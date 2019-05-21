@@ -1,0 +1,37 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel drawing
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> Texture;
+Texture2D<float> Stencil;
+Texture2D<float2> UV;
+
+//color
+float red;
+float green;
+float blue;
+
+[numthreads(8,8,1)]
+void drawing (uint3 id : SV_DispatchThreadID)
+{
+	uint2 stencil_size;
+	Stencil.GetDimensions(stencil_size.x, stencil_size.y); 
+	
+	uint2 brush_size;
+	UV.GetDimensions(brush_size.x, brush_size.y);
+
+	if (Stencil[id.xy * stencil_size / brush_size].x >= 0.01) {
+		uint width, height;
+		Texture.GetDimensions(width, height);
+
+		int2 px = int2(UV[id.xy].x*width, (UV[id.xy].y)*height);
+		Texture[px] = float4(red, green, blue, 1);
+
+		Texture[px - int2(0, 1)] = float4(red, green, blue, 1);
+		Texture[px + int2(0, 1)] = float4(red, green, blue, 1);
+		Texture[px - int2(1, 0)] = float4(red, green, blue, 1);
+		Texture[px + int2(1, 0)] = float4(red, green, blue, 1);
+
+	}
+}
