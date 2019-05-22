@@ -1,4 +1,7 @@
 Base path: D:/Programme/UnityHub/Editors/2019.1.3f1/Editor/Data
 Cmd: initializeCompiler
 Cmd: compileComputeKernel
-  api=4 insize=1030 outsize=1229 ok=1
+  error: 2 plat 4 at cs_drawing.compute(22): undeclared identifier 'GetDimensions'
+  api=4 insize=1266 outsize=0 ok=0
+Cmd: compileComputeKernel
+  api=4 insize=1199 outsize=1229 ok=1

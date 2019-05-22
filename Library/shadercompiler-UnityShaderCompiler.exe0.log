@@ -1,2 +1,10 @@
 Base path: D:/Programme/UnityHub/Editors/2019.1.3f1/Editor/Data
 Cmd: initializeCompiler
+Cmd: preprocessCompute
+  insize=1267 outsize=1266 ok=1
+Cmd: preprocessCompute
+  insize=1279 outsize=1278 ok=1
+Cmd: preprocessCompute
+  insize=1200 outsize=1199 ok=1
+Cmd: preprocessCompute
+  insize=1280 outsize=1279 ok=1

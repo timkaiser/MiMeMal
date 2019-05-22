@@ -6,15 +6,23 @@
 RWTexture2D<float4> Texture;
 Texture2D<float> Stencil;
 Texture2D<float2> UV;
+Texture2D<float> Component_Mask;
 
 //color
 float red;
 float green;
 float blue;
 
+float component_id;
+
 [numthreads(8,8,1)]
 void drawing (uint3 id : SV_DispatchThreadID)
 {
+	uint2 component_mask_size;
+	Component_Mask.GetDimensions(component_mask_size.x, component_mask_size.y);
+
+	if (component_id != Component_Mask[component_mask_size*UV[id.xy]]) { return; }
+
 	uint2 stencil_size;
 	Stencil.GetDimensions(stencil_size.x, stencil_size.y); 
 	

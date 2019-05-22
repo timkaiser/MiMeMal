@@ -29,6 +29,11 @@ public class sc_draw : MonoBehaviour {
 
     public Camera cam;
 
+    [SerializeField]
+    Texture2D component_mask;
+
+    [SerializeField]
+    float component_id = -1;
     // Use this for initialization
     void Start () {
         loadTexture(texture);
@@ -48,21 +53,31 @@ public class sc_draw : MonoBehaviour {
             cam.Render();
 
             RenderTexture.active = sc_UVCamera.uv_image;
-            Rect brush = new Rect(new Vector2((Input.mousePosition.x - (brush_size / 2)) * sc_UVCamera.scale_factor, (1280 - Input.mousePosition.y - (brush_size / 2)) * sc_UVCamera.scale_factor), new Vector2(brush_size * sc_UVCamera.scale_factor, brush_size * sc_UVCamera.scale_factor));
+            Rect brush = new Rect(new Vector2((Input.mousePosition.x - (brush_size / 2)) * sc_UVCamera.scale_factor, (Screen.height - Input.mousePosition.y - (brush_size / 2)) * sc_UVCamera.scale_factor), new Vector2(brush_size * sc_UVCamera.scale_factor, brush_size * sc_UVCamera.scale_factor));
             brush_positionMap.ReadPixels(brush, 0, 0);
             brush_positionMap.Apply();
+
+            if (component_id == -1) {
+                Color brush_center_uv = brush_positionMap.GetPixel(brush_size, brush_size);
+                component_id = component_mask.GetPixel((int)(brush_center_uv.r * component_mask.width), (int)(brush_center_uv.g * component_mask.height)).r;
+            }
 
             cs_draw.SetTexture(csKernel, "Texture", canvas);
             cs_draw.SetTexture(csKernel, "UV", brush_positionMap);
             cs_draw.SetTexture(csKernel, "Stencil", brush_stencil);
+            cs_draw.SetTexture(csKernel, "Component_Mask", component_mask);
 
             cs_draw.SetFloat("red", drawing_color.r);
             cs_draw.SetFloat("green", drawing_color.g);
             cs_draw.SetFloat("blue", drawing_color.b);
 
+            cs_draw.SetFloat("component_id", component_id);
+
             cs_draw.Dispatch(csKernel, brush_positionMap.width / 8, brush_positionMap.height / 8, 1);
 
             object_focused.GetComponent<Renderer>().material.mainTexture = canvas;
+        } else {
+            component_id = -1;
         }
     }
 
