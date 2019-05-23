@@ -4,7 +4,7 @@
 public class sc_UVCamera : MonoBehaviour {
 
     public static RenderTexture uv_image;
-    public static int scale_factor = 4;
+    public static int scale_factor = 8;
     Shader uv_shader;
 
     void Start () {

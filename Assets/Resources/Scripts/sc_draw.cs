@@ -58,7 +58,7 @@ public class sc_draw : MonoBehaviour {
             brush_positionMap.Apply();
 
             if (component_id == -1) {
-                Color brush_center_uv = brush_positionMap.GetPixel(brush_size, brush_size);
+                Color brush_center_uv = brush_positionMap.GetPixel(brush_positionMap.width / 2, brush_positionMap.height / 2);
                 component_id = component_mask.GetPixel((int)(brush_center_uv.r * component_mask.width), (int)(brush_center_uv.g * component_mask.height)).r;
             }
 
@@ -93,9 +93,6 @@ public class sc_draw : MonoBehaviour {
         canvas.Create();
         Graphics.Blit(src, canvas);
     }
-
-    public static void test() {
-        Debug.Log("test");
-    }
+    
 }
 

@@ -3,17 +3,10 @@ ScriptsOnlyBuild:
     Assembly-CSharp.dll:
     - sc_UVCamera
     - sc_draw
+    - sc_fpscounter
     - sc_rotation
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.TestListCacheData
-    UnityEngine.UI.dll:
-    - UnityEngine.EventSystems.EventSystem
-    - UnityEngine.EventSystems.StandaloneInputModule
-    - UnityEngine.UI.Button
-    - UnityEngine.UI.CanvasScaler
-    - UnityEngine.UI.GraphicRaycaster
-    - UnityEngine.UI.Image
-    - UnityEngine.UI.Text
   sceneClasses:
     Assets/Resources/Scenes/SampleScene.unity:
     - Class: 1
@@ -45,38 +38,16 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9372}
+      Script: {instanceID: 10076}
     - Class: 114
-      Script: {instanceID: 9374}
+      Script: {instanceID: 10326}
     - Class: 114
-      Script: {instanceID: 9380}
+      Script: {instanceID: 10346}
     - Class: 114
-      Script: {instanceID: 9386}
-    - Class: 114
-      Script: {instanceID: 9394}
-    - Class: 114
-      Script: {instanceID: 9430}
-    - Class: 114
-      Script: {instanceID: 9432}
-    - Class: 114
-      Script: {instanceID: 10072}
-    - Class: 114
-      Script: {instanceID: 10322}
-    - Class: 114
-      Script: {instanceID: 10342}
+      Script: {instanceID: 10798}
     - Class: 115
       Script: {instanceID: 0}
-    - Class: 128
-      Script: {instanceID: 0}
     - Class: 157
-      Script: {instanceID: 0}
-    - Class: 213
-      Script: {instanceID: 0}
-    - Class: 222
-      Script: {instanceID: 0}
-    - Class: 223
-      Script: {instanceID: 0}
-    - Class: 224
       Script: {instanceID: 0}
     - Class: 258
       Script: {instanceID: 0}
@@ -977,7 +948,7 @@ ScriptsOnlyBuild:
     className: TMP_Asset
   - hash:
       serializedVersion: 2
-      Hash: 537bc89225ec19e290f4056ecf467a19
+      Hash: 35251d2512a6cde9213710c4a0c29e9e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: sc_draw
@@ -1125,6 +1096,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_ColorGradient
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: sc_fpscounter
   - hash:
       serializedVersion: 2
       Hash: 8649814970b42d345b89944b862453cc
@@ -1554,4 +1531,4 @@ ScriptsOnlyBuild:
   platform: 13
   scenePathNames:
   - Assets/Resources/Scenes/SampleScene.unity
-  playerPath: C:/Users/TIm/AppData/Roaming/Microsoft/Windows/Network Shortcuts/PaintSculptures.apk
+  playerPath: D:/EigeneDateien/WichtigeDokumente/Universitaet_und_Schule/19SS/paint-sculptures/paint-sculptures.apk
