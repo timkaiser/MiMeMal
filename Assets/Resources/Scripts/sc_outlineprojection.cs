@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
+﻿using UnityEngine;
 
 public class sc_outlineprojection : MonoBehaviour {
     [SerializeField]
@@ -64,7 +61,6 @@ public class sc_outlineprojection : MonoBehaviour {
 
         string path = "Assets/outlines.png";
         System.IO.File.WriteAllBytes(path, bytes);
-        AssetDatabase.ImportAsset(path);
         Debug.Log("Saved to " + path);
     }
 

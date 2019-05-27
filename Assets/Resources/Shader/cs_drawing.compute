@@ -1,45 +1,76 @@
-﻿// Each #kernel tells which function to compile; you can have many kernels
+﻿/*HEADER:
+ * This compute shader does the actual drawing work. It takes as input three textures, one color, 
+ * two mouse positions, the starting point for the drawing, the brush size and the id of the component it is drawing on. It draws a line between both mouse positions
+ */
+
 #pragma kernel drawing
 
-// Create a RenderTexture with enableRandomWrite flag and set it
-// with cs.SetTexture
-RWTexture2D<float4> Texture;
-Texture2D<float> Stencil;
-Texture2D<float2> UV;
-Texture2D<float> Component_Mask;
+RWTexture2D<float4> Texture;		// INPUT: Texture to draw on;  OUTPUT: Input + Drawing 
 
-//color
-float red;
-float green;
-float blue;
+Texture2D<float2> UV;				// Small exerpt of the UV Image. Cntains only the part that is actually drawn on to save performance
+float corner_x, corner_y;			// Bottom left corner of the UV exerpt
 
-float component_id;
+Texture2D<float> Component_Mask;	// Mask that contains information about which part of the object belongs to which component
+float component_id;					// ID of the component the shader is currently drawing on
 
+float red, green, blue;				// Draw color
+
+float x_old, y_old;					// Old mouse position
+float x_new, y_new;					// New mouse position
+
+float size;							// Brush size
+
+
+/* This methode checks wether or not a point P is in the line between both mouse positions and therefore has to be drawn
+ * INPUT:  float2 p:		point to be checked
+ * OUTPUT: bool:			wether or not the point has to be draw
+ */
+bool isInLine(float2 p) {
+	float2 a = float2(x_old, y_new);	// Define point A (for some reason the y coords have to be switched, probably not the best solution but it works)
+	float2 b = float2(x_new, y_old);	// Define point B
+
+	float2 ap = p - a;					// Define vector A to P
+	float2 bp = p - b;					// Define vector B to P
+
+	bool draw = length(ap) <= size / 2 || length(bp) <= size / 2;		// Check wether or not point P is close enough to A or B to be drawn
+
+	if (!draw) {														// If not check wether or not P is between A and B
+		float2 ab = b - a;												// Define vector A to B
+		float2 o = normalize(float2(-ab.y, ab.x));						// Define vector orthogonal to AB
+
+		float d_o = abs(dot(o, ap));									// Calculate distance between A and P alongside the orthogonal vector
+		float d_ab = dot(normalize(ab), ap);							// Calculate distance between A and P alongside vector AB
+
+		draw = d_o <= size / 2 && d_ab <= length(ab) && d_ab >= 0;		// Check wether P is between A and B
+	}
+
+	return draw;
+}
+
+/* This is the main part of the shader
+ * INPUT: uint3 id: coordinate on the UV texture exerpt
+ */
 [numthreads(8,8,1)]
 void drawing (uint3 id : SV_DispatchThreadID)
 {
+	// If the pixel at position id.xy is not in the line between A and B then cancel
+	if (!isInLine(float2(id.x + corner_x, id.y + corner_y))) { return; }
+
+	// Get size of the component mask
 	uint2 component_mask_size;
 	Component_Mask.GetDimensions(component_mask_size.x, component_mask_size.y);
 
+	// If pixel is not in current component then cancel
 	if (component_id != Component_Mask[component_mask_size*UV[id.xy]]) { return; }
 
-	uint2 stencil_size;
-	Stencil.GetDimensions(stencil_size.x, stencil_size.y); 
+	// Get size of the texture
+	uint width, height;
+	Texture.GetDimensions(width, height);
+
+	// Calculate position on texture
+	int2 px = int2(UV[id.xy].x*width, (UV[id.xy].y)*height);
+
+	// Set pixel to color
+	Texture[px] = float4(red, green, blue, 1);
 	
-	uint2 brush_size;
-	UV.GetDimensions(brush_size.x, brush_size.y);
-
-	if (Stencil[id.xy * stencil_size / brush_size].x >= 0.01) {
-		uint width, height;
-		Texture.GetDimensions(width, height);
-
-		int2 px = int2(UV[id.xy].x*width, (UV[id.xy].y)*height);
-		Texture[px] = float4(red, green, blue, 1);
-
-		Texture[px - int2(0, 1)] = float4(red, green, blue, 1);
-		Texture[px + int2(0, 1)] = float4(red, green, blue, 1);
-		Texture[px - int2(1, 0)] = float4(red, green, blue, 1);
-		Texture[px + int2(1, 0)] = float4(red, green, blue, 1);
-
-	}
 }

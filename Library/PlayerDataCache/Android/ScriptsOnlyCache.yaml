@@ -4,11 +4,19 @@ ScriptsOnlyBuild:
     - sc_UVCamera
     - sc_draw
     - sc_fpscounter
-    - sc_rotation
+    - sc_simple_ui_features
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.TestListCacheData
+    UnityEngine.UI.dll:
+    - UnityEngine.EventSystems.EventSystem
+    - UnityEngine.EventSystems.StandaloneInputModule
+    - UnityEngine.UI.Button
+    - UnityEngine.UI.CanvasScaler
+    - UnityEngine.UI.GraphicRaycaster
+    - UnityEngine.UI.Image
+    - UnityEngine.UI.Text
   sceneClasses:
-    Assets/Resources/Scenes/SampleScene.unity:
+    Assets/Resources/Scenes/sn_Drawing.unity:
     - Class: 1
       Script: {instanceID: 0}
     - Class: 4
@@ -38,16 +46,40 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
+      Script: {instanceID: 9376}
+    - Class: 114
+      Script: {instanceID: 9378}
+    - Class: 114
+      Script: {instanceID: 9384}
+    - Class: 114
+      Script: {instanceID: 9390}
+    - Class: 114
+      Script: {instanceID: 9398}
+    - Class: 114
+      Script: {instanceID: 9434}
+    - Class: 114
+      Script: {instanceID: 9436}
+    - Class: 114
       Script: {instanceID: 10076}
     - Class: 114
       Script: {instanceID: 10326}
     - Class: 114
       Script: {instanceID: 10346}
     - Class: 114
-      Script: {instanceID: 10798}
+      Script: {instanceID: 10800}
     - Class: 115
       Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
     - Class: 157
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
       Script: {instanceID: 0}
     - Class: 258
       Script: {instanceID: 0}
@@ -984,10 +1016,10 @@ ScriptsOnlyBuild:
     className: SignalReceiver
   - hash:
       serializedVersion: 2
-      Hash: 18840f79072c4d11728e620be2c8d6c1
+      Hash: 6f9115ba2f1c00854c1d71613074d04e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: sc_rotation
+    className: sc_simple_ui_features
   - hash:
       serializedVersion: 2
       Hash: 4a0369cd366c126cd420018a4ac01f32
@@ -1068,6 +1100,12 @@ ScriptsOnlyBuild:
     className: DataPrivacyButton
   - hash:
       serializedVersion: 2
+      Hash: 4129ad199cb37f5a7865a94d0bd2716e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: sc_outlineprojection
+  - hash:
+      serializedVersion: 2
       Hash: f336e086360abe49a3323e5f1583c35a
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -1098,7 +1136,7 @@ ScriptsOnlyBuild:
     className: TMP_ColorGradient
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: fe4433ecbe545f9b4eef69e935b79c53
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: sc_fpscounter
@@ -1528,7 +1566,13 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 0e71e42a045d01fcfb93ccf7c3e00db2
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: sc_drawLine
   platform: 13
   scenePathNames:
-  - Assets/Resources/Scenes/SampleScene.unity
+  - Assets/Resources/Scenes/sn_Drawing.unity
   playerPath: D:/EigeneDateien/WichtigeDokumente/Universitaet_und_Schule/19SS/paint-sculptures/paint-sculptures.apk

@@ -63,16 +63,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Resources\Scripts\sc_draw.cs" />
+    <Compile Include="Assets\Resources\Scripts\sc_drawLine.cs" />
     <Compile Include="Assets\Resources\Scripts\sc_fpscounter.cs" />
     <Compile Include="Assets\Resources\Scripts\sc_outlineprojection.cs" />
-    <Compile Include="Assets\Resources\Scripts\sc_rotation.cs" />
+    <Compile Include="Assets\Resources\Scripts\sc_simple_ui_features.cs" />
     <Compile Include="Assets\Resources\Scripts\sc_UVCamera.cs" />
     <None Include="Assets\Resources\Shader\cs_drawing.compute" />
-    <None Include="Assets\Resources\Shader\sh_stencilShader.shader" />
     <None Include="Assets\Resources\Shader\sh_UVShader.shader" />
     <None Include="Assets\Resources\Shader\cs_projection.compute" />
     <None Include="Assets\Resources\Shader\sh_paint.shader" />
-    <None Include="Assets\Resources\Shader\sh_combined.shader" />
+    <None Include="Assets\Resources\Shader\cs_lineDrawer.compute" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/EigeneDateien/WichtigeDokumente/Universitaet_und_Schule/19SS/paint-sculptures/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

@@ -1,53 +1,40 @@
-﻿Shader "Custom/UVShader"
+﻿/* HEADER:
+ * This shader renders the scene displaying the objects UV coordinates.
+ */
+
+Shader "Custom/UVShader"
 {
-	Properties
-	{
-	}
+	Properties{}
 	SubShader
 	{
-		Tags { "RenderType" = "Opaque" /*"Queue" = "Geometry+1"*/}
-		LOD 100
+		Tags { "RenderType" = "Opaque"}
 
 		Pass
 		{
-			/*Stencil {
-				Ref 2
-				Comp equal
-				Pass replace
-			}*/
-
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-			// make fog work
-			#pragma multi_compile_fog
 			
 			#include "UnityCG.cginc"
 
-			struct appdata
-			{
-				float4 vertex : POSITION;
-				float2 uv : TEXCOORD0;
-			};
-
+			// Output of the vertex shader and input for the fragment shader
 			struct v2f
 			{
-				float2 uv : TEXCOORD0;
 				float4 vertex : SV_POSITION;
+				float2 uv : TEXCOORD0;
 			};
 			
-			v2f vert (appdata v)
-			{
-				v2f o;
-				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.uv = v.uv;
+			// Vertex Shader
+			v2f vert (appdata_base v) {
+				v2f o = { UnityObjectToClipPos(v.vertex), v.texcoord.xy };
 				return o;
 			}
 			
-			float4 frag (v2f i) : SV_Target
-			{
+			// Fragment Shader
+			float4 frag (v2f i) : SV_Target {
 				return float4(i.uv,0,1);
 			}
+
 			ENDCG
 		}
 	}
