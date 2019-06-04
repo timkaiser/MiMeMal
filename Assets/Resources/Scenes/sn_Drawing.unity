@@ -345,7 +345,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: -175}
+  m_AnchoredPosition: {x: -75, y: -75}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &472210597
@@ -534,9 +534,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1005360584}
-  - component: {fileID: 1005360583}
   - component: {fileID: 1005360585}
   - component: {fileID: 1005360586}
+  - component: {fileID: 1005360583}
   m_Layer: 0
   m_Name: ScriptManager
   m_TagString: Untagged
@@ -553,17 +553,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1005360582}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bff308a60f0960c439640d372106d94b, type: 3}
+  m_Script: {fileID: 11500000, guid: c4fdfc1d67ce93e40a03dcac456cda2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brush_stencil: {fileID: 2800000, guid: 0edadf3c972963149a5af930226fdc4c, type: 3}
-  brush_size: 50
-  object_focused: {fileID: 456685158}
-  drawing_color: {r: 0, g: 0.55501795, b: 1, a: 0}
-  texture: {fileID: 2800000, guid: 029edf3bb023885468ec3dea303a045a, type: 3}
-  cam: {fileID: 1274369613}
+  canvas: {fileID: 0}
+  object_to_draw_on: {fileID: 456685158}
+  original_texture: {fileID: 2800000, guid: 029edf3bb023885468ec3dea303a045a, type: 3}
   component_mask: {fileID: 2800000, guid: 5f4e553337e37e449b8a940d1224ac4b, type: 3}
-  component_id: 0
+  drawing_color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!4 &1005360584
 Transform:
   m_ObjectHideFlags: 0
@@ -607,7 +604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obj: {fileID: 456685158}
   next_color: 0
-  draw_script: {fileID: 1005360583}
+  draw_script: {fileID: 0}
   rotation_speed: 1000
 --- !u!1 &1274369610
 GameObject:
@@ -622,7 +619,7 @@ GameObject:
   - component: {fileID: 1274369614}
   m_Layer: 0
   m_Name: UV Camera
-  m_TagString: Untagged
+  m_TagString: UVCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

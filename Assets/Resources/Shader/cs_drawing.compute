@@ -1,5 +1,5 @@
 ﻿/*HEADER:
- * This compute shader does the actual drawing work. It takes as input three textures, one color, 
+ * This compute shader does the actual drawing work for the brush tool. It takes as input three textures, one color, 
  * two mouse positions, the starting point for the drawing, the brush size and the id of the component it is drawing on. It draws a line between both mouse positions
  */
 
