@@ -4,90 +4,73 @@ using UnityEngine;
 
 public class sc_drawing_handler : MonoBehaviour
 {
-    // Parameter of the mouse, used as compact way to deliver all necessary information to the tools
-    public struct Cursor_Parameter {
-        public float x, y;               // current mouse position
-        public float component_id;     // id of the component at current mouse position
-        public bool is_click_start;    // contains information on wether or not this is the fist update call while mouse button down
-    }
+    private static sc_drawing_handler instance; // singelton instance to avoid the doubeling of this script
 
-    //Parameter of the object that is drawn on, used as compact way to deliver all necessary information to the tools
-    public struct Object_Parameter {
-        public GameObject obj;                 // the object itself
-        public Texture2D original_texture;     // original texture of the object
-        public Texture2D component_mask;       // mask containing all informatinon about the components
-
-        public RenderTexture uv_image;         // uv rendering of the object
-        public RenderTexture canvas;           // canvas to draw on, used as new object texture
-    }
-
-    public RenderTexture canvas;           // canvas to draw on, used as new object texture
-
-    public GameObject object_to_draw_on;    // used as input via inspector
-    public Texture2D original_texture;      // used as input via inspector
-    public Texture2D component_mask;        // used as input via inspector
-
-
-    private Object_Parameter obj;           // instance of object_parameter used to deliver data to tools 
-    private Cursor_Parameter cursor;        // instance of cursor_parameter used to deliver data to tools
-
-    public Color drawing_color;             // current drawing color
-
-    private Camera cam;
+    public GameObject obj;              // the object itself
+    public Texture2D original_texture;  // original texture of the object
+    public Texture2D component_mask;    // mask containing all informatinon about the components
     
+    public RenderTexture canvas;        // canvas to draw on, used as new object texture
+    
+    public Color drawing_color;         // current drawing color
 
-    // singelton instance to avoid the doubeling of this script
-    private static sc_drawing_handler instance;
+    public float component_id;          // id of the component at current mouse position
 
-
-    // drawing tool
-    private sc_tool active_tool;                                            // currently active tool         
+    // drawing tools
+    private int active_tool = 0;                                            // currently active tool         
     private sc_tool[] tools = { new sc_tool_brush(), new sc_tool_fill() };  // list of all tools
+
+    
 
     private void Awake() {
         // avoid doubeling of this script
         if (instance != null && instance != this) { Destroy(this.gameObject); } else { instance = this; }
 
-        //activate current tool 
-        active_tool = tools[1];
-
-        //setup parameter
-        obj = new Object_Parameter() { obj = object_to_draw_on, original_texture = original_texture, uv_image = sc_UVCamera.uv_image, component_mask = component_mask, canvas = null };
-        cursor = new Cursor_Parameter() { x = 0, y = 0, component_id = -1 };
+        //initialize tools
+        foreach (sc_tool t in tools) {
+            t.initialize();
+        }
 
         //setup canvas
-        loadTexture(obj.original_texture, out obj.canvas);
+        loadTexture(original_texture, out canvas);
 
-        canvas = obj.canvas;
-
+        //set object texture as canvas
+        obj.GetComponent<Renderer>().material.mainTexture = canvas;
     }
 
     void Update(){
-        cursor.x = Input.mousePosition.x;
-        cursor.y = Input.mousePosition.y;
+        int mouse_x = (int)Input.mousePosition.x;
+        int mouse_y = Screen.height - (int)Input.mousePosition.y;
 
-        if (Input.GetMouseButtonDown(0)){ 
-            cursor.is_click_start = true;
-
-            Color color_at_cursor = read_pixel(sc_UVCamera.uv_image, (int)cursor.x, (int)cursor.y);
-            cursor.component_id = component_mask.GetPixel((int)(color_at_cursor.r * component_mask.width), (int)(color_at_cursor.g * component_mask.height)).r;
-        } else {
-            cursor.is_click_start = false;
+        if (Input.GetMouseButtonDown(0)) {
+            Color color_at_cursor = read_pixel(sc_UVCamera.uv_image, mouse_x, mouse_y);
+            if (color_at_cursor.a != 0) {
+                component_id = component_mask.GetPixel((int)(color_at_cursor.r * component_mask.width), (int)(color_at_cursor.g * component_mask.height)).r;
+            } else {
+                component_id = -1;
+            }
         }
-        
-        active_tool.perFrame(obj, cursor, drawing_color);
+
+        if (Input.GetMouseButton(0)) {
+            tools[active_tool].perFrame(canvas, sc_UVCamera.uv_image, component_mask, mouse_x, mouse_y, component_id, drawing_color, Input.GetMouseButtonDown(0));
+        }
     }
 
     private void activate_tool(int tool_id) {
         // deactivate currently active tool
-        if(active_tool != null) {
-            active_tool.active = false;
-        }
+        tools[active_tool].active = false;
 
         // activate new tool
-        active_tool = tools[tool_id];
-        active_tool.active = true;
+        active_tool = tool_id;
+        tools[active_tool].active = true;
     }
+
+    public void next_tool() {
+        int next_tool = (active_tool + 1) % tools.Length;
+
+        activate_tool(next_tool);
+    }
+
 
     private void loadTexture(Texture2D src, out RenderTexture dest) {
         //setup drawing texture
@@ -99,15 +82,6 @@ public class sc_drawing_handler : MonoBehaviour
         Graphics.Blit(src, dest);
     }
 
-    /*
-    void copy_uv_image() {
-        if (obj.uv_image == null) {
-            obj.uv_image = new Texture2D(sc_UVCamera.uv_image.width, sc_UVCamera.uv_image.height, TextureFormat.ARGB32, false);
-        }
-
-        Graphics.CopyTexture(sc_UVCamera.uv_image, obj.uv_image);
-    }*/
-
 
     // This methode reads a single pixel of a rendertexture. This is not very efficient. Do not use it too much.
     // INPUT:
@@ -116,7 +90,6 @@ public class sc_drawing_handler : MonoBehaviour
     // OUTPUT:
     //      Color, Color at pixel x,y in texture rt
     Color read_pixel(RenderTexture rt, int x, int y) {
-        // get id of current component
         Camera cam = GameObject.FindGameObjectWithTag("UVCamera").GetComponent<Camera>();
         cam.targetTexture = rt;
         cam.Render();
@@ -125,7 +98,7 @@ public class sc_drawing_handler : MonoBehaviour
         
         Texture2D pixel = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
 
-        pixel.ReadPixels(new Rect(cursor.x, cursor.y, 1, 1), 0, 0);
+        pixel.ReadPixels(new Rect(x, y, 1, 1), 0, 0);
         pixel.Apply();
 
         Color col = pixel.GetPixel(0,0);

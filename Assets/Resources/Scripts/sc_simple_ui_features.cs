@@ -10,7 +10,7 @@ public class sc_simple_ui_features : MonoBehaviour
     //color
     Color[] colors = { Color.red, Color.green, Color.blue, Color.yellow, Color.magenta, Color.cyan, Color.white, Color.black };
     public int next_color = 0;
-    public sc_draw draw_script;
+    public sc_drawing_handler draw_script;
 
     [SerializeField]
     private float rotation_speed = 1000.0f;

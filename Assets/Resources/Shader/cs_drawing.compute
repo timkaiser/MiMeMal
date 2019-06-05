@@ -7,8 +7,8 @@
 
 RWTexture2D<float4> Texture;		// INPUT: Texture to draw on;  OUTPUT: Input + Drawing 
 
-Texture2D<float2> UV;				// Small exerpt of the UV Image. Cntains only the part that is actually drawn on to save performance
-float corner_x, corner_y;			// Bottom left corner of the UV exerpt
+Texture2D<float2> UV;				// UV Imageof the scene
+float corner_x, corner_y;			// Bottom left corner of the drawing area
 
 Texture2D<float> Component_Mask;	// Mask that contains information about which part of the object belongs to which component
 float component_id;					// ID of the component the shader is currently drawing on
@@ -26,8 +26,8 @@ float size;							// Brush size
  * OUTPUT: bool:			wether or not the point has to be draw
  */
 bool isInLine(float2 p) {
-	float2 a = float2(x_old, y_new);	// Define point A (for some reason the y coords have to be switched, probably not the best solution but it works)
-	float2 b = float2(x_new, y_old);	// Define point B
+	float2 a = float2(x_old, y_old);	// Define point A (for some reason the y coords have to be switched, probably not the best solution but it works)
+	float2 b = float2(x_new, y_new);	// Define point B
 
 	float2 ap = p - a;					// Define vector A to P
 	float2 bp = p - b;					// Define vector B to P
@@ -53,22 +53,25 @@ bool isInLine(float2 p) {
 [numthreads(8,8,1)]
 void drawing (uint3 id : SV_DispatchThreadID)
 {
+	// Calculate screen position
+	uint2 pos = id.xy + uint2(corner_x, corner_y);
+
 	// If the pixel at position id.xy is not in the line between A and B then cancel
-	if (!isInLine(float2(id.x + corner_x, id.y + corner_y))) { return; }
+	if (!isInLine(float2(pos.x, pos.y))) { return; }
 
 	// Get size of the component mask
 	uint2 component_mask_size;
 	Component_Mask.GetDimensions(component_mask_size.x, component_mask_size.y);
 
 	// If pixel is not in current component then cancel
-	if (component_id != Component_Mask[component_mask_size*UV[id.xy]]) { return; }
+	if (component_id != Component_Mask[component_mask_size*UV[pos]]) { return; }
 
 	// Get size of the texture
 	uint width, height;
 	Texture.GetDimensions(width, height);
 
 	// Calculate position on texture
-	int2 px = int2(UV[id.xy].x*width, (UV[id.xy].y)*height);
+	int2 px = int2(UV[pos].x*width, (UV[pos].y)*height);
 
 	// Set pixel to color
 	Texture[px] = float4(red, green, blue, 1);
