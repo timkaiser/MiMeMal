@@ -62,7 +62,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Resources\Scripts\sc_draw.cs" />
     <Compile Include="Assets\Resources\Scripts\sc_drawing_handler.cs" />
     <Compile Include="Assets\Resources\Scripts\sc_drawLine.cs" />
     <Compile Include="Assets\Resources\Scripts\sc_fpscounter.cs" />

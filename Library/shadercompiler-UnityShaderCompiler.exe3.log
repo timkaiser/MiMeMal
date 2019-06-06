@@ -1,10 +1,2 @@
 Base path: D:/Programme/UnityHub/Editors/2019.1.3f1/Editor/Data
 Cmd: initializeCompiler
-Cmd: compileComputeKernel
-  error: 1 plat 4 at cs_drawing.compute(56): comma expression used where a vector constructor may have been intended
-  error: 1 plat 4 at cs_drawing.compute(59): signed/unsigned mismatch, unsigned assumed
-  api=4 insize=3310 outsize=2453 ok=1
-Cmd: compileComputeKernel
-  api=18 insize=3319 outsize=7853 ok=1
-Cmd: compileComputeKernel
-  api=4 insize=3319 outsize=1841 ok=1

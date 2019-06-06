@@ -3,6 +3,7 @@
 		_MainTex("Texture", 2D) = "white" {}
 		_NormalMap("Normalmap", 2D) = "bump" {}
 		_ComponentOutline("Component Outline", 2D) = "clear" {}
+		_ComponentMask("Component Mask", 2D) = "black" {}
 	}
 	SubShader{
 		Tags { "RenderType" = "Opaque" }

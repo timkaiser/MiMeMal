@@ -6,17 +6,17 @@ public class sc_drawing_handler : MonoBehaviour
 {
     private static sc_drawing_handler instance; // singelton instance to avoid the doubeling of this script
 
-    public GameObject obj;              // the object itself
-    public Texture2D original_texture;  // original texture of the object
-    public Texture2D component_mask;    // mask containing all informatinon about the components
+    [SerializeField]
+    private Texture2D component_mask;    // mask containing all informatinon about the components
     
-    public RenderTexture canvas;        // canvas to draw on, used as new object texture
+    private RenderTexture canvas;        // canvas to draw on, used as new object texture
     
     public Color drawing_color;         // current drawing color
 
-    public float component_id;          // id of the component at current mouse position
+    private float component_id;          // id of the component at current mouse position
 
     // drawing tools
+    [SerializeField]
     private int active_tool = 0;                                            // currently active tool         
     private sc_tool[] tools = { new sc_tool_brush(), new sc_tool_fill() };  // list of all tools
 
@@ -31,10 +31,15 @@ public class sc_drawing_handler : MonoBehaviour
             t.initialize();
         }
 
-        //setup canvas
-        loadTexture(original_texture, out canvas);
+        GameObject obj = GameObject.FindGameObjectWithTag("paintable");
 
-        //set object texture as canvas
+        // set component mask
+        component_mask = (Texture2D)obj.GetComponent<Renderer>().material.GetTexture("_ComponentMask");
+
+        // setup canvas
+        loadTexture(obj.GetComponent<Renderer>().material.mainTexture, out canvas);
+         
+        // set object texture as canvas
         obj.GetComponent<Renderer>().material.mainTexture = canvas;
     }
 
@@ -62,7 +67,16 @@ public class sc_drawing_handler : MonoBehaviour
 
         // activate new tool
         active_tool = tool_id;
-        tools[active_tool].active = true;
+        tools[active_tool].active = true;        
+    }
+
+    private void activate_tool(string name) {
+        for(int i = 0; i < tools.Length; i++) {
+            if (tools[i].getName().Equals(name)) {
+                activate_tool(i);
+                return;
+            }
+        }
     }
 
     public void next_tool() {
@@ -72,7 +86,8 @@ public class sc_drawing_handler : MonoBehaviour
     }
 
 
-    private void loadTexture(Texture2D src, out RenderTexture dest) {
+
+    private void loadTexture(Texture src, out RenderTexture dest) {
         //setup drawing texture
         dest = new RenderTexture(src.width, src.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Default);
         dest.enableRandomWrite = true;
@@ -104,5 +119,22 @@ public class sc_drawing_handler : MonoBehaviour
         Color col = pixel.GetPixel(0,0);
         DestroyImmediate(pixel);
         return col;
+    }
+
+    public void saveDrawing() { //source: https://gist.github.com/krzys-h/76c518be0516fb1e94c7efbdcd028830
+        RenderTexture rt = canvas;
+
+        RenderTexture.active = rt;
+        Texture2D tex = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
+        tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+        RenderTexture.active = null;
+
+        byte[] bytes;
+        bytes = tex.EncodeToPNG();
+
+        string path = "Assets/Resources/SavedDrawings/Drawing" + Time.time+ ".png";
+        System.IO.File.WriteAllBytes(path, bytes);
+
+        DestroyImmediate(tex);
     }
 }

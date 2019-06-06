@@ -4,7 +4,7 @@ using UnityEngine;
 using static sc_drawing_handler;
 
 public class sc_tool_brush : sc_tool{
-    
+
     [SerializeField]
     int brush_size = 50;
 
@@ -61,8 +61,9 @@ public class sc_tool_brush : sc_tool{
         // set new mouse position
         mouse_x_old = mouse_x_new;
         mouse_y_old = mouse_y_new;
-    }            
-    
+    }
 
+
+    public override string getName() { return "brush"; }
 
 }
