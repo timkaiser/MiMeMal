@@ -23,8 +23,8 @@ public class sc_tool_brush : sc_tool{
 
     public override void initialize() {
         //setup compute shader
-        cs_draw = (ComputeShader)Resources.Load("Shader/cs_drawing");
-        csKernel = cs_draw.FindKernel("drawing");
+        cs_draw = (ComputeShader)Resources.Load("Shader/cs_brush");
+        csKernel = cs_draw.FindKernel("brush");
     }
 
     public override void perFrame(RenderTexture canvas, RenderTexture uv_image, Texture2D component_mask, float mouse_x_new, float mouse_y_new, float component_id, Color drawing_color, bool is_click_start) {

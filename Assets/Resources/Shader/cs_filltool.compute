@@ -12,7 +12,6 @@ float component_id;					// ID of the component the shader is currently drawing o
 
 float red, green, blue;				// Draw color
 
-
 /* This is the main part of the shader
  * INPUT: uint3 id: coordinate on the Texture/Component_mask
  */
@@ -20,7 +19,7 @@ float red, green, blue;				// Draw color
 void filling(uint3 id : SV_DispatchThreadID)
 {
 	// If pixel is not in current component then cancel
-	//if (component_id != Component_Mask[id.xy]) { return; }
+	if (abs(component_id - Component_Mask[id.xy]) > 0.05) { return; }
 
 	// Set pixel to color
 	Canvas[id.xy] = float4(red, green, blue, 1);

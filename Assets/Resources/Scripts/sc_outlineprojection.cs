@@ -6,7 +6,6 @@ public class sc_outlineprojection : MonoBehaviour {
     [SerializeField]
     int result_size = 2048;
 
-
     [SerializeField]
     RenderTexture uv_image;
 
@@ -19,6 +18,7 @@ public class sc_outlineprojection : MonoBehaviour {
     
     // Use this for initialization
     void Start() {
+
         result = new RenderTexture(result_size, result_size, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Default);
         result.enableRandomWrite = true;
         result.filterMode = FilterMode.Point;

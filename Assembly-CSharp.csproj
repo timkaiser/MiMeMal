@@ -71,7 +71,7 @@
     <Compile Include="Assets\Resources\Scripts\sc_tool_brush.cs" />
     <Compile Include="Assets\Resources\Scripts\sc_tool_fill.cs" />
     <Compile Include="Assets\Resources\Scripts\sc_UVCamera.cs" />
-    <None Include="Assets\Resources\Shader\cs_drawing.compute" />
+    <None Include="Assets\Resources\Shader\cs_brush.compute" />
     <None Include="Assets\Resources\Shader\sh_UVShader.shader" />
     <None Include="Assets\Resources\Shader\cs_filltool.compute" />
     <None Include="Assets\Resources\Shader\cs_projection.compute" />
