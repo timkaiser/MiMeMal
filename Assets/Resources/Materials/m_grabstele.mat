@@ -24,11 +24,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ComponentMask:
-        m_Texture: {fileID: 2800000, guid: 23efbe8fae292474fa68c34a86d27d24, type: 3}
+        m_Texture: {fileID: 2800000, guid: 97175e9cb73ba184eb86086572e4fa3f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ComponentOutline:
-        m_Texture: {fileID: 2800000, guid: 73a16c42adf5e6b448826d64e4a7278c, type: 3}
+        m_Texture: {fileID: 2800000, guid: e0c9c8eb443359945ab7fd14b23c19c4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:

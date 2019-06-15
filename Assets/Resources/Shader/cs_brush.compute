@@ -64,7 +64,7 @@ void brush (uint3 id : SV_DispatchThreadID)
 	Component_Mask.GetDimensions(component_mask_size.x, component_mask_size.y);
 
 	// If pixel is not in current component then cancel
-	if (abs(component_id - Component_Mask[component_mask_size*UV[pos]]) > 0.05f) { return; }
+	if (abs(component_id - Component_Mask[component_mask_size*UV[pos]]) > 0.01f) { return; }
 
 	// Get size of the texture
 	uint width, height;
