@@ -19,7 +19,7 @@ float red, green, blue;				// Draw color
 void filling(uint3 id : SV_DispatchThreadID)
 {
 	// If pixel is not in current component then cancel
-	if (abs(component_id - Component_Mask[id.xy]) > 0.05) { return; }
+	if (abs(component_id - Component_Mask[id.xy]) > 0.01) { return; }
 
 	// Set pixel to color
 	Canvas[id.xy] = float4(red, green, blue, 1);

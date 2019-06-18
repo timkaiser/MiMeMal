@@ -12,7 +12,7 @@ public class sc_UVCamera : MonoBehaviour {
     public static RenderTexture uv_image;
 
     // This scalefactor is used to render the scene in a higher resolution 
-    public static int scale_factor = 1;
+    public static int scale_factor = 10;
 
     void Start () {
         //setup render target
