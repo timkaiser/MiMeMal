@@ -12,7 +12,7 @@ public class sc_UVCamera : MonoBehaviour {
     public static RenderTexture uv_image;
 
     // This scalefactor is used to render the scene in a higher resolution 
-    public static int scale_factor = 10;
+    public static int scale_factor = 1;
 
     void Start () {
         //setup render target
@@ -25,6 +25,6 @@ public class sc_UVCamera : MonoBehaviour {
         GetComponent<Camera>().SetTargetBuffers(uv_image.colorBuffer, uv_image.depthBuffer);
 
         //replacement shader
-        GetComponent<Camera>().SetReplacementShader((Shader)Resources.Load("Shader/sh_UVShader"), "");   
+        GetComponent<Camera>().SetReplacementShader((Shader)Resources.Load("Shader/sh_UVShader"), "");
     }
 }
