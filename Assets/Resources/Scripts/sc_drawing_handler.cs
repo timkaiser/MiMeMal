@@ -10,7 +10,8 @@ public class sc_drawing_handler : MonoBehaviour
     private Texture2D component_mask;    // mask containing all informatinon about the components
     
     private RenderTexture canvas;        // canvas to draw on, used as new object texture
-    
+    public RenderTexture uv;        // canvas to draw on, used as new object texture
+
     public Color drawing_color;         // current drawing color
 
     private float component_id;          // id of the component at current mouse position
@@ -44,6 +45,7 @@ public class sc_drawing_handler : MonoBehaviour
     }
 
     void Update(){
+        uv = sc_UVCamera.uv_image;
         int mouse_x = (int)Input.mousePosition.x;
         int mouse_y = Screen.height - (int)Input.mousePosition.y;
 

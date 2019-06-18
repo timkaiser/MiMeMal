@@ -723,7 +723,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   component_mask: {fileID: 0}
-  drawing_color: {r: 0.5921569, g: 0.68235296, b: 0.3372549, a: 1}
+  uv: {fileID: 0}
+  drawing_color: {r: 0.29196337, g: 0.6031477, b: 0.764151, a: 1}
   active_tool: 0
 --- !u!4 &1005360584
 Transform:
