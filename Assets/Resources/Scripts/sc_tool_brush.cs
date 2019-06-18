@@ -6,7 +6,7 @@ using static sc_drawing_handler;
 public class sc_tool_brush : sc_tool{
 
     [SerializeField]
-    int brush_size = 30;
+    int brush_size = 50;
 
     //compute shader
     ComputeShader cs_draw;
