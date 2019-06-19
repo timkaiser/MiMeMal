@@ -1,2 +1,0 @@
-D:\EigeneDateien\WichtigeDokumente\Universitaet_und_Schule\19SS\paint-sculptures\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
-D:\EigeneDateien\WichtigeDokumente\Universitaet_und_Schule\19SS\paint-sculptures\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
