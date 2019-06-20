@@ -6,7 +6,6 @@ public class sc_drawing_handler : MonoBehaviour
 {
     private static sc_drawing_handler instance; // singelton instance to avoid the doubeling of this script
 
-    [SerializeField]
     private Texture2D component_mask;    // mask containing all informatinon about the components
     
     private RenderTexture canvas;        // canvas to draw on, used as new object texture
@@ -60,7 +59,7 @@ public class sc_drawing_handler : MonoBehaviour
         }
     }
 
-    private void activate_tool(int tool_id) {
+    public void activate_tool(int tool_id) {
         // deactivate currently active tool
         tools[active_tool].active = false;
 
@@ -69,7 +68,7 @@ public class sc_drawing_handler : MonoBehaviour
         tools[active_tool].active = true;        
     }
 
-    private void activate_tool(string name) {
+    public void activate_tool(string name) {
         for(int i = 0; i < tools.Length; i++) {
             if (tools[i].getName().Equals(name)) {
                 activate_tool(i);
@@ -84,6 +83,15 @@ public class sc_drawing_handler : MonoBehaviour
         activate_tool(next_tool);
     }
 
+    public sc_tool get_tool(string name) {
+        for (int i = 0; i < tools.Length; i++) {
+            if (tools[i].getName().Equals(name)) {
+                return tools[i];
+            }
+        }
+
+        return null;
+    }
 
 
     private void loadTexture(Texture src, out RenderTexture dest) {

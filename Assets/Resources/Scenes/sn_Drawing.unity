@@ -703,6 +703,7 @@ GameObject:
   - component: {fileID: 1005360585}
   - component: {fileID: 1005360586}
   - component: {fileID: 1005360583}
+  - component: {fileID: 1005360587}
   m_Layer: 0
   m_Name: ScriptManager
   m_TagString: Untagged
@@ -722,10 +723,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4fdfc1d67ce93e40a03dcac456cda2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  component_mask: {fileID: 0}
   drawing_color: {r: 0.5921569, g: 0.68235296, b: 0.3372549, a: 1}
   active_tool: 0
-  test: {fileID: 0}
 --- !u!4 &1005360584
 Transform:
   m_ObjectHideFlags: 0
@@ -771,6 +770,18 @@ MonoBehaviour:
   rotation_speed: 1000
   current_color: 0
   draw_script: {fileID: 1005360583}
+--- !u!114 &1005360587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005360582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1eb9769046cf184780b5b5dc1e528b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1033669386
 GameObject:
   m_ObjectHideFlags: 0

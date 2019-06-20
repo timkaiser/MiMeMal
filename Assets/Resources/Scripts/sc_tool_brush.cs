@@ -5,8 +5,7 @@ using static sc_drawing_handler;
 
 public class sc_tool_brush : sc_tool{
 
-    [SerializeField]
-    int brush_size = 50;
+    public int brush_size { get; set; } = 50; 
 
     //compute shader
     ComputeShader cs_draw;
@@ -14,8 +13,8 @@ public class sc_tool_brush : sc_tool{
 
 
     //old mouse position
-    float mouse_x_old = -1;
-    float mouse_y_old = -1;
+    private float mouse_x_old = -1;
+    private float mouse_y_old = -1;
 
     void Start() {
         initialize();    
@@ -62,7 +61,6 @@ public class sc_tool_brush : sc_tool{
         mouse_x_old = mouse_x_new;
         mouse_y_old = mouse_y_new;
     }
-
 
     public override string getName() { return "brush"; }
 
