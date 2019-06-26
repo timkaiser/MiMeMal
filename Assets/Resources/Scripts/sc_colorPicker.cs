@@ -6,9 +6,10 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class sc_colorPicker : MonoBehaviour
 {
+    public Slider valueSlider;
     public Color currentColor = Color.white;
     [Range(0f, 1f)]
-    public float value = 1f;
+    private float value = 1f;
 
     public void OnColorPickerClicked()
     {
@@ -24,5 +25,15 @@ public class sc_colorPicker : MonoBehaviour
         if (saturation > 1) return;
 
         currentColor = Color.HSVToRGB(hue, saturation, value);
+
+        valueSlider.transform.Find("Color")
+                  .GetComponent<CanvasRenderer>().GetMaterial().SetVector("_HSVColor",
+                  new Vector4(hue, saturation, value, 1));
+    }
+    public void OnValueSliderChanged()
+    {
+        this.value = valueSlider.value;
+        Debug.Log(value);
+        gameObject.GetComponent<CanvasRenderer>().GetMaterial().SetFloat("_Value", this.value);
     }
 }

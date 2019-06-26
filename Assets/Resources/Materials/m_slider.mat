@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: m_colorPicker
-  m_Shader: {fileID: 4800000, guid: b2ee3ab4f1c698f4ab280dbdf13d4c58, type: 3}
+  m_Name: m_slider
+  m_Shader: {fileID: 4800000, guid: 220e5bad2020e8444a3f5a7403b541d5, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -71,8 +71,8 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _Value: 0.27531394
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HSVColor: {r: 0.64152807, g: 0.74293536, b: 1, a: 1}
