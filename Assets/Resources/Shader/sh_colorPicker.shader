@@ -39,9 +39,13 @@
 				//compute polar coords
 				float saturation = sqrt((x * x) + (y * y));
 				float hue = atan2(y, x) * (180 / 3.14159265f) + 180;
+				float alpha = 1;
 
 				//if outside cicle
-				if (saturation > 1) discard;
+				if (saturation > 1.01) discard;
+				if (saturation > 1.005) alpha = 0.8f;
+				if (saturation > 1) alpha = 0.5f;
+				if (saturation > 1.95) alpha = 0.3f;
 
 				//convert to RGB color
 				float rk = (5 + hue / 60) % 6;
@@ -51,7 +55,7 @@
 				float bk = (1 + hue / 60) % 6;
 				float b = _Value - _Value * saturation * max(min(min(bk, 4 - bk), 1), 0);
 
-				return float4(r, g, b, 1);
+				return alpha * float4(r, g, b, 1) + (1-alpha) * float4(1, 1, 1, 1);
 			}
 
 		ENDCG
