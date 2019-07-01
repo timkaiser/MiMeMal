@@ -21,8 +21,10 @@ public class sc_simple_ui_features : MonoBehaviour
         new Color(0.25f, 0.25f, 0.29f, 1.0f),
         new Color(0.56f, 0.28f, 0.24f, 1.0f)
     }; // Avialable colors for drawing
-    public int current_color = 0;                                                                                               // Index of current color
-    public sc_drawing_handler draw_script;                                                                                      // drawing scipt (to change color)
+    public int current_color = 0;            // Index of current color
+    public sc_drawing_handler draw_script;   // drawing scipt (to change color)
+    public GameObject UICanvas;
+    public GameObject ColorCanvas;
 
     /* This methode turns the object to the left
      * INPUT: none
@@ -46,8 +48,15 @@ public class sc_simple_ui_features : MonoBehaviour
      * OUTPUt: none
      */
     public void pick_next_color() {
-        current_color = (current_color + 1) % colors.Length;
-        draw_script.drawing_color = colors[current_color];
+        //current_color = (current_color + 1) % colors.Length;
+        //draw_script.drawing_color = colors[current_color];
+        UICanvas.SetActive(false);
+        ColorCanvas.SetActive(true);
     }
 
+    public void onReturnClicked()
+    {
+        UICanvas.SetActive(true);
+        ColorCanvas.SetActive(false);
+    }
 }

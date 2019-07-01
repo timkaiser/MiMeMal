@@ -1,14 +1,14 @@
 {
   "Items": [
     {
-      "name": "Bleiweiß",
-      "description": "Bleiweiß wurde von den Griechen entdeckt und war ihr bevorzugter Weißton. Es ist ein künstliches, hochgiftiges Pigment. Hergestellt wurde es indem Bleiplatten in einem Gefäß zusammen mit einer Schale Essig einige Wochen unter einem Misthaufen vergraben wurden.",
-      "color": [255, 245, 200],
+      "name": "Kalkweiß",
+      "description": "Kalkweiß ist schon seit prähistorischen Zeiten in Benutzung. Es ist weniger deckend als Bleiweiß und wurde als Bindemittel oder Aufheller eingesetzt.",
+      "color": [ 255, 255, 255 ],
       "category": "white"
     },
     {
-      "name": "Kalkweiß",
-      "description": "Kalkweiß ist schon seit prähistorischen Zeiten in Benutzung. Es ist weniger deckend als Bleiweiß und wurde als Bindemittel oder Aufheller eingesetzt.",
+      "name": "Bleiweiß",
+      "description": "Bleiweiß wurde von den Griechen entdeckt und war ihr bevorzugter Weißton. Es ist ein künstliches, hochgiftiges Pigment. Hergestellt wurde es indem Bleiplatten in einem Gefäß zusammen mit einer Schale Essig einige Wochen unter einem Misthaufen vergraben wurden.",
       "color": [ 255, 245, 200 ],
       "category": "white"
     },

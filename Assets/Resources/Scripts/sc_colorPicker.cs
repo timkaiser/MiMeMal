@@ -9,6 +9,7 @@ public class sc_colorPicker : MonoBehaviour
     public Slider valueSlider;
     public RawImage pointer;
     public RawImage displayedColor;
+    public sc_drawing_handler draw_script;
     public Text pigmentName;
     public Text pigmentText;
 
@@ -52,6 +53,9 @@ public class sc_colorPicker : MonoBehaviour
         //Set Info text invisible
         pigmentName.text = "";
         pigmentText.text = "";
+
+        //Communicate to drawing script
+        draw_script.drawing_color = current;
     }
     public void OnValueSliderChanged()
     {
@@ -66,6 +70,9 @@ public class sc_colorPicker : MonoBehaviour
         //Set Info text invisible
         pigmentName.text = "";
         pigmentText.text = "";
+
+        //communicate to drawing script
+        draw_script.drawing_color = current;
     }
 
     public void setColor(Color c)
@@ -91,6 +98,9 @@ public class sc_colorPicker : MonoBehaviour
         float worldX = (x * boundingRect.rect.size.x) / 2 + boundingRect.position.x;
         float worldY = (y * boundingRect.rect.size.y) / 2 + boundingRect.position.y;
         pointer.transform.position = new Vector3(worldX, worldY);
+
+        //communicate to drawing script
+        draw_script.drawing_color = c;
     }
 
 }

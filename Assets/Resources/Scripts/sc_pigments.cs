@@ -17,10 +17,10 @@ public class sc_pigments : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //read in pigments from json
         using (StreamReader r = new StreamReader("Assets\\Resources\\Data\\pigments.json"))
         {
             string json = r.ReadToEnd();
-            Debug.Log(json);
             pigments = JsonHelper.FromJson<Pigment>(json);
         }
         int numberOfPigments = pigments.Length;
@@ -59,12 +59,6 @@ public class sc_pigments : MonoBehaviour
         //Set default text
         pigmentName.text = pigments[0].name;
         pigmentText.text = pigments[0].description;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void pigmentSelected(Pigment p)
