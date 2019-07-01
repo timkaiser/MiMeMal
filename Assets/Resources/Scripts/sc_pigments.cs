@@ -1,21 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
-
-public struct Pigment
-{
-    public string name;
-    public Color color;
-    public string description;
-
-    public Pigment(string name, Color color, string description)
-    {
-        this.name = name;
-        this.color = color;
-        this.description = description;
-    }
-}
 
 public class sc_pigments : MonoBehaviour
 {
@@ -32,12 +17,13 @@ public class sc_pigments : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int numberOfPigments = 3;
-        pigments = new Pigment[numberOfPigments];
-        Pigment white = new Pigment("White", Color.white, "White is beautiful.");
-        Pigment black = new Pigment("Black", Color.black, "Black is beautiful.");
-        Pigment red = new Pigment("Red", Color.red, "Red is beautiful.");
-        pigments[0] = white; pigments[1] = black; pigments[2] = red;
+        using (StreamReader r = new StreamReader("Assets\\Resources\\Data\\pigments.json"))
+        {
+            string json = r.ReadToEnd();
+            Debug.Log(json);
+            pigments = JsonHelper.FromJson<Pigment>(json);
+        }
+        int numberOfPigments = pigments.Length;
 
         //Add pigment buttons as regular grid
         int intervalX = (int)GetComponent<RectTransform>().rect.width / numberOfPigmentsVertical;
@@ -60,10 +46,10 @@ public class sc_pigments : MonoBehaviour
                 o.transform.Translate(new Vector3(offsetX + intervalX * i, offsetY + intervalY * j, 0));
                 //Colorize
                 var colors = b.colors;
-                colors.normalColor = pigments[IDX].color;
-                colors.highlightedColor = pigments[IDX].color;
-                colors.pressedColor = pigments[IDX].color;
-                colors.selectedColor = pigments[IDX].color;
+                colors.normalColor = pigments[IDX].getColor();
+                colors.highlightedColor = pigments[IDX].getColor();
+                colors.pressedColor = pigments[IDX].getColor();
+                colors.selectedColor = pigments[IDX].getColor();
                 b.colors = colors;
                 //Set on click listener
                 b.onClick.AddListener(delegate () { pigmentSelected(pigments[IDX]); });
@@ -83,7 +69,7 @@ public class sc_pigments : MonoBehaviour
 
     public void pigmentSelected(Pigment p)
     {
-        colorPicker.setColor(p.color);
+        colorPicker.setColor(p.getColor());
         pigmentName.text = p.name;
         pigmentText.text = p.description;
     }
