@@ -8,6 +8,10 @@ public class sc_MainMenu_buttons : MonoBehaviour
 
     public GameObject gallery;
 
+    public GameObject InfoButton;
+
+    public GameObject BackButton;
+
     public void LoadNewDrawingScene() {
         SceneManager.LoadScene("sn_Drawing");
     }
@@ -24,10 +28,13 @@ public class sc_MainMenu_buttons : MonoBehaviour
         SceneManager.LoadScene(2);
     }
 
-    //method loads the stored textures, returns the amount of textures loaded.
+    public void InfoToBack() {
+        InfoButton.SetActive(false);
+        BackButton.SetActive(true);
+    }
 
-
-    //method constructs gallery elements accordingly
-
-    //method that creates images from the textures, to be displayed in the gallery
+    public void BackToInfo() {
+        BackButton.SetActive(false);
+        InfoButton.SetActive(true);
+    }
 }
