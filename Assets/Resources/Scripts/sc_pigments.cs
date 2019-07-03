@@ -9,8 +9,8 @@ public class sc_pigments : MonoBehaviour
     public Text pigmentName;
     public Text pigmentText;
 
-    public int numberOfPigmentsVertical;
-    public int numberOfPigmentsHorizontal;
+    public int pigmentsVertical;
+    public int pigmentsHorizontal;
 
     private Pigment[] pigments;
 
@@ -24,18 +24,18 @@ public class sc_pigments : MonoBehaviour
         int numberOfPigments = pigments.Length;
 
         //Add pigment buttons as regular grid
-        int intervalX = (int)GetComponent<RectTransform>().rect.width / numberOfPigmentsVertical;
-        int intervalY = -(int)GetComponent<RectTransform>().rect.height / numberOfPigmentsHorizontal;
+        int intervalX = (int)GetComponent<RectTransform>().rect.width / (pigmentsVertical+1);
+        int intervalY = -(int)GetComponent<RectTransform>().rect.height / pigmentsHorizontal;
         int offsetX = intervalX;
         int offsetY = 2*intervalY;
 
-        for (int j = 0; j < numberOfPigmentsHorizontal; j++)
+        for (int j = 0; j < pigmentsHorizontal; j++)
         {
-            if ((j * numberOfPigmentsHorizontal) >= numberOfPigments) break;
+            if ((j * pigmentsHorizontal) >= numberOfPigments) break;
 
-            for (int i = 0; i < numberOfPigmentsVertical; i++)
+            for (int i = 0; i < pigmentsVertical; i++)
             {
-                int IDX = j * numberOfPigmentsVertical + i;
+                int IDX = j * pigmentsVertical + i;
                 if (IDX >= numberOfPigments) break;
 
                 GameObject o = Instantiate(buttonPrefab, transform);
