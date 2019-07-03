@@ -18,11 +18,9 @@ public class sc_pigments : MonoBehaviour
     void Start()
     {
         //read in pigments from json
-        using (StreamReader r = new StreamReader("Assets\\Resources\\Data\\pigments.json"))
-        {
-            string json = r.ReadToEnd();
-            pigments = JsonHelper.FromJson<Pigment>(json);
-        }
+        TextAsset file = Resources.Load("Data/pigments") as TextAsset;
+        string json = file.ToString();
+        pigments = JsonHelper.FromJson<Pigment>(json);
         int numberOfPigments = pigments.Length;
 
         //Add pigment buttons as regular grid
