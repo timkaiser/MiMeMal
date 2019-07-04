@@ -1,10 +1,6 @@
 ﻿Shader "Custom/ColorPicker"
 {
-	Properties
-	{
-		_Value("Value", Range(0.0,1.0)) = 1.0
-	}
-		SubShader
+	SubShader
 	{
 		Tags { "RenderType" = "Opaque" }
 		Pass
@@ -19,8 +15,6 @@
 				float4 pos : SV_POSITION;
 				float2 tex : TEXCOORD0;
 			};
-
-			float _Value;
 
 			//pass through
 			Vertex vs_colorPicker(appdata_base input)
@@ -49,11 +43,11 @@
 
 				//convert to RGB color
 				float rk = (5 + hue / 60) % 6;
-				float r = _Value - _Value * saturation * max(min(min(rk, 4 - rk), 1), 0);
+				float r = 1 - 1 * saturation * max(min(min(rk, 4 - rk), 1), 0);
 				float gk = (3 + hue / 60) % 6;
-				float g = _Value - _Value * saturation * max(min(min(gk, 4 - gk), 1), 0);
+				float g = 1 - 1 * saturation * max(min(min(gk, 4 - gk), 1), 0);
 				float bk = (1 + hue / 60) % 6;
-				float b = _Value - _Value * saturation * max(min(min(bk, 4 - bk), 1), 0);
+				float b = 1 - 1 * saturation * max(min(min(bk, 4 - bk), 1), 0);
 
 				return alpha * float4(r, g, b, 1) + (1-alpha) * float4(1, 1, 1, 1);
 			}

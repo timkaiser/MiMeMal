@@ -4,7 +4,8 @@
 	{
 		_HSVColor("HSVColor", Vector) = (0,0,1,1)
 	}
-		SubShader
+
+	SubShader
 	{
 		Tags { "RenderType" = "Opaque" }
 		Pass
@@ -20,7 +21,7 @@
 				float2 tex : TEXCOORD0;
 			};
 
-			float4 _HSVColor;
+			float4 _HSVColor = float4(0, 0, 1, 1);
 
 			//pass through
 			Vertex vs_slider(appdata_base input)

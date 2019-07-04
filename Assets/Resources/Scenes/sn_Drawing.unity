@@ -293,8 +293,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1005360586}
-        m_MethodName: pick_next_color
+      - m_Target: {fileID: 1005360587}
+        m_MethodName: pick_color
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -780,10 +780,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1005360584}
   - component: {fileID: 1005360585}
-  - component: {fileID: 1005360586}
   - component: {fileID: 1005360583}
   - component: {fileID: 1005360587}
-  - component: {fileID: 1005360588}
   m_Layer: 0
   m_Name: ScriptManager
   m_TagString: Untagged
@@ -834,24 +832,6 @@ MonoBehaviour:
   showFPS: 1
   limitFPS: 0
   maxFPS: 20
---- !u!114 &1005360586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1005360582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a433e92acf09e4a4ba124269c5fa3101, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  obj: {fileID: 0}
-  rotation_speed: 1000
-  current_color: 0
-  draw_script: {fileID: 1005360583}
-  UICanvas: {fileID: 1533317134}
-  ColorCanvas: {fileID: 5991095524399279461}
 --- !u!114 &1005360587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -864,18 +844,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1eb9769046cf184780b5b5dc1e528b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1005360588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1005360582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60ccb4fc4cdd7604081dc2078ae78ec5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  UICanvas: {fileID: 1533317134}
+  ColorCanvas: {fileID: 5991095524399279461}
 --- !u!1 &1033669386
 GameObject:
   m_ObjectHideFlags: 0
@@ -1037,7 +1007,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1005360588}
+      - m_Target: {fileID: 1005360587}
         m_MethodName: LoadMainMenu
         m_Mode: 1
         m_Arguments:
@@ -1777,13 +1747,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 418b9154134724345abd3516ecaab69c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  container: {fileID: 5991095523820959526}
   buttonPrefab: {fileID: 416948585988870215, guid: 7be2e3fa07e62d04ab13b9591926cf9b,
     type: 3}
-  colorPicker: {fileID: 5991095524228661501}
+  colorPicker: {fileID: 5991095525033998669}
   pigmentName: {fileID: 616723149256194028}
   pigmentText: {fileID: 544245376481167000}
   pigmentsVertical: 8
-  pigmentsHorizontal: 7
+  pigmentsHorizontal: 6
 --- !u!114 &5991095523906436432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2179,7 +2150,6 @@ GameObject:
   - component: {fileID: 5991095524228661472}
   - component: {fileID: 5991095524228661503}
   - component: {fileID: 5991095524228661502}
-  - component: {fileID: 5991095524228661501}
   m_Layer: 5
   m_Name: HSCircle
   m_TagString: Untagged
@@ -2206,24 +2176,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 380, y: 380}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5991095524228661501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5991095524228661499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51f2a7a39173e584db1985dab85efba3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  valueSlider: {fileID: 5991095524889001423}
-  pointer: {fileID: 5991095525492585073}
-  displayedColor: {fileID: 5991095525755429960}
-  draw_script: {fileID: 1005360583}
-  pigmentName: {fileID: 616723149256194028}
-  pigmentText: {fileID: 544245376481167000}
 --- !u!114 &5991095524228661502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2267,7 +2219,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5991095524228661501}
+      - m_Target: {fileID: 5991095525033998669}
         m_MethodName: OnColorPickerClicked
         m_Mode: 1
         m_Arguments:
@@ -2575,7 +2527,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5991095524228661501}
+      - m_Target: {fileID: 5991095525033998669}
         m_MethodName: OnValueSliderChanged
         m_Mode: 1
         m_Arguments:
@@ -2673,6 +2625,7 @@ GameObject:
   - component: {fileID: 5991095525033998666}
   - component: {fileID: 5991095525033998668}
   - component: {fileID: 5991095525033998667}
+  - component: {fileID: 5991095525033998669}
   m_Layer: 5
   m_Name: ColorPicker
   m_TagString: Untagged
@@ -2739,6 +2692,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5991095525033998665}
   m_CullTransparentMesh: 0
+--- !u!114 &5991095525033998669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5991095525033998665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51f2a7a39173e584db1985dab85efba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorPicker: {fileID: 5991095524228661502}
+  valueSlider: {fileID: 5991095524889001423}
+  pointer: {fileID: 5991095525492585073}
+  displayedColor: {fileID: 5991095525755429960}
+  draw_script: {fileID: 1005360583}
+  pigmentName: {fileID: 616723149256194028}
+  pigmentText: {fileID: 544245376481167000}
 --- !u!1 &5991095525294238324
 GameObject:
   m_ObjectHideFlags: 0
@@ -3244,8 +3216,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1005360586}
-        m_MethodName: onReturnClicked
+      - m_Target: {fileID: 1005360587}
+        m_MethodName: return_to_draw
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

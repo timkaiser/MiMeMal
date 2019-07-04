@@ -18,8 +18,8 @@ public class sc_galleryLoader : MonoBehaviour
         if (textures.Length >= 1)
             //obj.GetComponent<Renderer>().material.SetTexture(0, textures[3]);
             obj.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
-        else
-            obj.SetActive(false);
+        //else
+            //obj.SetActive(false);
     }
 
     public Texture2D[] CountImages() {
