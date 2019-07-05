@@ -73,6 +73,7 @@ public class sc_ui_features : MonoBehaviour
      * INPUT/OUTPUT: none */
     public void pick_color()
     {
+        drawing_script.active = false;
         UICanvas.SetActive(false);
         ColorCanvas.SetActive(true);
     }
@@ -81,6 +82,7 @@ public class sc_ui_features : MonoBehaviour
      * INPUT/OUTPUT: none */
     public void return_to_draw()
     {
+        drawing_script.active = true;
         UICanvas.SetActive(true);
         ColorCanvas.SetActive(false);
     }

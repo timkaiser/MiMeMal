@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class sc_drawing_handler : MonoBehaviour
 {
+    public Color drawing_color;         // current drawing color
+
+    public bool active;
+
     private static sc_drawing_handler instance; // singelton instance to avoid the doubeling of this script
 
     private Texture2D component_mask;    // mask containing all informatinon about the components
     
     private RenderTexture canvas;        // canvas to draw on, used as new object texture
-    
-    public Color drawing_color;         // current drawing color
 
     private float component_id;          // id of the component at current mouse position
 
@@ -21,6 +23,8 @@ public class sc_drawing_handler : MonoBehaviour
 
 
     private void Awake() {
+        active = true;
+
         // avoid doubeling of this script
         if (instance != null && instance != this) { Destroy(this.gameObject); } else { instance = this; }
 
@@ -42,20 +46,28 @@ public class sc_drawing_handler : MonoBehaviour
     }
 
     void Update(){
-        int mouse_x = (int)Input.mousePosition.x;
-        int mouse_y = Screen.height - (int)Input.mousePosition.y;
+        if (active)
+        {
+            int mouse_x = (int)Input.mousePosition.x;
+            int mouse_y = Screen.height - (int)Input.mousePosition.y;
 
-        if (Input.GetMouseButtonDown(0)) {
-            Color color_at_cursor = read_pixel(sc_UVCamera.uv_image, mouse_x, mouse_y);
-            if (color_at_cursor.a != 0) {
-                component_id = component_mask.GetPixel((int)(color_at_cursor.r * component_mask.width), (int)(color_at_cursor.g * component_mask.height)).r;
-            } else {
-                component_id = -1;
+            if (Input.GetMouseButtonDown(0))
+            {
+                Color color_at_cursor = read_pixel(sc_UVCamera.uv_image, mouse_x, mouse_y);
+                if (color_at_cursor.a != 0)
+                {
+                    component_id = component_mask.GetPixel((int)(color_at_cursor.r * component_mask.width), (int)(color_at_cursor.g * component_mask.height)).r;
+                }
+                else
+                {
+                    component_id = -1;
+                }
             }
-        }
 
-        if (Input.GetMouseButton(0)) {
-            tools[active_tool].perFrame(canvas, sc_UVCamera.uv_image, component_mask, mouse_x, mouse_y, component_id, drawing_color, Input.GetMouseButtonDown(0));
+            if (Input.GetMouseButton(0))
+            {
+                tools[active_tool].perFrame(canvas, sc_UVCamera.uv_image, component_mask, mouse_x, mouse_y, component_id, drawing_color, Input.GetMouseButtonDown(0));
+            }
         }
     }
 
