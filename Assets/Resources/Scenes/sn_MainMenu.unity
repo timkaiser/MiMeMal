@@ -1362,6 +1362,9 @@ MonoBehaviour:
   gallery: {fileID: 1021575471}
   InfoButton: {fileID: 659906052}
   BackButton: {fileID: 1931507434}
+  PrevButton: {fileID: 1034830153}
+  NextButton: {fileID: 1078132248}
+  ResetButton: {fileID: 498171091}
 --- !u!114 &960029101
 MonoBehaviour:
   m_ObjectHideFlags: 0

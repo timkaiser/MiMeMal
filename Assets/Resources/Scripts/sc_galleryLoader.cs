@@ -67,4 +67,14 @@ public class sc_galleryLoader : MonoBehaviour
     public void Prev() {
         obj.GetComponent<Renderer>().material.mainTexture = textures[updateValue(false)];
     }
+
+    public void SetToDefault()
+    {
+        obj.GetComponent<Renderer>().material.mainTexture = Resources.Load("SavedDrawings/Default") as Texture2D;
+    }
+
+    public void ResetDefault()
+    {
+        obj.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
+    }
 }
