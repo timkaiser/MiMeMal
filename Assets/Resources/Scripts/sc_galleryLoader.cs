@@ -7,25 +7,26 @@ public class sc_galleryLoader : MonoBehaviour
 {
     public GameObject obj;
     int resolution = 2048;
-    Texture2D[] textures;
+    List<Texture2D> textures;
     int currentValue = 0;
 
      void Awake()
     {
         //calc the size of the texture buffer
-        textures = CountImages();
+        textures = new List<Texture2D>();
+        CountImages("Assets/Resources/SavedDrawings/");
+        CountImages(Application.persistentDataPath + "/");
         //load textures next and prev
-        if (textures.Length >= 1)
+        if (textures.Count >= 1)
             //obj.GetComponent<Renderer>().material.SetTexture(0, textures[3]);
             obj.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
         else
-            obj.SetActive(false);
+            obj.GetComponent<Renderer>().material.mainTexture = Resources.Load("SavedDrawings/Default") as Texture2D;
     }
 
-    public Texture2D[] CountImages() {
+    public void CountImages(string path) {
         int amt = 0;
         List<FileInfo> list = new List<FileInfo>();
-        string path = "Assets/Resources/SavedDrawings/";
         //set directory
 
         DirectoryInfo dir = new DirectoryInfo(path);
@@ -37,8 +38,6 @@ public class sc_galleryLoader : MonoBehaviour
                 list.Add(file);
             }
         }
-        //return new Texture2D[0];//tmp return
-        Texture2D[] output = new Texture2D[amt];
 
         int counter = 0;
         foreach (FileInfo file in list) {
@@ -48,21 +47,17 @@ public class sc_galleryLoader : MonoBehaviour
 
             Texture2D tex = new Texture2D(resolution, resolution);
             tex.LoadImage(bytes);
-            output[counter++] = tex;
+            textures.Add(tex);
         }
-
-
-        return output;
-        
     }
 
     public int updateValue(bool positive) {
         if (positive)
-            currentValue = (currentValue + 1) % textures.Length;
+            currentValue = (currentValue + 1) % textures.Count;
         else {
             if (currentValue == 0)
             {
-                currentValue = textures.Length - 1;
+                currentValue = textures.Count - 1;
             }
             else
                 currentValue -= 1;
