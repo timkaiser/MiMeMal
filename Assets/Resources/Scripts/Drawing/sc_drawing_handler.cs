@@ -152,7 +152,6 @@ public class sc_drawing_handler : MonoBehaviour
         bytes = tex.EncodeToPNG();
 
         string path = Application.persistentDataPath + "/" + Time.time+ ".png";
-        Debug.Log(Application.persistentDataPath);
         System.IO.File.WriteAllBytes(path, bytes);
 
         DestroyImmediate(tex);

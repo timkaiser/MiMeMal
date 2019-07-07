@@ -14,32 +14,26 @@ public class sc_galleryLoader : MonoBehaviour
     {
         //calc the size of the texture buffer
         textures = new List<Texture2D>();
-        CountImages("Assets/Resources/SavedDrawings/");
+        //CountImages("Assets/Resources/SavedDrawings/");
         CountImages(Application.persistentDataPath + "/");
         //load textures next and prev
         if (textures.Count >= 1)
-            //obj.GetComponent<Renderer>().material.SetTexture(0, textures[3]);
             obj.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
         else
             obj.GetComponent<Renderer>().material.mainTexture = Resources.Load("SavedDrawings/Default") as Texture2D;
     }
 
     public void CountImages(string path) {
-        int amt = 0;
         List<FileInfo> list = new List<FileInfo>();
-        //set directory
-
         DirectoryInfo dir = new DirectoryInfo(path);
-        FileInfo[] files = dir.GetFiles();
+
         foreach (FileInfo file in dir.GetFiles()) {
+            Debug.Log(file.FullName);
             if (file.Extension.Contains("png") && !file.Extension.Contains("meta")) {
-                Debug.Log(file.Name);//tmp log, seems to work
-                amt++;
                 list.Add(file);
             }
         }
 
-        int counter = 0;
         foreach (FileInfo file in list) {
             //for each counter png file, load it's texture into the texture array
             byte[] bytes;
@@ -63,9 +57,7 @@ public class sc_galleryLoader : MonoBehaviour
                 currentValue -= 1;
             
         }
-            
-        //currentValue = Mathf.Abs(currentValue);
-        Debug.Log(currentValue);
+
         return currentValue;
     }
 
