@@ -156,4 +156,12 @@ public class sc_drawing_handler : MonoBehaviour
 
         DestroyImmediate(tex);
     }
+
+    //method used to change brush size
+    public void setBrushSize(int brushSize) {
+        sc_tool_brush newBrush = new sc_tool_brush();
+        newBrush.brush_size = brushSize;
+        tools[0] = newBrush;
+        tools[0].initialize();
+    }
 }
