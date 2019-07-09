@@ -158,10 +158,9 @@ public class sc_drawing_handler : MonoBehaviour
     }
 
     //method used to change brush size
-    public void setBrushSize(int brushSize) {
-        sc_tool_brush newBrush = new sc_tool_brush();
-        newBrush.brush_size = brushSize;
-        tools[0] = newBrush;
-        tools[0].initialize();
+    public void setBrushSize(float brushSize) {
+        //access the toolbrush and change the size
+        sc_tool_brush brush = (sc_tool_brush)tools[0];
+        brush.brush_size = (int)brushSize;
     }
 }

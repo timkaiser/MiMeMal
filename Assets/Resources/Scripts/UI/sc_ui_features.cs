@@ -16,6 +16,9 @@ public class sc_ui_features : MonoBehaviour
     public GameObject image1;
     public GameObject image2;
 
+    //slider to show / hide with the swap method
+    public GameObject slider;
+
     // Start is called before the first frame update
     void Start(){
         // initializing draw script
@@ -105,5 +108,10 @@ public class sc_ui_features : MonoBehaviour
     public void LoadMainMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    /*Method enables / disables game object in the ui*/
+    public void SwapSlider() {
+        slider.SetActive(!slider.activeSelf);
     }
 }
