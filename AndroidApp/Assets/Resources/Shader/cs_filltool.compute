@@ -1,0 +1,27 @@
+﻿/*HEADER:
+ * This compute shader does the actual drawing work. It takes as input three textures, one color,
+ * two mouse positions, the starting point for the drawing, the brush size and the id of the component it is drawing on. It draws a line between both mouse positions
+ */
+
+#pragma kernel filling
+
+RWTexture2D<float4> Canvas;		// INPUT: Texture to draw on;  OUTPUT: Input + Drawing 
+
+Texture2D<float> Component_Mask;	// Mask that contains information about which part of the object belongs to which component
+float component_id;					// ID of the component the shader is currently drawing on
+
+float red, green, blue;				// Draw color
+
+/* This is the main part of the shader
+ * INPUT: uint3 id: coordinate on the Texture/Component_mask
+ */
+[numthreads(8, 8, 1)]
+void filling(uint3 id : SV_DispatchThreadID)
+{
+	// If pixel is not in current component then cancel
+	if (abs(component_id - Component_Mask[id.xy]) > 0.01) { return; }
+
+	// Set pixel to color
+	Canvas[id.xy] = float4(red, green, blue, 1);
+
+}

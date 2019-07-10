@@ -1,0 +1,64 @@
+{
+  "Items": [
+    {
+      "name": "Kalkweiß",
+      "description": "Kalkweiß ist schon seit prähistorischen Zeiten in Benutzung. Es ist weniger deckend als Bleiweiß und wurde als Bindemittel oder Aufheller eingesetzt.",
+      "color": [ 255, 255, 255 ],
+      "category": "white"
+    },
+    {
+      "name": "Bleiweiß",
+      "description": "Bleiweiß wurde von den Griechen entdeckt und war ihr bevorzugter Weißton. Es ist ein künstliches, hochgiftiges Pigment. Hergestellt wurde es indem Bleiplatten in einem Gefäß zusammen mit einer Schale Essig einige Wochen unter einem Misthaufen vergraben wurden.",
+      "color": [ 255, 245, 200 ],
+      "category": "white"
+    },
+    {
+      "name": "Zinnoberrot",
+      "description": "Dieses Pigment wird aus dem toxischen Quecksilbersulfid Zinnober hergestellt und kann je nach Größe der zermahlenen Partikel unterschiedliche Farbtöne von einem warmen orange-rot bis zu einem matten rotlila annehmen. Bei hoher Sonneneinstrahlung verdunkelt es sich stark.",
+      "color": [ 200, 30, 20 ],
+      "category": "red"
+    },
+    {
+      "name": "Bleimennige",
+      "description": "Menning wurde durch verglühen von Bleiweiß hergestellt. Es ist beim Einatmen in hoher Dosis giftig. Von den Römern wurde es als färbender Stoff unter den Sand im Zirkus gemischt um Blutspuren nach Kämpfen zu verdecken.",
+      "color": [ 220, 45, 0 ],
+      "category": "red"
+    },
+    {
+      "name": "Kermes",
+      "description": "Auch unreines Karmin genannt wird dieses Pigment aus getrockneten, weiblichen Schildläusen gewonnen.",
+      "color": [ 170, 0, 30 ],
+      "category": "red"
+    },
+    {
+      "name": "Färberkrapp",
+      "description": "Dieser Pflanzenfarbstoff wurde zum Malen durch weiße Pigmente und Metallsalze gebunden.",
+      "color": [ 190, 10, 10 ],
+      "category": "red"
+    },
+    {
+      "name": "Sienna",
+      "description": "Erdpigmente wie Sienna weichen je nach chemischer Zusammensetzung der Erde im Farbton ab und können durch erhitzen verdunkelt werden.",
+      "color": [ 160, 100, 30 ],
+      "category": "brown"
+    },
+    {
+      "name": "Ocker",
+      "description": "Ocker ist ein Erdpigment und weicht je nach Herkunft stark im Farbton ab.",
+      "color": [ 220, 160, 90 ],
+      "category": "brown"
+    },
+    {
+      "name": "Roter Ocker",
+      "description": "Roter Ocker (gr. Míltos) wurde häufig als Wandfarbe oder zum Markieren von Schafen verwendet.",
+      "color": [ 130, 30, 10 ],
+      "category": "brown"
+    },
+    {
+      "name": "Umbra",
+      "description": "Umber, ein Erdpigment, ist eins der ersten von Menschen benutzen Pigmente",
+      "color": [ 90, 50, 30 ],
+      "category": "brown"
+    }
+  ]
+}
