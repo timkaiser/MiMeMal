@@ -1042,7 +1042,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 659906055}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -1293,6 +1293,7 @@ GameObject:
   - component: {fileID: 960029097}
   - component: {fileID: 960029100}
   - component: {fileID: 960029101}
+  - component: {fileID: 960029102}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1379,6 +1380,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resetee: {fileID: 26430671}
+--- !u!114 &960029102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960029096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6265ecaa5f3ec1f45b76f4f31d1a80d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1021575471
 GameObject:
   m_ObjectHideFlags: 0
@@ -1556,7 +1569,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1034830156}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
