@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /* HEADER:
  * This class acts as a connection between the UI and the backend. UI elements can call the functions in this script to change the draw settings.   */
@@ -10,6 +11,13 @@ public class sc_ui_features : MonoBehaviour
     public GameObject UICanvas, ColorCanvas;    // The two UIs to switch between
 
     private sc_drawing_handler drawing_script;  // The script responsible for all the drawing
+
+    //two images, to which the color is pushed when the selection is done
+    public GameObject image1;
+    public GameObject image2;
+
+    //slider to show / hide with the swap method
+    public GameObject slider;
 
     // Start is called before the first frame update
     void Start(){
@@ -37,7 +45,7 @@ public class sc_ui_features : MonoBehaviour
         drawing_script.activate_tool("brush");
     }
 
-    /* This methode activates the brush tool.
+    /* This methode activates the fill tool.
      * INPUT/OUTPUT: none */
     public void activate_filltool() {
         drawing_script.activate_tool("filltool");
@@ -63,6 +71,15 @@ public class sc_ui_features : MonoBehaviour
         drawing_script.drawing_color = color;
     }
 
+    /*  This method will push a newly selected color into ui elements.
+     *  INPUT: color: Color, the selected color.
+     *  OUTPUT: none.  
+     */
+    public void push_images(Color color) {
+        image1.GetComponent<Image>().color = color;
+        image2.GetComponent<Image>().color = color;
+    }
+
     /* This methode saves the current drawing to a file.
      * INPUT/OUTPUT: none   */
      public void save_drawing() {
@@ -84,11 +101,17 @@ public class sc_ui_features : MonoBehaviour
     {
         drawing_script.active = true;
         UICanvas.SetActive(true);
+        push_images(drawing_script.drawing_color);
         ColorCanvas.SetActive(false);
     }
 
     public void LoadMainMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    /*Method enables / disables game object in the ui*/
+    public void SwapSlider() {
+        slider.SetActive(!slider.activeSelf);
     }
 }

@@ -151,9 +151,16 @@ public class sc_drawing_handler : MonoBehaviour
         byte[] bytes;
         bytes = tex.EncodeToPNG();
 
-        string path = "Assets/Resources/SavedDrawings/Drawing" + Time.time+ ".png";
+        string path = Application.persistentDataPath + "/" + Time.time+ ".png";
         System.IO.File.WriteAllBytes(path, bytes);
 
         DestroyImmediate(tex);
+    }
+
+    //method used to change brush size
+    public void setBrushSize(float brushSize) {
+        //access the toolbrush and change the size
+        sc_tool_brush brush = (sc_tool_brush)tools[0];
+        brush.brush_size = (int)brushSize;
     }
 }
