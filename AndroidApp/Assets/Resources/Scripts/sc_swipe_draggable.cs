@@ -31,8 +31,6 @@ public class sc_swipe_draggable : MonoBehaviour
         //restrict rotation here
         Vector3 current_rotation = transform.localEulerAngles;
         current_rotation.y = Mathf.Clamp(current_rotation.y, 200, 340);
-        Debug.Log(current_rotation.y);
-
         transform.localEulerAngles = current_rotation;
     }
 
