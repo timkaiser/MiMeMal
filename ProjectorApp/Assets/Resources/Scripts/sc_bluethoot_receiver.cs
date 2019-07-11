@@ -6,7 +6,7 @@ using System.Threading;
 public class sc_bluethoot_receiver : MonoBehaviour
 {
     public String portName = "COM3";
-    public int baudRate = 115200;
+    public int baudRate = 9600;
 
     private SerialPort port = null;
     private int readTimeout = 100;
@@ -48,12 +48,12 @@ public class sc_bluethoot_receiver : MonoBehaviour
         {
             try
             {
-                Debug.Log(port.ReadLine());
+                byte[] buffer = new byte[64];
+                Debug.Log(port.Read(buffer, 0, 32));
             } catch (TimeoutException)
             {
                 //do nothing
             }
-            Thread.Sleep(500);
         }
         Debug.Log("End reading");
     }

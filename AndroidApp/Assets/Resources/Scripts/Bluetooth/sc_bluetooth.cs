@@ -1,29 +1,28 @@
 ﻿using UnityEngine;
 using System;
+using System.Threading;
 
 public class sc_bluetooth : MonoBehaviour
 {
     private AndroidJavaObject btplugin = null;
-    private AndroidJavaObject activityContext = null;
+    private bool running = true;
 
-    void Start()
+    private void Start()
     {
         if (btplugin == null)
         {
             try
             {
-                using (AndroidJavaClass activityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-                {
-                    activityContext = activityClass.GetStatic<AndroidJavaObject>("currentActivity");
-                }
                 using (AndroidJavaClass pluginClass = new AndroidJavaClass("com.mptum.bluetoothplugin.BTPlugin"))
                 {
                     if (pluginClass != null)
                     {
                         btplugin = pluginClass.CallStatic<AndroidJavaObject>("getInstance");
-                        btplugin.Call("setContext", activityContext);
                         String result = btplugin.Call<String>("init");
                         Debug.Log(result);
+                        bool connected = btplugin.Call<bool>("connect");
+                        Debug.Log("connected: " + connected);
+                        Debug.Log(btplugin.Call<bool>("sendText", "Hello"));
                     }
                 }
             }
@@ -35,4 +34,15 @@ public class sc_bluetooth : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        running = false;
+        try
+        {
+            btplugin.Call("close");
+        } catch (Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+    }
 }
