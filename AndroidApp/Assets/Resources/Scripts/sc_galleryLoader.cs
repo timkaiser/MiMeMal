@@ -20,7 +20,7 @@ public class sc_galleryLoader : MonoBehaviour
         if (textures.Count >= 1)
             obj.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
         else
-            obj.GetComponent<Renderer>().material.mainTexture = Resources.Load("SavedDrawings/Default") as Texture2D;
+            obj.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Default") as Texture2D;
     }
 
     public void CountImages(string path) {

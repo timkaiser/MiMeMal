@@ -49,7 +49,13 @@ public class sc_bluethoot_receiver : MonoBehaviour
             try
             {
                 byte[] buffer = new byte[64];
-                Debug.Log(port.Read(buffer, 0, 32));
+                port.Read(buffer, 0, 64);
+                String message = "";
+                for(int i = 0; i<64;i++)
+                {
+                    message += Convert.ToChar(buffer[i]);
+                }
+                Debug.Log(message);
             } catch (TimeoutException)
             {
                 //do nothing
