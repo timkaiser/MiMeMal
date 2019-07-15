@@ -160,6 +160,8 @@ public class sc_ui_features : MonoBehaviour
         MainAndInfoCanvas.SetActive(false);
         drawing_script.active = true;
         drawing_script.resetCanvas();
+        sc_bluetooth_handler.getInstance().send(
+            "Textures/Grabstele_texture", sc_bluetooth_handler.SignalFlag.COMMAND);
     }
 
     public void DrawToMain()

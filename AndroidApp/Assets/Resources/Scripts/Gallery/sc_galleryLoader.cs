@@ -8,9 +8,10 @@ public class sc_galleryLoader : MonoBehaviour
     private GameObject grabstele;
     private int resolution = 2048;
     private List<Texture2D> textures;
+    private List<string> fileNames;
     private int currentValue = 0;
 
-     void Awake()
+     void Start()
     {
         grabstele = GameObject.FindGameObjectWithTag("paintable");
         Load();
@@ -19,34 +20,40 @@ public class sc_galleryLoader : MonoBehaviour
     public void Load()
     {
         textures = new List<Texture2D>();
+        fileNames = new List<string>();
         CountImages(Application.persistentDataPath + "/");
         //load textures next and prev
         if (textures.Count >= 1)
         {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
+            sc_bluetooth_handler.getInstance().send(fileNames[currentValue], sc_bluetooth_handler.SignalFlag.FILENAME);
         }
         else
         {
             grabstele.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Default") as Texture2D;
-
+            sc_bluetooth_handler.getInstance().send("Textures/Default", sc_bluetooth_handler.SignalFlag.COMMAND);
         }
     }
 
     public void Next() {
         grabstele.GetComponent<Renderer>().material.mainTexture = textures[updateValue(true)];
+        sc_bluetooth_handler.getInstance().send(fileNames[currentValue], sc_bluetooth_handler.SignalFlag.FILENAME);
     }
     public void Prev() {
         grabstele.GetComponent<Renderer>().material.mainTexture = textures[updateValue(false)];
+        sc_bluetooth_handler.getInstance().send(fileNames[currentValue], sc_bluetooth_handler.SignalFlag.FILENAME);
     }
 
     public void SetToDefault()
     {
         grabstele.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Default") as Texture2D;
+        sc_bluetooth_handler.getInstance().send("Textures/Default", sc_bluetooth_handler.SignalFlag.COMMAND);
     }
 
     public void ResetDefault()
     {
         grabstele.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
+        sc_bluetooth_handler.getInstance().send(fileNames[currentValue], sc_bluetooth_handler.SignalFlag.FILENAME);
     }
 
     private void CountImages(string path)
@@ -71,6 +78,7 @@ public class sc_galleryLoader : MonoBehaviour
             Texture2D tex = new Texture2D(resolution, resolution);
             tex.LoadImage(bytes);
             textures.Add(tex);
+            fileNames.Add(file.Name);
         }
     }
 

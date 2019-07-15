@@ -2,6 +2,8 @@
 using System;
 using System.IO.Ports;
 using System.Threading;
+using System.Linq;
+using System.Collections.Generic;
 
 public class sc_bluethoot_receiver : MonoBehaviour
 {
@@ -11,9 +13,9 @@ public class sc_bluethoot_receiver : MonoBehaviour
     };
 
     public String portName = "COM3";
-    public int baudRate = 9600;
 
     private SerialPort port = null;
+    private int baudRate = 9600;
     private int readTimeout = 100;
     private Boolean running = true;
 
@@ -49,15 +51,45 @@ public class sc_bluethoot_receiver : MonoBehaviour
     void ReceiveData()
     {
         Debug.Log("Start reading");
+        int readSize = 32;
         while(running)
         {
             try
             {
-                byte[] buffer = new byte[32];
-                if (port.Read(buffer, 0, 32) > 0)
+                byte[] buffer = new byte[readSize];
+                if (port.Read(buffer, 0, readSize) > 0)
                 {
+                    int signalFlag = (int)char.GetNumericValue(Convert.ToChar(buffer[0]));
+                    if (signalFlag == (int)SignalFlag.COMMAND)
+                    {
+                        Debug.Log("Command");
+                    }
+                    else if (signalFlag == (int)SignalFlag.FILENAME)
+                    {
+                        Debug.Log("Filename");
+                    }
+                    else if (signalFlag == (int)SignalFlag.TEXTURE)
+                    {
+                        Debug.Log("Texture");
+                        String fileName = "";
+                        for (int i = 1; i < readSize; i++)
+                        {
+                            fileName += Convert.ToChar(buffer[i]);
+                        }
+                        Debug.Log(fileName);
+                        Thread.Sleep(3000);
+                        Debug.Log("Reading texture");
+                        buffer = new byte[readSize];
+                        List<byte> bytes = new List<byte>();
+                        while (port.Read(buffer, 0, readSize) > 0)
+                        {
+                            bytes.AddRange(buffer);
+                        }
+                        Debug.Log(bytes.ToArray().Length);
+                        continue;
+                    }
                     String message = "";
-                    for (int i = 0; i < 32; i++)
+                    for (int i = 1; i < readSize; i++)
                     {
                         message += Convert.ToChar(buffer[i]);
                     }

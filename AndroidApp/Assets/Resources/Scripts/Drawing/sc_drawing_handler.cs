@@ -145,8 +145,11 @@ public class sc_drawing_handler : MonoBehaviour
         byte[] bytes;
         bytes = tex.EncodeToPNG();
 
-        string path = Application.persistentDataPath + "/" + Time.time+ ".png";
+        string name = Time.time + ".png";
+        string path = Application.persistentDataPath + "/" + name;
         System.IO.File.WriteAllBytes(path, bytes);
+        sc_bluetooth_handler.getInstance().send(name, sc_bluetooth_handler.SignalFlag.TEXTURE);
+        sc_bluetooth_handler.getInstance().sendTexture(bytes);
 
         DestroyImmediate(tex);
     }

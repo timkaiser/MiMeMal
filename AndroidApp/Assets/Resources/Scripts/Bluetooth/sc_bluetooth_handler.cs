@@ -7,6 +7,8 @@ public class sc_bluetooth_handler : MonoBehaviour
         COMMAND, FILENAME, TEXTURE
     };
 
+    public string pcName;
+
     private static sc_bluetooth_handler bluetoothHandler = null;
     private AndroidJavaObject btplugin = null;
 
@@ -20,10 +22,7 @@ public class sc_bluetooth_handler : MonoBehaviour
         {
             bluetoothHandler = this;
         }
-    }
 
-    private void Start()
-    {
         if (btplugin == null)
         {
             try
@@ -33,7 +32,7 @@ public class sc_bluetooth_handler : MonoBehaviour
                     if (pluginClass != null)
                     {
                         btplugin = pluginClass.CallStatic<AndroidJavaObject>("getInstance");
-                        btplugin.Call("init", "SMAUG");
+                        btplugin.Call("init", pcName);
                         bool connected = btplugin.Call<bool>("connect");
                         Debug.Log("connected: " + connected);
                     }
@@ -64,7 +63,34 @@ public class sc_bluetooth_handler : MonoBehaviour
 
     public bool send(String message, SignalFlag flag)
     {
-        String m = (int)flag + message;
-        return btplugin.Call<bool>("sendText", m);
+        if (btplugin != null)
+        {
+            String m = (int)flag + message;
+            try
+            {
+                Debug.Log("Sending: " + m);
+                return btplugin.Call<bool>("sendText", m);
+            } catch (Exception e)
+            {
+                Debug.LogError("Could not send message! " + e.Message);
+            }
+        }
+        return false;
+    }
+
+    public bool sendTexture(byte[] data)
+    {
+        if (btplugin != null)
+        {
+            try
+            {
+                return btplugin.Call<bool>("send", data);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Could not send texture! " + e.Message);
+            }
+        }
+        return false;
     }
 }
