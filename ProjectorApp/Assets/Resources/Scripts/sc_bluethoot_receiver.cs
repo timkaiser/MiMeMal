@@ -5,6 +5,11 @@ using System.Threading;
 
 public class sc_bluethoot_receiver : MonoBehaviour
 {
+    public enum SignalFlag
+    {
+        COMMAND, FILENAME, TEXTURE
+    };
+
     public String portName = "COM3";
     public int baudRate = 9600;
 
@@ -48,14 +53,16 @@ public class sc_bluethoot_receiver : MonoBehaviour
         {
             try
             {
-                byte[] buffer = new byte[64];
-                port.Read(buffer, 0, 64);
-                String message = "";
-                for(int i = 0; i<64;i++)
+                byte[] buffer = new byte[32];
+                if (port.Read(buffer, 0, 32) > 0)
                 {
-                    message += Convert.ToChar(buffer[i]);
+                    String message = "";
+                    for (int i = 0; i < 64; i++)
+                    {
+                        message += Convert.ToChar(buffer[i]);
+                    }
+                    Debug.Log(message);
                 }
-                Debug.Log(message);
             } catch (TimeoutException)
             {
                 //do nothing

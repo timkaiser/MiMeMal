@@ -1,11 +1,26 @@
 ﻿using UnityEngine;
 using System;
-using System.Threading;
 
-public class sc_bluetooth : MonoBehaviour
+public class sc_bluetooth_handler : MonoBehaviour
 {
+    public enum SignalFlag{
+        COMMAND, FILENAME, TEXTURE
+    };
+
+    private static sc_bluetooth_handler bluetoothHandler = null;
     private AndroidJavaObject btplugin = null;
-    private bool running = true;
+
+    private void Awake()
+    {
+        if(bluetoothHandler!=null && bluetoothHandler!=this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            bluetoothHandler = this;
+        }
+    }
 
     private void Start()
     {
@@ -18,11 +33,9 @@ public class sc_bluetooth : MonoBehaviour
                     if (pluginClass != null)
                     {
                         btplugin = pluginClass.CallStatic<AndroidJavaObject>("getInstance");
-                        String result = btplugin.Call<String>("init");
-                        Debug.Log(result);
+                        btplugin.Call("init", "SMAUG");
                         bool connected = btplugin.Call<bool>("connect");
                         Debug.Log("connected: " + connected);
-                        Debug.Log(btplugin.Call<bool>("sendText", "Hello"));
                     }
                 }
             }
@@ -36,7 +49,6 @@ public class sc_bluetooth : MonoBehaviour
 
     private void OnDisable()
     {
-        running = false;
         try
         {
             btplugin.Call("close");
@@ -44,5 +56,17 @@ public class sc_bluetooth : MonoBehaviour
         {
             Debug.Log(e.Message);
         }
+    }
+
+    public static sc_bluetooth_handler getInstance()
+    {
+        return bluetoothHandler;
+    }
+
+    public bool send(String message, SignalFlag flag)
+    {
+        char c = (char)flag;
+        String m = c + message;
+        return btplugin.Call<bool>("sendText", m);
     }
 }
