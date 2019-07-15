@@ -12,7 +12,7 @@ public class sc_drawing_handler : MonoBehaviour
 
     private Texture2D component_mask;    // mask containing all informatinon about the components
     
-    private RenderTexture canvas;        // canvas to draw on, used as new object texture
+    public RenderTexture canvas;        // canvas to draw on, used as new object texture
 
     private float component_id;          // id of the component at current mouse position
 
@@ -36,13 +36,7 @@ public class sc_drawing_handler : MonoBehaviour
         GameObject obj = GameObject.FindGameObjectWithTag("paintable");
 
         // set component mask
-        component_mask = (Texture2D)obj.GetComponent<Renderer>().material.GetTexture("_ComponentMask");
-
-        // setup canvas
-        loadTexture(obj.GetComponent<Renderer>().material.mainTexture, out canvas);
-         
-        // set object texture as canvas
-        obj.GetComponent<Renderer>().material.mainTexture = canvas;
+        component_mask = (Texture2D)obj.GetComponent<Renderer>().material.GetTexture("_ComponentMask");        
     }
 
     void Update(){
@@ -140,7 +134,7 @@ public class sc_drawing_handler : MonoBehaviour
         DestroyImmediate(pixel);
         return col;
     }
-
+    
     public void saveDrawing() { //source: https://gist.github.com/krzys-h/76c518be0516fb1e94c7efbdcd028830
         RenderTexture rt = canvas;
 
@@ -163,5 +157,19 @@ public class sc_drawing_handler : MonoBehaviour
         //access the toolbrush and change the size
         sc_tool_brush brush = (sc_tool_brush)tools[0];
         brush.brush_size = (int)brushSize;
+    }
+
+    // this methode has to be called at the beginning of the drawing screen. It sets the canvas to the default texture and makes sure it's assigend to the object
+    // INPUT/OUTPUT: none
+    public void resetCanvas() {
+        if(canvas != null) {
+            DestroyImmediate(canvas);
+        }
+        GameObject obj = GameObject.FindGameObjectWithTag("paintable");
+
+        loadTexture(Resources.Load("Textures/Grabstele_texture") as Texture2D, out canvas);
+
+        // set object texture as canvas
+        obj.GetComponent<Renderer>().material.mainTexture = canvas;
     }
 }
