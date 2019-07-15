@@ -144,7 +144,8 @@ public class sc_ui_features : MonoBehaviour
         DrawingCanvas.SetActive(true);
         MainAndInfoCanvas.SetActive(false);
         drawing_script.active = true;
-        grabstele.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Grabstele_texture") as Texture2D;
+        drawing_script.resetCanvas();
+        //grabstele.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Grabstele_texture") as Texture2D;
     }
 
     public void DrawToMain()
