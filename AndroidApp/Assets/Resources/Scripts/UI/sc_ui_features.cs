@@ -13,9 +13,10 @@ public class sc_ui_features : MonoBehaviour
     public GameObject brushImage, fillToolImage;
     //slider to show / hide with the swap method
     public GameObject brushSizeSlider;
+    public GameObject brushButton, fillToolButton, sliderObj;
     //Gallery stuff
     public GameObject gallery;
-    public GameObject InfoButton, BackButton, PrevButton, NextButton, ResetButton;
+    public GameObject InfoButton, BackButton, PrevButton, NextButton, ResetButton, Tutorial;
 
     // The script responsible for all the drawing
     private sc_drawing_handler drawing_script;
@@ -102,6 +103,20 @@ public class sc_ui_features : MonoBehaviour
         brushSizeSlider.SetActive(!brushSizeSlider.activeSelf);
     }
 
+    public void SwitchTool()
+    {
+        if (brushButton.activeSelf && !fillToolButton.activeSelf)
+        {
+            brushButton.SetActive(false);
+            fillToolButton.SetActive(true);
+            sliderObj.SetActive(false);
+            return;
+        }
+        fillToolButton.SetActive(false);
+        brushButton.SetActive(true);
+        sliderObj.SetActive(true);
+    }
+
     public void reset_orientation()
     {
         grabstele.transform.rotation = Quaternion.identity;
@@ -145,7 +160,6 @@ public class sc_ui_features : MonoBehaviour
         MainAndInfoCanvas.SetActive(false);
         drawing_script.active = true;
         drawing_script.resetCanvas();
-        //grabstele.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Grabstele_texture") as Texture2D;
     }
 
     public void DrawToMain()
@@ -153,7 +167,7 @@ public class sc_ui_features : MonoBehaviour
         DrawingCanvas.SetActive(false);
         MainAndInfoCanvas.SetActive(true);
         drawing_script.active = false;
-        gallery.GetComponent<sc_galleryLoader>().ResetDefault();
+        gallery.GetComponent<sc_galleryLoader>().Load();
     }
 
     public void DrawToColor()
@@ -169,5 +183,10 @@ public class sc_ui_features : MonoBehaviour
         DrawingCanvas.SetActive(true);
         push_images(drawing_script.drawing_color);
         ColorPickerCanvas.SetActive(false);
+    }
+
+    public void OpenTutorial()
+    {
+        Tutorial.SetActive(true);
     }
 }
