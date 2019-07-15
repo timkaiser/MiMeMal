@@ -32,6 +32,7 @@ public class sc_tool_brush : sc_tool{
             mouse_x_old = mouse_x_new;
             mouse_y_old = mouse_y_new;
         }
+        Debug.Log("perframe " + canvas + uv_image + component_mask);
 
         // call compute shader
         cs_draw.SetTexture(csKernel, "Texture", canvas);

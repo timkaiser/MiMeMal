@@ -5,22 +5,22 @@ using System.IO;
 
 public class sc_galleryLoader : MonoBehaviour
 {
-    public GameObject obj;
-    int resolution = 2048;
-    List<Texture2D> textures;
-    int currentValue = 0;
+    private GameObject grabstele;
+    private int resolution = 2048;
+    private List<Texture2D> textures;
+    private int currentValue = 0;
 
      void Awake()
     {
+        grabstele = GameObject.FindGameObjectWithTag("paintable");
         //calc the size of the texture buffer
         textures = new List<Texture2D>();
-        //CountImages("Assets/Resources/SavedDrawings/");
         CountImages(Application.persistentDataPath + "/");
         //load textures next and prev
         if (textures.Count >= 1)
-            obj.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
+            grabstele.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
         else
-            obj.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Default") as Texture2D;
+            grabstele.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Default") as Texture2D;
     }
 
     public void CountImages(string path) {
@@ -62,19 +62,19 @@ public class sc_galleryLoader : MonoBehaviour
     }
 
     public void Next() {
-        obj.GetComponent<Renderer>().material.mainTexture = textures[updateValue(true)];
+        grabstele.GetComponent<Renderer>().material.mainTexture = textures[updateValue(true)];
     }
     public void Prev() {
-        obj.GetComponent<Renderer>().material.mainTexture = textures[updateValue(false)];
+        grabstele.GetComponent<Renderer>().material.mainTexture = textures[updateValue(false)];
     }
 
     public void SetToDefault()
     {
-        obj.GetComponent<Renderer>().material.mainTexture = Resources.Load("SavedDrawings/Default") as Texture2D;
+        grabstele.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Default") as Texture2D;
     }
 
     public void ResetDefault()
     {
-        obj.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
+        grabstele.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
     }
 }

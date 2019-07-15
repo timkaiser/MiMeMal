@@ -6,7 +6,7 @@ public class sc_drawing_handler : MonoBehaviour
 {
     public Color drawing_color;         // current drawing color
 
-    public bool active;
+    public bool active;                 // drawing enabled
 
     private static sc_drawing_handler instance; // singelton instance to avoid the doubeling of this script
 
@@ -23,7 +23,7 @@ public class sc_drawing_handler : MonoBehaviour
 
 
     private void Awake() {
-        active = true;
+        active = false;
 
         // avoid doubeling of this script
         if (instance != null && instance != this) { Destroy(this.gameObject); } else { instance = this; }
@@ -54,6 +54,7 @@ public class sc_drawing_handler : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Color color_at_cursor = read_pixel(sc_UVCamera.uv_image, mouse_x, mouse_y);
+                Debug.Log(color_at_cursor);
                 if (color_at_cursor.a != 0)
                 {
                     component_id = component_mask.GetPixel((int)(color_at_cursor.r * component_mask.width), (int)(color_at_cursor.g * component_mask.height)).r;
