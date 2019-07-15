@@ -41,8 +41,7 @@ public class sc_bluetooth_handler : MonoBehaviour
             }
             catch (Exception e)
             {
-                Debug.LogError("Could not establish bluetooth connection!");
-                Debug.LogError(e.Message);
+                Debug.LogError("Could not establish bluetooth connection! " + e.Message);
             }
         }
     }
