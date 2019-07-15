@@ -15,7 +15,7 @@ public class sc_ui_features : MonoBehaviour
     public GameObject brushSizeSlider;
     //Gallery stuff
     public GameObject gallery;
-    public GameObject InfoButton, BackButton, PrevButton, NextButton, ResetButton;
+    public GameObject InfoButton, BackButton, PrevButton, NextButton, ResetButton, Tutorial;
 
     // The script responsible for all the drawing
     private sc_drawing_handler drawing_script;
@@ -168,5 +168,10 @@ public class sc_ui_features : MonoBehaviour
         DrawingCanvas.SetActive(true);
         push_images(drawing_script.drawing_color);
         ColorPickerCanvas.SetActive(false);
+    }
+
+    public void OpenTutorial()
+    {
+        Tutorial.SetActive(true);
     }
 }
