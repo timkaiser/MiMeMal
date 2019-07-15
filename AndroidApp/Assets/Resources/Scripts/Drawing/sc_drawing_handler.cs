@@ -48,7 +48,6 @@ public class sc_drawing_handler : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Color color_at_cursor = read_pixel(sc_UVCamera.uv_image, mouse_x, mouse_y);
-                Debug.Log(color_at_cursor);
                 if (color_at_cursor.a != 0)
                 {
                     component_id = component_mask.GetPixel((int)(color_at_cursor.r * component_mask.width), (int)(color_at_cursor.g * component_mask.height)).r;
