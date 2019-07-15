@@ -57,7 +57,7 @@ public class sc_bluethoot_receiver : MonoBehaviour
                 if (port.Read(buffer, 0, 32) > 0)
                 {
                     String message = "";
-                    for (int i = 0; i < 64; i++)
+                    for (int i = 0; i < 32; i++)
                     {
                         message += Convert.ToChar(buffer[i]);
                     }

@@ -13,19 +13,23 @@ public class sc_galleryLoader : MonoBehaviour
      void Awake()
     {
         grabstele = GameObject.FindGameObjectWithTag("paintable");
-        //calc the size of the texture buffer
-        textures = new List<Texture2D>();
         Load();
     }
 
     public void Load()
     {
+        textures = new List<Texture2D>();
         CountImages(Application.persistentDataPath + "/");
         //load textures next and prev
         if (textures.Count >= 1)
+        {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
+        }
         else
+        {
             grabstele.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Default") as Texture2D;
+
+        }
     }
 
     public void Next() {

@@ -121,7 +121,7 @@ public class sc_ui_features : MonoBehaviour
     {
         grabstele.transform.rotation = Quaternion.identity;
         sc_bluetooth_handler bt = sc_bluetooth_handler.getInstance();
-        //bt.send("Hello", sc_bluetooth_handler.SignalFlag.COMMAND);
+        bt.send("Hello", sc_bluetooth_handler.SignalFlag.COMMAND);
     }
 
     public void OpenGallery()

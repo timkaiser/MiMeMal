@@ -64,8 +64,7 @@ public class sc_bluetooth_handler : MonoBehaviour
 
     public bool send(String message, SignalFlag flag)
     {
-        char c = (char)flag;
-        String m = c + message;
+        String m = (int)flag + message;
         return btplugin.Call<bool>("sendText", m);
     }
 }
