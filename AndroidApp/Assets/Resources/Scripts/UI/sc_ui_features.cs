@@ -156,6 +156,7 @@ public class sc_ui_features : MonoBehaviour
 
     public void MainToDraw()
     {
+        InfoToMain();
         DrawingCanvas.SetActive(true);
         MainAndInfoCanvas.SetActive(false);
         drawing_script.active = true;

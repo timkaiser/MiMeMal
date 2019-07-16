@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
 
 public class sc_galleryLoader : MonoBehaviour
 {
@@ -36,12 +37,26 @@ public class sc_galleryLoader : MonoBehaviour
     }
 
     public void Next() {
-        grabstele.GetComponent<Renderer>().material.mainTexture = textures[updateValue(true)];
-        sc_bluetooth_handler.getInstance().send(fileNames[currentValue], sc_bluetooth_handler.SignalFlag.FILENAME);
+        try {
+            grabstele.GetComponent<Renderer>().material.mainTexture = textures[updateValue(true)];
+            sc_bluetooth_handler.getInstance().send(fileNames[currentValue], sc_bluetooth_handler.SignalFlag.FILENAME);
+
+        } catch(Exception)
+        {
+            SetToDefault();
+        }
     }
+
     public void Prev() {
-        grabstele.GetComponent<Renderer>().material.mainTexture = textures[updateValue(false)];
+        try
+        {
+            grabstele.GetComponent<Renderer>().material.mainTexture = textures[updateValue(false)];
         sc_bluetooth_handler.getInstance().send(fileNames[currentValue], sc_bluetooth_handler.SignalFlag.FILENAME);
+        }
+        catch (Exception)
+        {
+            SetToDefault();
+        }
     }
 
     public void SetToDefault()
@@ -52,8 +67,15 @@ public class sc_galleryLoader : MonoBehaviour
 
     public void ResetDefault()
     {
-        grabstele.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
-        sc_bluetooth_handler.getInstance().send(fileNames[currentValue], sc_bluetooth_handler.SignalFlag.FILENAME);
+        try
+        {
+            grabstele.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
+            sc_bluetooth_handler.getInstance().send(fileNames[currentValue], sc_bluetooth_handler.SignalFlag.FILENAME);
+        }
+        catch (Exception)
+        {
+            SetToDefault();
+        }
     }
 
     private void CountImages(string path)

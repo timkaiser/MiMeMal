@@ -1369,7 +1369,7 @@ GameObject:
   - component: {fileID: 611156465}
   m_Layer: 5
   m_Name: ChildInfoTextContainer
-  m_TagString: Untagged
+  m_TagString: ChildInfo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3234,7 +3234,7 @@ GameObject:
   - component: {fileID: 1109839970}
   m_Layer: 5
   m_Name: DefaultTextContainer
-  m_TagString: Untagged
+  m_TagString: DefaultInfo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3672,7 +3672,7 @@ GameObject:
   - component: {fileID: 1285537684}
   m_Layer: 5
   m_Name: TutorialButton
-  m_TagString: Untagged
+  m_TagString: DefaultInfo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

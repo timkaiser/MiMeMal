@@ -84,13 +84,7 @@ public class sc_bluetooth_handler : MonoBehaviour
         {
             try
             {
-                Debug.Log(data.Length);
-                Debug.Log(data.ToString());
-                foreach(byte b in data)
-                {
-                    Debug.Log(b);
-                    Debug.Log(Convert.ToChar(b));
-                }
+                Debug.Log(data.Length + " " + data[0] + " " + data[data.Length-1]);
                 return btplugin.Call<bool>("send", data);
             }
             catch (Exception e)

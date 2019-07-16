@@ -12,7 +12,7 @@ public class sc_drawing_handler : MonoBehaviour
     private static sc_drawing_handler instance; // singelton instance to avoid the doubeling of this script
 
     private Texture2D component_mask;    // mask containing all informatinon about the components
-    
+
     public RenderTexture canvas;        // canvas to draw on, used as new object texture
 
     private float component_id;          // id of the component at current mouse position
@@ -23,24 +23,27 @@ public class sc_drawing_handler : MonoBehaviour
     private sc_tool[] tools = { new sc_tool_brush(), new sc_tool_fill() };  // list of all tools
 
 
-    private void Awake() {
+    private void Awake()
+    {
         active = false;
 
         // avoid doubeling of this script
         if (instance != null && instance != this) { Destroy(this.gameObject); } else { instance = this; }
 
         //initialize tools
-        foreach (sc_tool t in tools) {
+        foreach (sc_tool t in tools)
+        {
             t.initialize();
         }
 
         GameObject obj = GameObject.FindGameObjectWithTag("paintable");
 
         // set component mask
-        component_mask = (Texture2D)obj.GetComponent<Renderer>().material.GetTexture("_ComponentMask");        
+        component_mask = (Texture2D)obj.GetComponent<Renderer>().material.GetTexture("_ComponentMask");
     }
 
-    void Update(){
+    void Update()
+    {
         if (active)
         {
             int mouse_x = (int)Input.mousePosition.x;
@@ -66,33 +69,41 @@ public class sc_drawing_handler : MonoBehaviour
         }
     }
 
-    public void activate_tool(int tool_id) {
+    public void activate_tool(int tool_id)
+    {
         // deactivate currently active tool
         tools[active_tool].active = false;
 
         // activate new tool
         active_tool = tool_id;
-        tools[active_tool].active = true;        
+        tools[active_tool].active = true;
     }
 
-    public void activate_tool(string name) {
-        for(int i = 0; i < tools.Length; i++) {
-            if (tools[i].getName().Equals(name)) {
+    public void activate_tool(string name)
+    {
+        for (int i = 0; i < tools.Length; i++)
+        {
+            if (tools[i].getName().Equals(name))
+            {
                 activate_tool(i);
                 return;
             }
         }
     }
 
-    public void next_tool() {
+    public void next_tool()
+    {
         int next_tool = (active_tool + 1) % tools.Length;
 
         activate_tool(next_tool);
     }
 
-    public sc_tool get_tool(string name) {
-        for (int i = 0; i < tools.Length; i++) {
-            if (tools[i].getName().Equals(name)) {
+    public sc_tool get_tool(string name)
+    {
+        for (int i = 0; i < tools.Length; i++)
+        {
+            if (tools[i].getName().Equals(name))
+            {
                 return tools[i];
             }
         }
@@ -101,7 +112,8 @@ public class sc_drawing_handler : MonoBehaviour
     }
 
 
-    private void loadTexture(Texture src, out RenderTexture dest) {
+    private void loadTexture(Texture src, out RenderTexture dest)
+    {
         //setup drawing texture
         dest = new RenderTexture(src.width, src.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Default);
         dest.enableRandomWrite = true;
@@ -118,24 +130,26 @@ public class sc_drawing_handler : MonoBehaviour
     //      x,y: int, Position off the pixel that should be read
     // OUTPUT:
     //      Color, Color at pixel x,y in texture rt
-    Color read_pixel(RenderTexture rt, int x, int y) {
+    Color read_pixel(RenderTexture rt, int x, int y)
+    {
         Camera cam = GameObject.FindGameObjectWithTag("UVCamera").GetComponent<Camera>();
         cam.targetTexture = rt;
         cam.Render();
 
         RenderTexture.active = rt;
-        
+
         Texture2D pixel = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
 
         pixel.ReadPixels(new Rect(x, y, 1, 1), 0, 0);
         pixel.Apply();
 
-        Color col = pixel.GetPixel(0,0);
+        Color col = pixel.GetPixel(0, 0);
         DestroyImmediate(pixel);
         return col;
     }
-    
-    public void saveDrawing() { //source: https://gist.github.com/krzys-h/76c518be0516fb1e94c7efbdcd028830
+
+    public void saveDrawing()
+    { //source: https://gist.github.com/krzys-h/76c518be0516fb1e94c7efbdcd028830
         RenderTexture rt = canvas;
 
         RenderTexture.active = rt;
@@ -149,21 +163,15 @@ public class sc_drawing_handler : MonoBehaviour
         string name = Time.time + ".png";
         string path = Application.persistentDataPath + "/" + name;
         System.IO.File.WriteAllBytes(path, bytes);
-        sc_bluetooth_handler.getInstance().send(name, sc_bluetooth_handler.SignalFlag.TEXTURE);
+        sc_bluetooth_handler.getInstance().send(name + " " + bytes.Length, sc_bluetooth_handler.SignalFlag.TEXTURE);
         sc_bluetooth_handler.getInstance().sendTexture(bytes);
-
-        string data = "";
-        for(int i = 0; i<bytes.Length; i++)
-        {
-            data += Convert.ToChar(bytes[i]);
-        }
-        Debug.Log(data);
 
         DestroyImmediate(tex);
     }
 
     //method used to change brush size
-    public void setBrushSize(float brushSize) {
+    public void setBrushSize(float brushSize)
+    {
         //access the toolbrush and change the size
         sc_tool_brush brush = (sc_tool_brush)tools[0];
         brush.brush_size = (int)brushSize;
@@ -171,8 +179,10 @@ public class sc_drawing_handler : MonoBehaviour
 
     // this methode has to be called at the beginning of the drawing screen. It sets the canvas to the default texture and makes sure it's assigend to the object
     // INPUT/OUTPUT: none
-    public void resetCanvas() {
-        if(canvas != null) {
+    public void resetCanvas()
+    {
+        if (canvas != null)
+        {
             DestroyImmediate(canvas);
         }
         GameObject obj = GameObject.FindGameObjectWithTag("paintable");

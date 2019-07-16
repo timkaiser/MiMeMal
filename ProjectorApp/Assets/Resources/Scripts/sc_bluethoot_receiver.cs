@@ -14,7 +14,7 @@ public class sc_bluethoot_receiver : MonoBehaviour
         COMMAND, FILENAME, TEXTURE
     };
 
-    public String portName = "COM3";
+    public string portName = "COM3";
 
     private SerialPort port = null;
     private int baudRate = 9600;
@@ -27,6 +27,7 @@ public class sc_bluethoot_receiver : MonoBehaviour
     private const int MAX_READ = 15;
     List<byte> textureBytes;
     private string textureFileName = "";
+    private int textureSize;
 
     // Start is called before the first frame update
     void Start()
@@ -62,54 +63,69 @@ public class sc_bluethoot_receiver : MonoBehaviour
             int numBytes = port.Read(receivedData, 0, readSize);
             if (numBytes > 0)
             {
+                byte[] data = new byte[numBytes];
+                Array.Copy(receivedData, data, numBytes);
                 if (isReadingTexture)
                 {
-                    Array.Copy(receivedData, receivedData, numBytes);
-                    textureBytes.AddRange(receivedData);
+                    readingCounter = 0;
+                    textureBytes.AddRange(data);
                     return;
                 }
-                int signalFlag = (int)char.GetNumericValue(Convert.ToChar(receivedData[0]));
+                int signalFlag = (int)char.GetNumericValue(Convert.ToChar(data[0]));
                 if (signalFlag == (int)SignalFlag.COMMAND)
                 {
-                    string resourcePath = byteToString(receivedData);
+                    string resourcePath = byteToString(data);
                     Debug.Log("Command " + resourcePath);
 
                     texture_loader.setTexture(texture_loader.loadResource(resourcePath));
                 }
                 else if (signalFlag == (int)SignalFlag.FILENAME)
                 {
-                    string filename = byteToString(receivedData);
+                    string filename = byteToString(data);
                     Debug.Log("Filename " + filename);
 
                     texture_loader.setTexture(texture_loader.loadTexture(
-                        Application.persistentDataPath + filename, resolution));
+                        Application.persistentDataPath + "/" + filename, resolution));
                 }
                 else if (signalFlag == (int)SignalFlag.TEXTURE)
                 {
                     isReadingTexture = true;
                     readingCounter = 0;
-                    textureFileName = byteToString(receivedData);
+                    string message = byteToString(data);
+                    string[] parts = message.Split(' ');
+                    textureFileName = parts[0];
+                    textureSize = Convert.ToInt32(parts[1]);
                     Debug.Log("Texture " + textureFileName);
+                    port.ReadTimeout = 10000;
+                    readSize = 2000000;
                 }
             }
         }
         catch (TimeoutException)
         {
-            //do nothing
-            if (isReadingTexture&&readingCounter>MAX_READ)
+            if (isReadingTexture&&readingCounter>=MAX_READ)
             {
                 Debug.Log("Done reading");
                 isReadingTexture = false;
                 readingCounter = 0;
-                Debug.Log(textureBytes.Count);
-                texture_loader.setTexture(texture_loader.loadFromBytes(textureBytes.ToArray(), resolution));
-                Debug.Log(Application.persistentDataPath + "/" + textureFileName);
-                Debug.Log(byteToString(textureBytes.ToArray()));
-                File.WriteAllBytes(Application.persistentDataPath + "/" + textureFileName, textureBytes.ToArray());
-
-            } else if(isReadingTexture&&readingCounter<=MAX_READ)
+                port.ReadTimeout = 100;
+                readSize = 32;
+                Debug.Log("size is: " + textureBytes.Count + ", expected: " + textureSize);
+                if (textureBytes.Count > 0)
+                {
+                    string path = Application.persistentDataPath + "/" + textureFileName;
+                    texture_loader.setTexture(texture_loader.loadFromBytes(textureBytes.ToArray(), resolution));
+                    File.WriteAllBytes(path, textureBytes.ToArray());
+                }
+            } else if(isReadingTexture&&readingCounter<MAX_READ)
             {
-                readingCounter++;
+                if (textureBytes.Count > 0)
+                {
+                    readingCounter = MAX_READ;
+                } else
+                {
+                    readingCounter++;
+                }
             }
         }
         catch (Exception e)
@@ -133,7 +149,6 @@ public class sc_bluethoot_receiver : MonoBehaviour
         for (int i = 1; i < message.Length; i++)
         {
             result += Convert.ToChar(message[i]);
-            Debug.Log(message[i]);
         }
         return result;
     }
