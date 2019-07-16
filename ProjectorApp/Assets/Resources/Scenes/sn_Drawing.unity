@@ -368,8 +368,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f84ad524e1a9e6f4c84401a771eebd81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  texture_loader: {fileID: 1005360583}
   portName: COM3
-  baudRate: 115200
 --- !u!23 &1952770373565235298
 MeshRenderer:
   m_ObjectHideFlags: 0

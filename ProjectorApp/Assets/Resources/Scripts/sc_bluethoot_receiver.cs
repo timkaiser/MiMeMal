@@ -4,9 +4,11 @@ using System.IO.Ports;
 using System.Threading;
 using System.Linq;
 using System.Collections.Generic;
+using System.IO;
 
 public class sc_bluethoot_receiver : MonoBehaviour
 {
+    public sc_texture_loader texture_loader;
     public enum SignalFlag
     {
         COMMAND, FILENAME, TEXTURE
@@ -16,8 +18,12 @@ public class sc_bluethoot_receiver : MonoBehaviour
 
     private SerialPort port = null;
     private int baudRate = 9600;
-    private int readTimeout = 100;
-    private Boolean running = true;
+    private int readTimeout = 300;
+    private int resolution = 2048;
+    private int readSize = 32;
+
+    private bool reading = false;
+    List<byte> bytes = new List<byte>();
 
     // Start is called before the first frame update
     void Start()
@@ -37,79 +43,83 @@ public class sc_bluethoot_receiver : MonoBehaviour
         try
         {
             port.Open();
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             Debug.Log(e.Message);
         }
-
-        //Start thread for reading data
-        running = true;
-        Thread t = new Thread(new ThreadStart(ReceiveData));
-        t.Start();
     }
 
-    void ReceiveData()
+    public void Update()
     {
-        Debug.Log("Start reading");
-        int readSize = 32;
-        while(running)
+        try
         {
-            try
+            byte[] buffer = new byte[readSize];
+            if (port.Read(buffer, 0, readSize) > 0)
             {
-                byte[] buffer = new byte[readSize];
-                if (port.Read(buffer, 0, readSize) > 0)
+                if (reading)
                 {
-                    int signalFlag = (int)char.GetNumericValue(Convert.ToChar(buffer[0]));
-                    if (signalFlag == (int)SignalFlag.COMMAND)
-                    {
-                        Debug.Log("Command");
-                    }
-                    else if (signalFlag == (int)SignalFlag.FILENAME)
-                    {
-                        Debug.Log("Filename");
-                    }
-                    else if (signalFlag == (int)SignalFlag.TEXTURE)
-                    {
-                        Debug.Log("Texture");
-                        String fileName = "";
-                        for (int i = 1; i < readSize; i++)
-                        {
-                            fileName += Convert.ToChar(buffer[i]);
-                        }
-                        Debug.Log(fileName);
-                        Thread.Sleep(3000);
-                        Debug.Log("Reading texture");
-                        buffer = new byte[readSize];
-                        List<byte> bytes = new List<byte>();
-                        while (port.Read(buffer, 0, readSize) > 0)
-                        {
-                            bytes.AddRange(buffer);
-                        }
-                        Debug.Log(bytes.ToArray().Length);
-                        continue;
-                    }
-                    String message = "";
-                    for (int i = 1; i < readSize; i++)
-                    {
-                        message += Convert.ToChar(buffer[i]);
-                    }
-                    Debug.Log(message);
+                    bytes.AddRange(buffer);
+                    return;
                 }
-            } catch (TimeoutException)
+                int signalFlag = (int)char.GetNumericValue(Convert.ToChar(buffer[0]));
+                if (signalFlag == (int)SignalFlag.COMMAND)
+                {
+                    string resourcePath = byteToString(buffer);
+                    Debug.Log("Command " + resourcePath);
+
+                    texture_loader.setTexture(texture_loader.loadResource(resourcePath));
+                }
+                else if (signalFlag == (int)SignalFlag.FILENAME)
+                {
+                    string filename = byteToString(buffer);
+                    Debug.Log("Filename " + filename);
+
+                    texture_loader.setTexture(texture_loader.loadTexture(
+                        Application.persistentDataPath + filename, resolution));
+                }
+                else if (signalFlag == (int)SignalFlag.TEXTURE)
+                {
+                    reading = true;
+                    String fileName = byteToString(buffer);
+                    Debug.Log("Texture " + fileName);
+                }
+            } else if (reading)
             {
-                //do nothing
+                Debug.Log("Done reading " + bytes.ToArray().Length);
+                reading = false;
             }
         }
-        Debug.Log("End reading");
+        catch (TimeoutException)
+        {
+            //do nothing
+            if (reading)
+            {
+                Debug.Log("Error reading");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message);
+        }
     }
 
     private void OnDisable()
     {
         //Close Port
-        running = false;
         if (port != null && port.IsOpen)
         {
             port.Close();
         }
+    }
+
+    private string byteToString(byte[] message)
+    {
+        String result = "";
+        for (int i = 1; i < message.Length; i++)
+        {
+            result += Convert.ToChar(message[i]);
+        }
+        return result;
     }
 }
