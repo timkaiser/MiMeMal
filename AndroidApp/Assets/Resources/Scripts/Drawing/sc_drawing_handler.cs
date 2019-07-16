@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -150,6 +151,13 @@ public class sc_drawing_handler : MonoBehaviour
         System.IO.File.WriteAllBytes(path, bytes);
         sc_bluetooth_handler.getInstance().send(name, sc_bluetooth_handler.SignalFlag.TEXTURE);
         sc_bluetooth_handler.getInstance().sendTexture(bytes);
+
+        string data = "";
+        for(int i = 0; i<bytes.Length; i++)
+        {
+            data += Convert.ToChar(bytes[i]);
+        }
+        Debug.Log(data);
 
         DestroyImmediate(tex);
     }

@@ -19,15 +19,19 @@ public class sc_bluethoot_receiver : MonoBehaviour
     private SerialPort port = null;
     private int baudRate = 9600;
     private int readTimeout = 300;
-    private int resolution = 2048;
+    private const int resolution = 2048;
     private int readSize = 32;
 
-    private bool reading = false;
-    List<byte> bytes = new List<byte>();
+    private bool isReadingTexture = false;
+    private int readingCounter = 0;
+    private const int MAX_READ = 15;
+    List<byte> textureBytes;
+    private string textureFileName = "";
 
     // Start is called before the first frame update
     void Start()
     {
+        textureBytes = new List<byte>();
         String[] ports = SerialPort.GetPortNames();
         for (int i = 0; i < ports.Length; i++)
         {
@@ -54,25 +58,27 @@ public class sc_bluethoot_receiver : MonoBehaviour
     {
         try
         {
-            byte[] buffer = new byte[readSize];
-            if (port.Read(buffer, 0, readSize) > 0)
+            byte[] receivedData = new byte[readSize];
+            int numBytes = port.Read(receivedData, 0, readSize);
+            if (numBytes > 0)
             {
-                if (reading)
+                if (isReadingTexture)
                 {
-                    bytes.AddRange(buffer);
+                    Array.Copy(receivedData, receivedData, numBytes);
+                    textureBytes.AddRange(receivedData);
                     return;
                 }
-                int signalFlag = (int)char.GetNumericValue(Convert.ToChar(buffer[0]));
+                int signalFlag = (int)char.GetNumericValue(Convert.ToChar(receivedData[0]));
                 if (signalFlag == (int)SignalFlag.COMMAND)
                 {
-                    string resourcePath = byteToString(buffer);
+                    string resourcePath = byteToString(receivedData);
                     Debug.Log("Command " + resourcePath);
 
                     texture_loader.setTexture(texture_loader.loadResource(resourcePath));
                 }
                 else if (signalFlag == (int)SignalFlag.FILENAME)
                 {
-                    string filename = byteToString(buffer);
+                    string filename = byteToString(receivedData);
                     Debug.Log("Filename " + filename);
 
                     texture_loader.setTexture(texture_loader.loadTexture(
@@ -80,22 +86,30 @@ public class sc_bluethoot_receiver : MonoBehaviour
                 }
                 else if (signalFlag == (int)SignalFlag.TEXTURE)
                 {
-                    reading = true;
-                    String fileName = byteToString(buffer);
-                    Debug.Log("Texture " + fileName);
+                    isReadingTexture = true;
+                    readingCounter = 0;
+                    textureFileName = byteToString(receivedData);
+                    Debug.Log("Texture " + textureFileName);
                 }
-            } else if (reading)
-            {
-                Debug.Log("Done reading " + bytes.ToArray().Length);
-                reading = false;
             }
         }
         catch (TimeoutException)
         {
             //do nothing
-            if (reading)
+            if (isReadingTexture&&readingCounter>MAX_READ)
             {
-                Debug.Log("Error reading");
+                Debug.Log("Done reading");
+                isReadingTexture = false;
+                readingCounter = 0;
+                Debug.Log(textureBytes.Count);
+                texture_loader.setTexture(texture_loader.loadFromBytes(textureBytes.ToArray(), resolution));
+                Debug.Log(Application.persistentDataPath + "/" + textureFileName);
+                Debug.Log(byteToString(textureBytes.ToArray()));
+                File.WriteAllBytes(Application.persistentDataPath + "/" + textureFileName, textureBytes.ToArray());
+
+            } else if(isReadingTexture&&readingCounter<=MAX_READ)
+            {
+                readingCounter++;
             }
         }
         catch (Exception e)

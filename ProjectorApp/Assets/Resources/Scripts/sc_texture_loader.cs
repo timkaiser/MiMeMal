@@ -34,4 +34,11 @@ public class sc_texture_loader : MonoBehaviour
     {
         return Resources.Load(path) as Texture2D;
     }
+
+    public Texture2D loadFromBytes(byte[] data, int resolution)
+    {
+        Texture2D result = new Texture2D(resolution, resolution);
+        result.LoadImage(data);
+        return result;
+    }
 }
