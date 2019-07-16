@@ -133,6 +133,7 @@ public class sc_bluethoot_receiver : MonoBehaviour
         for (int i = 1; i < message.Length; i++)
         {
             result += Convert.ToChar(message[i]);
+            Debug.Log(message[i]);
         }
         return result;
     }
