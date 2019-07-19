@@ -13,16 +13,28 @@
       "category": "white"
     },
     {
-      "name": "Zinnoberrot",
-      "description": "Dieses Pigment wird aus dem toxischen Quecksilbersulfid Zinnober hergestellt und kann je nach Größe der zermahlenen Partikel unterschiedliche Farbtöne von einem warmen orange-rot bis zu einem matten rotlila annehmen. Bei hoher Sonneneinstrahlung verdunkelt es sich stark.",
-      "color": [ 200, 30, 20 ],
-      "category": "red"
+      "name": "Ocker",
+      "description": "Ocker ist ein Erdpigment und weicht je nach Herkunft stark im Farbton ab.",
+      "color": [ 220, 160, 90 ],
+      "category": "brown"
     },
     {
-      "name": "Bleimennige",
-      "description": "Menning wurde durch verglühen von Bleiweiß hergestellt. Es ist beim Einatmen in hoher Dosis giftig. Von den Römern wurde es als färbender Stoff unter den Sand im Zirkus gemischt um Blutspuren nach Kämpfen zu verdecken.",
-      "color": [ 220, 45, 0 ],
-      "category": "red"
+      "name": "Sienna",
+      "description": "Erdpigmente wie Sienna weichen je nach chemischer Zusammensetzung der Erde im Farbton ab und können durch erhitzen verdunkelt werden.",
+      "color": [ 160, 100, 30 ],
+      "category": "brown"
+    },
+    {
+      "name": "Umbra",
+      "description": "Umbra, ein Erdpigment, ist eins der ersten von Menschen benutzen Pigmente",
+      "color": [ 90, 50, 30 ],
+      "category": "brown"
+    },
+    {
+      "name": "Roter Ocker",
+      "description": "Roter Ocker (gr. Míltos) wurde häufig als Wandfarbe oder zum Markieren von Schafen verwendet.",
+      "color": [ 130, 30, 10 ],
+      "category": "brown"
     },
     {
       "name": "Kermes",
@@ -37,28 +49,100 @@
       "category": "red"
     },
     {
-      "name": "Sienna",
-      "description": "Erdpigmente wie Sienna weichen je nach chemischer Zusammensetzung der Erde im Farbton ab und können durch erhitzen verdunkelt werden.",
-      "color": [ 160, 100, 30 ],
-      "category": "brown"
+      "name": "Zinnoberrot",
+      "description": "Dieses Pigment wird aus dem toxischen Quecksilbersulfid Zinnober hergestellt und kann je nach Größe der zermahlenen Partikel unterschiedliche Farbtöne von einem warmen orange-rot bis zu einem matten rotlila annehmen. Bei hoher Sonneneinstrahlung verdunkelt es sich stark.",
+      "color": [ 200, 30, 20 ],
+      "category": "red"
     },
     {
-      "name": "Ocker",
-      "description": "Ocker ist ein Erdpigment und weicht je nach Herkunft stark im Farbton ab.",
-      "color": [ 220, 160, 90 ],
-      "category": "brown"
+      "name": "Bleimennige",
+      "description": "Menning wurde durch verglühen von Bleiweiß hergestellt. Es ist beim Einatmen in hoher Dosis giftig. Von den Römern wurde es als färbender Stoff unter den Sand im Zirkus gemischt um Blutspuren nach Kämpfen zu verdecken.",
+      "color": [ 220, 45, 0 ],
+      "category": "red"
     },
     {
-      "name": "Roter Ocker",
-      "description": "Roter Ocker (gr. Míltos) wurde häufig als Wandfarbe oder zum Markieren von Schafen verwendet.",
-      "color": [ 130, 30, 10 ],
-      "category": "brown"
+      "name": "Raelgar",
+      "description": "",
+      "color": [ 230, 127, 10 ],
+      "category": "yellow"
     },
     {
-      "name": "Umbra",
-      "description": "Umber, ein Erdpigment, ist eins der ersten von Menschen benutzen Pigmente",
-      "color": [ 90, 50, 30 ],
-      "category": "brown"
+      "name": "Auripigment",
+      "description": "",
+      "color": [ 230, 230, 20 ],
+      "category": "yellow"
+    },
+    {
+      "name": "Massicotit",
+      "description": "",
+      "color": [ 230, 255, 115 ],
+      "category": "yellow"
+    },
+    {
+      "name": "Grünerde",
+      "description": "",
+      "color": [ 142, 166, 76 ],
+      "category": "green"
+    },
+    {
+      "name": "Malachit",
+      "description": "",
+      "color": [ 0, 136, 90 ],
+      "category": "green"
+    },
+    {
+      "name": "Ägyptisch Grün",
+      "description": "",
+      "color": [ 70, 194, 173 ],
+      "category": "green"
+    },
+    {
+      "name": "Verdigris",
+      "description": "",
+      "color": [ 76, 179, 174 ],
+      "category": "green"
+    },
+    {
+      "name": "Azurblau",
+      "description": "",
+      "color": [ 34, 95, 120 ],
+      "category": "blue"
+    },
+    {
+      "name": "Indigo",
+      "description": "",
+      "color": [ 36, 107, 206 ],
+      "category": "blue"
+    },
+    {
+      "name": "Ägyptisch Blau",
+      "description": "",
+      "color": [ 16, 52, 166 ],
+      "category": "blue"
+    },
+    {
+      "name": "Ultramarin",
+      "description": "",
+      "color": [ 18, 10, 143 ],
+      "category": "blue"
+    },
+    {
+      "name": "Purpur",
+      "description": "",
+      "color": [ 102, 2, 60 ],
+      "category": "purple"
+    },
+    {
+      "name": "Holzkohle",
+      "description": "",
+      "color": [ 0, 0, 2 ],
+      "category": "black"
+    },
+    {
+      "name": "Elfenbeinschwarz",
+      "description": "",
+      "color": [ 0, 0, 0 ],
+      "category": "black"
     }
   ]
 }

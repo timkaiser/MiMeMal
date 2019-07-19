@@ -4628,7 +4628,7 @@ MonoBehaviour:
   pigmentName: {fileID: 2146329532}
   pigmentText: {fileID: 169072716}
   pigmentsVertical: 8
-  pigmentsHorizontal: 6
+  pigmentsHorizontal: 5
 --- !u!114 &1638222119
 MonoBehaviour:
   m_ObjectHideFlags: 0
