@@ -9,17 +9,23 @@ public class sc_swipe_draggable : MonoBehaviour
 
     private bool locked = false;
 
+    //lerp variables
+    private bool lerpLock = true;
+    private Quaternion destination;
+    public float lerpingSpeed;
+    private float rotationTime;
+
+    public void Awake()
+    {
+        destination = transform.rotation;
+    }
+
     private void OnMouseDrag(){
         if (locked)
             return;
         float rotationX = Input.GetAxis("Mouse X") * rotationSpeed * Mathf.Deg2Rad;
-        //float rotationY = Input.GetAxis("Mouse Y") * rotationSpeed * Mathf.Deg2Rad;
-
-        //if((rotationX > 0 && transform.rotation.y<=-90 )|| (rotationX < 0 && transform.rotation.y >= 90))
-        //    transform.Rotate(Vector3.up, -rotationX);
         transform.Rotate(Vector3.up, -rotationX);
-
-        //transform.Rotate(Vector3.right, rotationY);
+        lerpLock = true;
     }
 
     public void resetRotation() {
@@ -32,6 +38,16 @@ public class sc_swipe_draggable : MonoBehaviour
         Vector3 current_rotation = transform.localEulerAngles;
         current_rotation.y = Mathf.Clamp(current_rotation.y, 200, 340);
         transform.localEulerAngles = current_rotation;
+
+        if (!Input.GetMouseButton(0)) {
+            if (lerpLock)
+            {
+                lerpLock = false;
+                rotationTime = 0;
+            }
+            rotationTime += Time.deltaTime * lerpingSpeed;
+            transform.rotation = Quaternion.Lerp(transform.rotation, destination, rotationTime);
+        }
     }
 
     public void Lock() {
