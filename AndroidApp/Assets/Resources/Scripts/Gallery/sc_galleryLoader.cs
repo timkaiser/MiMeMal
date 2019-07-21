@@ -8,7 +8,7 @@ public class sc_galleryLoader : MonoBehaviour
 {
     private GameObject grabstele;
     private int resolution = 2048;
-    private List<Texture2D> textures;
+    public List<Texture2D> textures;
     private List<string> fileNames;
     private int currentValue = 0;
 
@@ -39,6 +39,7 @@ public class sc_galleryLoader : MonoBehaviour
     public void Next() {
         try {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[updateValue(true)];
+            Debug.Log(textures[currentValue].format);
             sc_connection_handler.instance.send(textures[currentValue]);
 
         } catch (Exception)

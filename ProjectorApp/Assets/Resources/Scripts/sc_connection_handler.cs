@@ -13,10 +13,14 @@ public class sc_connection_handler : MonoBehaviour {
 
     //received data
     private string imageData = "";
-    [SerializeField]
     private Vector2 imageSize = new Vector2(1024, 1024);
+    private int imageFormatIndex = 0;
     public bool updated = false;
+    private TextureFormat[] texture_formats = { TextureFormat.RGB24, TextureFormat.ARGB32 };
+    private string command = "";
+    private Texture2D[] infoTextures;
 
+    private sc_texture_loader texture_loader;
 
     public async void Awake() {
         //singelton initialization
@@ -25,6 +29,13 @@ public class sc_connection_handler : MonoBehaviour {
         } else {
             instance = this;
         }
+
+        texture_loader = FindObjectOfType<sc_texture_loader>();
+        infoTextures = new Texture2D[4];
+        infoTextures[0] = 
+        infoTextures[1] = Resources.Load<Texture2D>("Textures/InfoChild");
+        infoTextures[2] = Resources.Load<Texture2D>("Textures/InfoChair");
+        infoTextures[3] = Resources.Load<Texture2D>("Textures/InfoXanthippos");
 
 
         client = FindObjectOfType<UbiiClient>();
@@ -35,21 +46,30 @@ public class sc_connection_handler : MonoBehaviour {
 
         await client.InitializeClient();
         await client.Subscribe("image size", receiveImageSize);
+        await client.Subscribe("image format", receiveImageFormat);
         await client.Subscribe("image", receiveImage);
+        await client.Subscribe("command", receiveCommand);
 
         Debug.Log("connected");
         connected = true;
     }
 
     public void Update() {
+        //Sets textures for info screen
+        if(command != "") {
+            updated = false;
+            texture_loader.setTexture(Resources.Load<Texture2D>("Textures/"+command));
+        }
+
+        //sets every other texture
         if (updated) {
             byte[] b = Convert.FromBase64String(imageData);
 
-            Texture2D tex = new Texture2D((int)imageSize.x, (int)imageSize.y, TextureFormat.RGB24, false);
+            Texture2D tex = new Texture2D((int)imageSize.x, (int)imageSize.y, texture_formats[imageFormatIndex], false);
             tex.LoadRawTextureData(b);
             tex.Apply();
 
-            FindObjectOfType<sc_texture_loader>().setTexture(tex);
+            texture_loader.setTexture(tex);
 
             updated = false;
         }
@@ -68,5 +88,13 @@ public class sc_connection_handler : MonoBehaviour {
         Debug.Log("Received Image Size");
     }
 
+    public void receiveImageFormat(TopicDataRecord dir) {
+        imageFormatIndex = (int)UbiiParser.ProtoToUnity(dir.Double)-1;      //added -1 to not send empty data (0)
+        Debug.Log(imageFormatIndex);
+        Debug.Log("Received Image Format");
+    }
 
+    public void receiveCommand(TopicDataRecord dir) {
+        command = dir.String;
+    }
 }

@@ -12,6 +12,7 @@ public class sc_connection_handler : MonoBehaviour {
     private UbiiClient client;
     public bool connected = false;
 
+    private TextureFormat[] texture_formats = { TextureFormat.RGB24, TextureFormat.ARGB32 };
 
     public async void Awake() {
         //singelton initialization
@@ -34,9 +35,18 @@ public class sc_connection_handler : MonoBehaviour {
 
 
     public void send(Texture2D texture) {
+        //send size
         client.Publish(UbiiParser.UnityToProto("image size", new Vector2(texture.width, texture.height)));
+        //send format
+        int index = 0;
+        for (; index < texture_formats.Length; index++) { if (texture_formats[index] == texture.format) break; };
+        client.Publish(UbiiParser.UnityToProto("image format", index+1));   // added +1 to not send empty data
         client.Publish(UbiiParser.UnityToProto("image", Convert.ToBase64String(texture.GetRawTextureData())));
 
+        Debug.Log("Sent");
+    }
+    public void send(String command) {
+        client.Publish(UbiiParser.UnityToProto("command", command));
         Debug.Log("Sent");
     }
 

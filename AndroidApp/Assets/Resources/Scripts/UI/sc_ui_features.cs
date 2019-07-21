@@ -16,7 +16,7 @@ public class sc_ui_features : MonoBehaviour
     public GameObject brushButton, fillToolButton, sliderObj;
     //Gallery stuff
     public GameObject gallery;
-    public GameObject InfoButton, BackButton, PrevButton, NextButton, ResetButton, Tutorial;
+    public GameObject InfoButton, BackButton, PrevButton, NextButton, Tutorial;
 
     // The script responsible for all the drawing
     private sc_drawing_handler drawing_script;
@@ -139,9 +139,9 @@ public class sc_ui_features : MonoBehaviour
         InfoButton.SetActive(false);
         PrevButton.SetActive(false);
         NextButton.SetActive(false);
-        ResetButton.SetActive(false);
         BackButton.SetActive(true);
         gallery.GetComponent<sc_galleryLoader>().SetToDefault();
+        sc_connection_handler.instance.send("InfoDefault");
     }
 
     public void InfoToMain()
@@ -150,7 +150,6 @@ public class sc_ui_features : MonoBehaviour
         InfoButton.SetActive(true);
         PrevButton.SetActive(true);
         NextButton.SetActive(true);
-        ResetButton.SetActive(true);
         gallery.GetComponent<sc_galleryLoader>().ResetDefault();
     }
 
