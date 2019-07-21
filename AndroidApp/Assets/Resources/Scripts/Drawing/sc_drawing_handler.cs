@@ -14,8 +14,13 @@ public class sc_drawing_handler : MonoBehaviour
     private Texture2D component_mask;    // mask containing all informatinon about the components
 
     public RenderTexture canvas;        // canvas to draw on, used as new object texture
+    private Texture2D canvasTex2D;   // Texture2D version of the canvas. update via convertCanvas(). used for saving and sending
 
     private float component_id;          // id of the component at current mouse position
+
+
+    private float time_last_sent;
+    private float time_between_sending = 1.0f;
 
     // drawing tools
     [SerializeField]
@@ -42,31 +47,30 @@ public class sc_drawing_handler : MonoBehaviour
         component_mask = (Texture2D)obj.GetComponent<Renderer>().material.GetTexture("_ComponentMask");
     }
 
-    void Update()
-    {
-        if (active)
-        {
-            int mouse_x = (int)Input.mousePosition.x;
-            int mouse_y = Screen.height - (int)Input.mousePosition.y;
+    void Update()    {
+        if (!active) { return; }
+        if (time_last_sent + time_between_sending < Time.time) {
+            convertCanvas();
+            sc_connection_handler.instance.send(canvasTex2D);
+            time_last_sent = Time.time;
+        }
 
-            if (Input.GetMouseButtonDown(0))
-            {
-                Color color_at_cursor = read_pixel(sc_UVCamera.uv_image, mouse_x, mouse_y);
-                if (color_at_cursor.a != 0)
-                {
-                    component_id = component_mask.GetPixel((int)(color_at_cursor.r * component_mask.width), (int)(color_at_cursor.g * component_mask.height)).r;
-                }
-                else
-                {
-                    component_id = -1;
-                }
-            }
+        int mouse_x = (int)Input.mousePosition.x;
+        int mouse_y = Screen.height - (int)Input.mousePosition.y;
 
-            if (Input.GetMouseButton(0))
-            {
-                tools[active_tool].perFrame(canvas, sc_UVCamera.uv_image, component_mask, mouse_x, mouse_y, component_id, drawing_color, Input.GetMouseButtonDown(0));
+        if (Input.GetMouseButtonDown(0)) {
+            Color color_at_cursor = read_pixel(sc_UVCamera.uv_image, mouse_x, mouse_y);
+            if (color_at_cursor.a != 0) {
+                component_id = component_mask.GetPixel((int)(color_at_cursor.r * component_mask.width), (int)(color_at_cursor.g * component_mask.height)).r;
+            } else {
+                component_id = -1;
             }
         }
+
+        if (Input.GetMouseButton(0)) {
+            tools[active_tool].perFrame(canvas, sc_UVCamera.uv_image, component_mask, mouse_x, mouse_y, component_id, drawing_color, Input.GetMouseButtonDown(0));
+        }
+
     }
 
     public void activate_tool(int tool_id)
@@ -150,23 +154,18 @@ public class sc_drawing_handler : MonoBehaviour
 
     public void saveDrawing()
     { //source: https://gist.github.com/krzys-h/76c518be0516fb1e94c7efbdcd028830
-        RenderTexture rt = canvas;
-
-        RenderTexture.active = rt;
-        Texture2D tex = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
-        tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
-        RenderTexture.active = null;
+        convertCanvas();
 
         byte[] bytes;
-        bytes = tex.EncodeToPNG();
+        bytes = canvasTex2D.EncodeToPNG();
 
         string name = Time.time + ".png";
         string path = Application.persistentDataPath + "/" + name;
         System.IO.File.WriteAllBytes(path, bytes);
-        sc_bluetooth_handler.getInstance().send(name + " " + bytes.Length, sc_bluetooth_handler.SignalFlag.TEXTURE);
-        sc_bluetooth_handler.getInstance().sendTexture(bytes);
 
-        DestroyImmediate(tex);
+        sc_connection_handler.instance.send(canvasTex2D);
+
+        DestroyImmediate(canvasTex2D);
     }
 
     //method used to change brush size
@@ -189,7 +188,17 @@ public class sc_drawing_handler : MonoBehaviour
 
         loadTexture(Resources.Load("Textures/Grabstele_texture") as Texture2D, out canvas);
 
+        convertCanvas();
+
         // set object texture as canvas
         obj.GetComponent<Renderer>().material.mainTexture = canvas;
+    }
+
+    // this methode converts the canvas to a Texture2D and stores it in canvasTex2D
+    private void convertCanvas() {
+        RenderTexture.active = canvas;
+        canvasTex2D = new Texture2D(canvas.width, canvas.height, TextureFormat.RGB24, false);
+        canvasTex2D.ReadPixels(new Rect(0, 0, canvas.width, canvas.height), 0, 0);
+        RenderTexture.active = null;
     }
 }

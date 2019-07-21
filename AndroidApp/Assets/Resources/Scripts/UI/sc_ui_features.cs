@@ -120,8 +120,8 @@ public class sc_ui_features : MonoBehaviour
     public void reset_orientation()
     {
         grabstele.transform.rotation = Quaternion.identity;
-        sc_bluetooth_handler bt = sc_bluetooth_handler.getInstance();
-        bt.send("Hello", sc_bluetooth_handler.SignalFlag.COMMAND);
+        //sc_bluetooth_handler bt = sc_bluetooth_handler.getInstance();
+        //bt.send("Hello", sc_bluetooth_handler.SignalFlag.COMMAND);
     }
 
     public void OpenGallery()
@@ -161,8 +161,7 @@ public class sc_ui_features : MonoBehaviour
         MainAndInfoCanvas.SetActive(false);
         drawing_script.active = true;
         drawing_script.resetCanvas();
-        sc_bluetooth_handler.getInstance().send(
-            "Textures/Grabstele_texture", sc_bluetooth_handler.SignalFlag.COMMAND);
+        //sc_bluetooth_handler.getInstance().send("Textures/Grabstele_texture", sc_bluetooth_handler.SignalFlag.COMMAND);
     }
 
     public void DrawToMain()

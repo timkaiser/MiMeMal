@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657886, g: 0.4964127, b: 0.57481724, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 534669905}
   - component: {fileID: 534669904}
   - component: {fileID: 534669903}
+  - component: {fileID: 534669906}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: Untagged
@@ -294,6 +295,47 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &534669906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534669902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29329ba18edf6d4aae41a2affd8bf67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  step_sizes:
+  - 0.1
+  - 1
+  - 5
+  - 0.01
+  current_step_size: 0
+  modes:
+  - translate
+  - prespective
+  - scale
+  current_mode: 0
+  show_ui: 1
+  matrix:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
 --- !u!1 &1005360582
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,6 +347,8 @@ GameObject:
   - component: {fileID: 1005360584}
   - component: {fileID: 1005360583}
   - component: {fileID: 1005360585}
+  - component: {fileID: 1005360587}
+  - component: {fileID: 1005360586}
   m_Layer: 0
   m_Name: ScriptManager
   m_TagString: Untagged
@@ -348,11 +392,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 1005360582}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f84ad524e1a9e6f4c84401a771eebd81, type: 3}
+  m_Script: {fileID: 11500000, guid: fa89125456ccd164bbcc66117ed2c553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  texture_loader: {fileID: 1005360583}
-  portName: COM3
+  showFPS: 1
+  limitFPS: 0
+  maxFPS: 20
+  calibration_script: {fileID: 534669906}
+--- !u!114 &1005360586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005360582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776686d3ee698db4395baf9d8ff4b15b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  connected: 0
+  imageSize: {x: 1024, y: 1024}
+  updated: 0
+--- !u!114 &1005360587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005360582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8487dab0cf20014d888d7466f4b5ebb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ip: localhost
+  port: 8101
 --- !u!23 &1952770373565235298
 MeshRenderer:
   m_ObjectHideFlags: 0

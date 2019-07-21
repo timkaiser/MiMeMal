@@ -27,21 +27,21 @@ public class sc_galleryLoader : MonoBehaviour
         if (textures.Count >= 1)
         {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
-            sc_bluetooth_handler.getInstance().send(fileNames[currentValue], sc_bluetooth_handler.SignalFlag.FILENAME);
+            sc_connection_handler.instance.send(textures[currentValue]);
         }
         else
         {
             grabstele.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Default") as Texture2D;
-            sc_bluetooth_handler.getInstance().send("Textures/Default", sc_bluetooth_handler.SignalFlag.COMMAND);
+            sc_connection_handler.instance.send(textures[currentValue]);
         }
     }
 
     public void Next() {
         try {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[updateValue(true)];
-            sc_bluetooth_handler.getInstance().send(fileNames[currentValue], sc_bluetooth_handler.SignalFlag.FILENAME);
+            sc_connection_handler.instance.send(textures[currentValue]);
 
-        } catch(Exception)
+        } catch (Exception)
         {
             SetToDefault();
         }
@@ -51,9 +51,8 @@ public class sc_galleryLoader : MonoBehaviour
         try
         {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[updateValue(false)];
-        sc_bluetooth_handler.getInstance().send(fileNames[currentValue], sc_bluetooth_handler.SignalFlag.FILENAME);
-        }
-        catch (Exception)
+            sc_connection_handler.instance.send(textures[currentValue]);
+        } catch (Exception)
         {
             SetToDefault();
         }
@@ -62,7 +61,7 @@ public class sc_galleryLoader : MonoBehaviour
     public void SetToDefault()
     {
         grabstele.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Default") as Texture2D;
-        sc_bluetooth_handler.getInstance().send("Textures/Default", sc_bluetooth_handler.SignalFlag.COMMAND);
+        sc_connection_handler.instance.send(textures[currentValue]);
     }
 
     public void ResetDefault()
@@ -70,9 +69,8 @@ public class sc_galleryLoader : MonoBehaviour
         try
         {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[currentValue];
-            sc_bluetooth_handler.getInstance().send(fileNames[currentValue], sc_bluetooth_handler.SignalFlag.FILENAME);
-        }
-        catch (Exception)
+            sc_connection_handler.instance.send(textures[currentValue]);
+        } catch (Exception)
         {
             SetToDefault();
         }

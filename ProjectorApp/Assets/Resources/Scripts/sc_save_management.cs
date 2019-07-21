@@ -20,7 +20,7 @@ public class sc_save_management : MonoBehaviour {
     }
 
     //saves settings
-    public static void save(Matrix4x4 matrix) {
+    public static void saveCalibration(Matrix4x4 matrix) {
         CalibrationData data = new CalibrationData(matrix);
 
         string destination = Application.persistentDataPath + "/calibration.dat";
@@ -35,7 +35,7 @@ public class sc_save_management : MonoBehaviour {
     }
 
     //loads settings
-    public static Matrix4x4 load() {
+    public static Matrix4x4 loadCalibration() {
         string destination = Application.persistentDataPath + "/calibration.dat";
         FileStream file;
         Matrix4x4 result = new Matrix4x4();
@@ -57,5 +57,27 @@ public class sc_save_management : MonoBehaviour {
         }
 
         return result;
+    }
+
+    //loads settings
+    public static void loadNetConfig(out string ip, out string port) {
+        string destination = Application.persistentDataPath + "/netconfig.txt";
+
+        try {
+            StreamReader reader = new StreamReader(destination);
+            ip = reader.ReadLine();
+            port = reader.ReadLine();
+            reader.Close();
+        } catch {
+            StreamWriter writer = new StreamWriter(destination, false);
+            writer.WriteLine("localhost");
+            writer.WriteLine("8101");
+            writer.Close();
+
+            ip = "localhost";
+            port = "8101";
+
+            Debug.LogError("netconfig.txt not found. Loading default configuration (loacalhost:8101)");
+        }
     }
 }

@@ -32,7 +32,8 @@ public class sc_debug_ui : MonoBehaviour {
     void OnGUI() {
         if (!calibration_script.show_ui) { return; }
 
-        StringBuilder msg = new StringBuilder("", 120);
+        StringBuilder msg = new StringBuilder("", 135);
+        msg.Append("connected: ").Append(sc_connection_handler.instance.connected).AppendLine();
         msg.Append((int)(1 / Time.deltaTime)).Append(" FPS\t")
             .Append("Mode: ").Append(calibration_script.modes[calibration_script.current_mode])
             .Append("  Step size: ").Append(calibration_script.step_sizes[calibration_script.current_step_size])
