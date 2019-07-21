@@ -8,6 +8,11 @@ TagManager:
   - paintable
   - ChildInfo
   - DefaultInfo
+  - InfoCanvas
+  - GalleryCanvas
+  - DrawingCanvas
+  - ColorPickerCanvas
+  - Tutorial
   layers:
   - Default
   - TransparentFX

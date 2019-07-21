@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class sc_InfoTextContainer : MonoBehaviour
+public class sc_info_text : MonoBehaviour
 {
     // Update is called once per frame
     void Update()

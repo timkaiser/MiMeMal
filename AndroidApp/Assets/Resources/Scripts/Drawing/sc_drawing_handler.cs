@@ -11,21 +11,22 @@ public class sc_drawing_handler : MonoBehaviour
 
     private static sc_drawing_handler instance; // singelton instance to avoid the doubeling of this script
 
-    private Texture2D component_mask;    // mask containing all informatinon about the components
+    private Texture2D component_mask;  // mask containing all informatinon about the components
 
-    public RenderTexture canvas;        // canvas to draw on, used as new object texture
+    public RenderTexture canvas;       // canvas to draw on, used as new object texture
 
-    private float component_id;          // id of the component at current mouse position
+    private float component_id;        // id of the component at current mouse position
 
     // drawing tools
     [SerializeField]
-    private int active_tool = 0;                                            // currently active tool         
-    private sc_tool[] tools = { new sc_tool_brush(), new sc_tool_fill() };  // list of all tools
+    private int active_tool = 0;       // currently active tool         
+    private sc_tool[] tools;           // list of all tools
 
 
     private void Awake()
     {
         active = false;
+        tools = new sc_tool[]{ new sc_tool_brush(), new sc_tool_fill() };
 
         // avoid doubeling of this script
         if (instance != null && instance != this) { Destroy(this.gameObject); } else { instance = this; }
@@ -112,7 +113,7 @@ public class sc_drawing_handler : MonoBehaviour
     }
 
 
-    private void loadTexture(Texture src, out RenderTexture dest)
+    private void load_texture(Texture src, out RenderTexture dest)
     {
         //setup drawing texture
         dest = new RenderTexture(src.width, src.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Default);
@@ -148,7 +149,7 @@ public class sc_drawing_handler : MonoBehaviour
         return col;
     }
 
-    public void saveDrawing()
+    public void save_drawing()
     { //source: https://gist.github.com/krzys-h/76c518be0516fb1e94c7efbdcd028830
         RenderTexture rt = canvas;
 
@@ -170,7 +171,7 @@ public class sc_drawing_handler : MonoBehaviour
     }
 
     //method used to change brush size
-    public void setBrushSize(float brushSize)
+    public void set_brush_size(float brushSize)
     {
         //access the toolbrush and change the size
         sc_tool_brush brush = (sc_tool_brush)tools[0];
@@ -179,7 +180,7 @@ public class sc_drawing_handler : MonoBehaviour
 
     // this methode has to be called at the beginning of the drawing screen. It sets the canvas to the default texture and makes sure it's assigend to the object
     // INPUT/OUTPUT: none
-    public void resetCanvas()
+    public void reset_canvas()
     {
         if (canvas != null)
         {
@@ -187,7 +188,7 @@ public class sc_drawing_handler : MonoBehaviour
         }
         GameObject obj = GameObject.FindGameObjectWithTag("paintable");
 
-        loadTexture(Resources.Load("Textures/Grabstele_texture") as Texture2D, out canvas);
+        load_texture(Resources.Load("Textures/Grabstele_texture") as Texture2D, out canvas);
 
         // set object texture as canvas
         obj.GetComponent<Renderer>().material.mainTexture = canvas;

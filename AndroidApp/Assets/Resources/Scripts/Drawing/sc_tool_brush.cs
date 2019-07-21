@@ -13,14 +13,16 @@ public class sc_tool_brush : sc_tool{
 
 
     //old mouse position
-    private float mouse_x_old = -1;
-    private float mouse_y_old = -1;
+    private float mouse_x_old;
+    private float mouse_y_old;
 
     void Start() {
         initialize();    
     }
 
     public override void initialize() {
+        mouse_x_old = -1;
+        mouse_y_old = -1;
         //setup compute shader
         cs_draw = (ComputeShader)Resources.Load("Shader/cs_brush");
         csKernel = cs_draw.FindKernel("brush");

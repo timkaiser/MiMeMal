@@ -5,25 +5,31 @@ using UnityEngine.EventSystems;
 
 public class sc_color_picker_move : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    private bool isClicked = false;
-    public sc_color_picker color_Picker;
+    private bool is_clicked = false;
+    private sc_color_picker_ui color_picker;
+
+    // Start is called before the first frame update
+    public void Start()
+    {
+        color_picker = FindObjectOfType<sc_color_picker_ui>();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if(isClicked)
+        if(is_clicked)
         {
-            color_Picker.OnColorPickerClicked();
+            color_picker.on_color_picker_clicked();
         }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        isClicked = true;
+        is_clicked = true;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        isClicked = false;
+        is_clicked = false;
     }
 }
