@@ -11,11 +11,12 @@ public class sc_drawing_ui : MonoBehaviour
     private sc_drawing_handler drawing_script;
     private sc_gallery_loader gallery_loader;
 
-    public void Awake()
+    // Start is called before the first frame update
+    public void Start()
     {
-        color_picker_canvas = GameObject.FindGameObjectWithTag("ColorPickerCanvas");
-        gallery_canvas = GameObject.FindGameObjectWithTag("GalleryCanvas");
-        drawing_canvas = GameObject.FindGameObjectWithTag("DrawingCanvas");
+        color_picker_canvas = sc_canvas.instance.color_picker_canvas;
+        gallery_canvas = sc_canvas.instance.gallery_canvas;
+        drawing_canvas = sc_canvas.instance.drawing_canvas;
         drawing_script = FindObjectOfType<sc_drawing_handler>();
         gallery_loader = FindObjectOfType<sc_gallery_loader>();
     }

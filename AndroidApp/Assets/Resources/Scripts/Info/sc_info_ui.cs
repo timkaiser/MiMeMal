@@ -6,13 +6,14 @@ public class sc_info_ui : MonoBehaviour
     private sc_gallery_loader gallery_loader;
     private sc_drawing_handler drawing_script;
 
-    public void Awake()
+    // Start is called before the first frame update
+    public void Start()
     {
         drawing_script = FindObjectOfType<sc_drawing_handler>();
         gallery_loader = FindObjectOfType<sc_gallery_loader>();
-        info_canvas = GameObject.FindGameObjectWithTag("InfoCanvas");
-        gallery_canvas = GameObject.FindGameObjectWithTag("GalleryCanvas");
-        drawing_canvas = GameObject.FindGameObjectWithTag("DrawingCanvas");
+        info_canvas = sc_canvas.instance.info_canvas;
+        gallery_canvas = sc_canvas.instance.gallery_canvas;
+        drawing_canvas = sc_canvas.instance.drawing_canvas;
     }
 
     public void info_to_gallery()

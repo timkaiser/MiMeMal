@@ -7,10 +7,9 @@ using System;
 public class sc_gallery_loader : MonoBehaviour
 {
     private GameObject grabstele;
-    private sc_drawing_handler drawing_script;
 
     private int resolution = 2048;
-    private List<Texture2D> textures;
+    public List<Texture2D> textures;
     private List<string> filenames;
     private int current_value = 0;
 
@@ -30,7 +29,6 @@ public class sc_gallery_loader : MonoBehaviour
     public void Start()
     {
         grabstele = GameObject.FindGameObjectWithTag("paintable");
-        drawing_script = FindObjectOfType<sc_drawing_handler>();
         load();
     }
 
@@ -43,23 +41,24 @@ public class sc_gallery_loader : MonoBehaviour
         if (textures.Count >= 1)
         {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[current_value];
+            sc_connection_handler.instance.send(textures[current_value]);
         }
         else
         {
             grabstele.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Default") as Texture2D;
+            sc_connection_handler.instance.send(textures[current_value]);
         }
     }
 
-    public void next()
-    {
-        try
-        {
+    public void next() {
+        try {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[update_value(true)];
         }
         catch (Exception)
         {
             set_to_default();
         }
+        sc_connection_handler.instance.send(textures[current_value]);
     }
 
     public void previous()
@@ -67,16 +66,17 @@ public class sc_gallery_loader : MonoBehaviour
         try
         {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[update_value(false)];
-        }
-        catch (Exception)
+        } catch (Exception)
         {
             set_to_default();
         }
+        sc_connection_handler.instance.send(textures[current_value]);
     }
 
     public void set_to_default()
     {
         grabstele.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Default") as Texture2D;
+        sc_connection_handler.instance.send(textures[current_value]);
     }
 
     public void set_to_current()
@@ -84,11 +84,11 @@ public class sc_gallery_loader : MonoBehaviour
         try
         {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[current_value];
-        }
-        catch (Exception)
+        } catch (Exception)
         {
             set_to_default();
         }
+        sc_connection_handler.instance.send(textures[current_value]);
     }
 
     private void count_images(string path)

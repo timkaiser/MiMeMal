@@ -31,13 +31,14 @@ public class sc_color_picker_ui : MonoBehaviour
         {
             instance = this;
         }
-        drawing_script = FindObjectOfType<sc_drawing_handler>();
-        drawing_canvas = GameObject.FindGameObjectWithTag("DrawingCanvas");
-        color_picker_canvas = GameObject.FindGameObjectWithTag("ColorPickerCanvas");
     }
 
+    // Start is called before the first frame update
     public void Start()
     {
+        drawing_script = FindObjectOfType<sc_drawing_handler>();
+        drawing_canvas = sc_canvas.instance.drawing_canvas;
+        color_picker_canvas = sc_canvas.instance.color_picker_canvas;
         //set to white color
         current_color = new Vector3(0, 0, 1);
         slider_color = Resources.Load("Materials/m_slider") as Material;

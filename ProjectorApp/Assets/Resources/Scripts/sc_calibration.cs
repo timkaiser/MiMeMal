@@ -58,7 +58,7 @@ public class sc_calibration : MonoBehaviour {
     // Called on Startup
     public void Start() {
         cam = this.GetComponent<Camera>();              // get main camera
-        matrix = sc_save_management.load();//cam.worldToCameraMatrix;    // get projection matrix
+        matrix = sc_save_management.loadCalibration();//cam.worldToCameraMatrix;    // get projection matrix
         Screen.fullScreen = true;
     }
 
@@ -79,7 +79,7 @@ public class sc_calibration : MonoBehaviour {
         // save calibration
         if (time_since_last_change+3 < Time.time) {
             time_since_last_change = -10;
-            sc_save_management.save(matrix);
+            sc_save_management.saveCalibration(matrix);
         }
         
 
