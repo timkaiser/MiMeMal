@@ -1237,7 +1237,7 @@ GameObject:
   - component: {fileID: 611156466}
   - component: {fileID: 611156465}
   m_Layer: 5
-  m_Name: InfoBox
+  m_Name: InfoBoxChild
   m_TagString: InfoBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1251,17 +1251,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 611156463}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -705.8379}
-  m_LocalScale: {x: 5.4445057, y: 5.4445057, z: 5.4445057}
+  m_LocalPosition: {x: 0, y: 0, z: -0.51244795}
+  m_LocalScale: {x: 2.7900257, y: 2.7900257, z: 2.7900257}
   m_Children:
   - {fileID: 268265989}
-  m_Father: {fileID: 1414283112}
-  m_RootOrder: 1
+  m_Father: {fileID: 1931507435}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -236.34785, y: 129.0491}
-  m_SizeDelta: {x: 60, y: 10}
+  m_AnchoredPosition: {x: 291.884, y: -564.8689}
+  m_SizeDelta: {x: 30, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &611156465
 MonoBehaviour:
@@ -3099,7 +3099,7 @@ GameObject:
   - component: {fileID: 1109839968}
   - component: {fileID: 1109839970}
   m_Layer: 5
-  m_Name: InfoBox
+  m_Name: InfoBoxXanthippos
   m_TagString: InfoBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3113,17 +3113,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1109839966}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.00010865192}
-  m_LocalScale: {x: 5.444506, y: 5.444506, z: 5.444506}
+  m_LocalPosition: {x: 0, y: 0, z: -0.51244795}
+  m_LocalScale: {x: 2.7900257, y: 2.7900257, z: 2.7900257}
   m_Children:
   - {fileID: 2125705515}
-  m_Father: {fileID: 1915877078}
-  m_RootOrder: 1
+  m_Father: {fileID: 1931507435}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 288.58347, y: -202.692}
-  m_SizeDelta: {x: 60, y: 10}
+  m_AnchoredPosition: {x: 291.8841, y: -564.86896}
+  m_SizeDelta: {x: 30, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1109839968
 MonoBehaviour:
@@ -3833,7 +3833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8487dab0cf20014d888d7466f4b5ebb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: localhost
+  ip: 192.168.137.1
   port: 8101
 --- !u!114 &1286716761
 MonoBehaviour:
@@ -4029,7 +4029,7 @@ GameObject:
   - component: {fileID: 1414283113}
   - component: {fileID: 1414283116}
   m_Layer: 5
-  m_Name: InfoRightChild
+  m_Name: InfoButtonRightChild
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4047,9 +4047,8 @@ RectTransform:
   m_LocalScale: {x: 0.512448, y: 0.512448, z: 0.512448}
   m_Children:
   - {fileID: 692769932}
-  - {fileID: 611156464}
   m_Father: {fileID: 1931507435}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4098,7 +4097,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1414283114}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1414283116}
+        m_MethodName: displayInfo
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: InfoChild
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1414283114
@@ -4150,7 +4160,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0cb6ec73815644eaaeb4d2d9bf6883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tag: InfoChild
   infobox: {fileID: 611156463}
 --- !u!1 &1438659943
 GameObject:
@@ -4220,7 +4229,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1931507435}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180.00002}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5254,7 +5263,7 @@ GameObject:
   - component: {fileID: 1915877079}
   - component: {fileID: 1915877082}
   m_Layer: 5
-  m_Name: InfoXanthippos
+  m_Name: InfoButtonXanthippos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5272,9 +5281,8 @@ RectTransform:
   m_LocalScale: {x: 0.51244795, y: 0.51244795, z: 0.51244795}
   m_Children:
   - {fileID: 1015638413}
-  - {fileID: 1109839967}
   m_Father: {fileID: 1931507435}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5323,7 +5331,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1915877080}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1915877082}
+        m_MethodName: displayInfo
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: InfoXanthippos
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1915877080
@@ -5375,8 +5394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0cb6ec73815644eaaeb4d2d9bf6883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tag: InfoXanthippos
-  infobox: {fileID: 1015638412}
+  infobox: {fileID: 1109839966}
 --- !u!1 &1931507434
 GameObject:
   m_ObjectHideFlags: 0
@@ -5407,8 +5425,10 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5340002, y: 1.5340002, z: 1.5340002}
   m_Children:
-  - {fileID: 1915877078}
   - {fileID: 1414283112}
+  - {fileID: 1915877078}
+  - {fileID: 1109839967}
+  - {fileID: 611156464}
   - {fileID: 1463881215}
   m_Father: {fileID: 1111089656}
   m_RootOrder: 0

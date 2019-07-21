@@ -24,9 +24,10 @@ public class sc_connection_handler : MonoBehaviour {
 
         client = FindObjectOfType<UbiiClient>();
 
-        loadNetConfig(out string ip, out string port);
+        /*loadNetConfig(out string ip, out string port);
         client.ip = ip;
         client.port = int.Parse(port);
+        */
 
         await client.InitializeClient();
         Debug.Log("connected");
@@ -47,7 +48,7 @@ public class sc_connection_handler : MonoBehaviour {
     }
     public void send(String command) {
         client.Publish(UbiiParser.UnityToProto("command", command));
-        Debug.Log("Sent");
+        Debug.Log("Sent command: " + command);
     }
 
     public static void loadNetConfig(out string ip, out string port) {
@@ -60,7 +61,7 @@ public class sc_connection_handler : MonoBehaviour {
             reader.Close();
         } catch {
             StreamWriter writer = new StreamWriter(destination, false);
-            writer.WriteLine("localhost");
+            writer.WriteLine("192.168.137.1");
             writer.WriteLine("8101");
             writer.Close();
 
@@ -70,4 +71,13 @@ public class sc_connection_handler : MonoBehaviour {
             Debug.LogError("netconfig.txt not found. Loading default configuration (loacalhost:8101)");
         }
     }
+
+    /*void OnGUI() {
+        GUIStyle style = new GUIStyle();
+        style.fontSize = Screen.height / 40;
+        style.normal.textColor = Color.yellow;
+        GUI.Label(new Rect(30, 10, 20, 20),
+            sc_connection_handler.instance.client.ip + ":" + sc_connection_handler.instance.client.port + " | connected: " + sc_connection_handler.instance.connected,
+            style);
+    }*/
 }

@@ -59,6 +59,7 @@ public class sc_connection_handler : MonoBehaviour {
         if(command != "") {
             updated = false;
             texture_loader.setTexture(Resources.Load<Texture2D>("Textures/"+command));
+            command = "";
         }
 
         //sets every other texture

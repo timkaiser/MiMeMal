@@ -49,11 +49,11 @@ public class sc_drawing_handler : MonoBehaviour
 
     void Update()    {
         if (!active) { return; }
-        if (time_last_sent + time_between_sending < Time.time) {
+        /*if (time_last_sent + time_between_sending < Time.time) {
             convertCanvas();
             sc_connection_handler.instance.send(canvasTex2D);
             time_last_sent = Time.time;
-        }
+        }*/
 
         int mouse_x = (int)Input.mousePosition.x;
         int mouse_y = Screen.height - (int)Input.mousePosition.y;
