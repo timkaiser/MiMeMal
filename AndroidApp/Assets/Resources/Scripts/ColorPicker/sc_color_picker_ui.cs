@@ -20,6 +20,14 @@ public class sc_color_picker_ui : MonoBehaviour
 
     private sc_color_picker_ui instance;
 
+    private Button[] recently_selected;
+    private GameObject[] recently_selected_obj;
+    public GameObject recently_selected_container;
+    public int num_saved_colors = 8;
+    public int num_currently_saved = 0;
+    public GameObject button_prefab;
+    private bool pigmentSelected = false;
+
     public void Awake()
     {
         // avoid doubeling of this script
@@ -39,22 +47,26 @@ public class sc_color_picker_ui : MonoBehaviour
         drawing_script = FindObjectOfType<sc_drawing_handler>();
         drawing_canvas = sc_canvas.instance.drawing_canvas;
         color_picker_canvas = sc_canvas.instance.color_picker_canvas;
+
         //set to white color
         current_color = new Vector3(0, 0, 1);
         slider_color = Resources.Load("Materials/m_slider") as Material;
         slider_color.SetVector("_HSVColor", new Vector4(0, 0, 1, 1));
-    }
 
-    public void OnApplicationQuit()
-    {
-        //reset to white color
-        slider_color.SetVector("_HSVColor", new Vector4(0, 0, 1, 1));
-    }
-
-    public void OnEnable()
-    {
-        //display current color
-        displayed_color.GetComponent<CanvasRenderer>().SetColor(drawing_script.drawing_color);
+        //init recently used
+        recently_selected = new Button[num_saved_colors];
+        recently_selected_obj = new GameObject[num_saved_colors];
+        for (int i = 0; i < num_saved_colors; i++)
+        {
+            GameObject o = Instantiate(button_prefab, recently_selected_container.transform);
+            o.transform.localPosition = new Vector3(-467 + 133 * i, -50, 0);
+            Button b = o.transform.Find("Button").GetComponent<Button>();
+            recently_selected[i] = b;
+            recently_selected_obj[i] = o;
+            //Set on click listener 
+            b.onClick.AddListener(delegate () { recent_color_selected(b); });
+            o.SetActive(false);
+        }
     }
 
     /*
@@ -91,6 +103,7 @@ public class sc_color_picker_ui : MonoBehaviour
 
         //communicate to drawing UI
         set_draw_color(current);
+        pigmentSelected = false;
     }
 
     /*
@@ -112,6 +125,7 @@ public class sc_color_picker_ui : MonoBehaviour
 
         //communicate to drawing UI
         set_draw_color(current);
+        pigmentSelected = false;
     }
 
     /*
@@ -141,10 +155,45 @@ public class sc_color_picker_ui : MonoBehaviour
 
         //communicate to drawing UI
         set_draw_color(c);
+
+        //set in recently used list
+        save_color(c);
+        pigmentSelected = true;
+    }
+
+    public void recent_color_selected(Button b)
+    {
+        set_color(b.colors.normalColor);
+    }
+
+    private void save_color(Color c)
+    {
+        recently_selected_obj[num_currently_saved].SetActive(true);
+        for (int i = num_currently_saved; i > 0; i--)
+        {
+            var colorsPrev = recently_selected[i].colors;
+            colorsPrev.normalColor = recently_selected[i - 1].colors.normalColor;
+            colorsPrev.highlightedColor = recently_selected[i - 1].colors.highlightedColor;
+            colorsPrev.pressedColor = recently_selected[i - 1].colors.pressedColor;
+            colorsPrev.selectedColor = recently_selected[i - 1].colors.selectedColor;
+            recently_selected[i].colors = colorsPrev;
+        }
+        var colorsNew = recently_selected[0].colors;
+        colorsNew.normalColor = c;
+        colorsNew.highlightedColor = c;
+        colorsNew.pressedColor = c;
+        colorsNew.selectedColor = c;
+        recently_selected[0].colors = colorsNew;
+
+        if (num_currently_saved < 8)
+        {
+            num_currently_saved++;
+        }
     }
 
     public void color_to_draw()
     {
+        if (!pigmentSelected) save_color(drawing_script.drawing_color);
         drawing_script.active = true;
         drawing_canvas.SetActive(true);
         color_picker_canvas.SetActive(false);

@@ -13,12 +13,12 @@ public class sc_pigments : MonoBehaviour
     public int num_vertical;
 
     private Pigment[] pigments;
-    private sc_color_picker_ui color_picker;
+    private sc_color_picker_ui color_picker_ui;
 
     // Start is called before the first frame update
     void Start()
     {
-        color_picker = FindObjectOfType<sc_color_picker_ui>();
+        color_picker_ui = FindObjectOfType<sc_color_picker_ui>();
 
         //read in pigments from json
         TextAsset file = Resources.Load("Data/pigments") as TextAsset;
@@ -47,10 +47,10 @@ public class sc_pigments : MonoBehaviour
                 o.transform.Translate(new Vector3(offsetX + intervalX * i, offsetY + intervalY * j, 0));
                 //Colorize
                 var colors = b.colors;
-                colors.normalColor = pigments[IDX].getColor();
-                colors.highlightedColor = pigments[IDX].getColor();
-                colors.pressedColor = pigments[IDX].getColor();
-                colors.selectedColor = pigments[IDX].getColor();
+                colors.normalColor = pigments[IDX].get_color();
+                colors.highlightedColor = pigments[IDX].get_color();
+                colors.pressedColor = pigments[IDX].get_color();
+                colors.selectedColor = pigments[IDX].get_color();
                 b.colors = colors;
                 //Set on click listener
                 b.onClick.AddListener(delegate () { pigment_selected(pigments[IDX]); });
@@ -64,7 +64,7 @@ public class sc_pigments : MonoBehaviour
 
     public void pigment_selected(Pigment p)
     {
-        color_picker.set_color(p.getColor());
+        color_picker_ui.set_color(p.get_color());
         pigment_name.text = p.name;
         pigment_text.text = p.description;
     }

@@ -25,13 +25,12 @@ public class sc_drawing_handler : MonoBehaviour
     // drawing tools
     [SerializeField]
     private int active_tool = 0;       // currently active tool         
-    private sc_tool[] tools;           // list of all tools
+    private sc_tool[] tools = { new sc_tool_brush(), new sc_tool_fill() };           // list of all tools
 
 
     private void Awake()
     {
         active = false;
-        tools = new sc_tool[]{ new sc_tool_brush(), new sc_tool_fill() };
 
         // avoid doubeling of this script
         if (instance != null && instance != this) { Destroy(this.gameObject); } else { instance = this; }
