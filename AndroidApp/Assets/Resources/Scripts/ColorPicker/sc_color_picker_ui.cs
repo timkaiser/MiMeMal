@@ -59,7 +59,7 @@ public class sc_color_picker_ui : MonoBehaviour
         for (int i = 0; i < num_saved_colors; i++)
         {
             GameObject o = Instantiate(button_prefab, recently_selected_container.transform);
-            o.transform.localPosition = new Vector3(-467 + 133 * i, -50, 0);
+            o.transform.localPosition = new Vector3(-467 + 133 * i, -30, 0);
             Button b = o.transform.Find("Button").GetComponent<Button>();
             recently_selected[i] = b;
             recently_selected_obj[i] = o;
