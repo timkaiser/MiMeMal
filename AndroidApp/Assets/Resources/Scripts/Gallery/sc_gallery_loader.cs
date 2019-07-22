@@ -122,7 +122,8 @@ public class sc_gallery_loader : MonoBehaviour
 
     private void add_examples()
     {
-
+        textures.Add(Resources.Load("Textures/Example1") as Texture2D);
+        textures.Add(Resources.Load("Textures/Example2") as Texture2D);
     }
 
     private int update_value(bool positive)

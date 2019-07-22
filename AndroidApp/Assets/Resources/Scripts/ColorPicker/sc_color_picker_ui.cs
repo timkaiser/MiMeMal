@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,7 +25,7 @@ public class sc_color_picker_ui : MonoBehaviour
     private GameObject[] recently_selected_obj;
     public GameObject recently_selected_container;
     public int num_saved_colors = 8;
-    public int num_currently_saved = 0;
+    private int num_currently_saved = 0;
     public GameObject button_prefab;
     private bool pigmentSelected = false;
 
@@ -81,7 +82,7 @@ public class sc_color_picker_ui : MonoBehaviour
 
         //Compute polar coords
         float saturation = Mathf.Sqrt((x * x) + (y * y));
-        float hue = (Mathf.Atan2(y, x) / (2*Mathf.PI)) + 0.5f;
+        float hue = (Mathf.Atan2(y, x) / (2 * Mathf.PI)) + 0.5f;
 
         //If outside cicle neglect
         if (saturation > 1) return;
@@ -168,8 +169,11 @@ public class sc_color_picker_ui : MonoBehaviour
 
     private void save_color(Color c)
     {
-        recently_selected_obj[num_currently_saved].SetActive(true);
-        for (int i = num_currently_saved; i > 0; i--)
+        if (num_currently_saved < num_saved_colors)
+        {
+            recently_selected_obj[num_currently_saved].SetActive(true);
+        }
+        for (int i = num_currently_saved - 1; i > 0; i--)
         {
             var colorsPrev = recently_selected[i].colors;
             colorsPrev.normalColor = recently_selected[i - 1].colors.normalColor;
@@ -185,7 +189,7 @@ public class sc_color_picker_ui : MonoBehaviour
         colorsNew.selectedColor = c;
         recently_selected[0].colors = colorsNew;
 
-        if (num_currently_saved < 8)
+        if (num_currently_saved < num_saved_colors - 1)
         {
             num_currently_saved++;
         }
@@ -194,6 +198,7 @@ public class sc_color_picker_ui : MonoBehaviour
     public void color_to_draw()
     {
         if (!pigmentSelected) save_color(drawing_script.drawing_color);
+        pigmentSelected = false;
         drawing_script.active = true;
         drawing_canvas.SetActive(true);
         color_picker_canvas.SetActive(false);
