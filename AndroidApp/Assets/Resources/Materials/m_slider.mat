@@ -75,4 +75,4 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HSVColor: {r: 0, g: 0, b: 1, a: 1}
+    - _HSVColor: {r: 0.08863636, g: 0.95652175, b: 0.9019608, a: 1}

@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class sc_reset_color : MonoBehaviour
+public class sc_color_picker : MonoBehaviour
 {
     public RawImage displayed_color;
 
@@ -25,6 +26,6 @@ public class sc_reset_color : MonoBehaviour
     void OnEnable()
     {
         //display current color
-        displayed_color.GetComponent<CanvasRenderer>().SetColor(drawing_script.drawing_color);
+        try { displayed_color.GetComponent<CanvasRenderer>().SetColor(drawing_script.drawing_color); } catch (Exception) { }
     }
 }
