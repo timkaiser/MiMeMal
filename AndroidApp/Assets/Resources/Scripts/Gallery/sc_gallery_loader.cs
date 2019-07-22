@@ -12,6 +12,7 @@ public class sc_gallery_loader : MonoBehaviour
     public List<Texture2D> textures;
     private List<string> filenames;
     private int current_value = 0;
+    private Texture2D historic_version;
 
     private sc_gallery_loader instance;
 
@@ -29,6 +30,7 @@ public class sc_gallery_loader : MonoBehaviour
     public void Start()
     {
         grabstele = GameObject.FindGameObjectWithTag("paintable");
+        historic_version = Resources.Load("Textures/Historic_Version") as Texture2D;
         load();
     }
 
@@ -36,6 +38,7 @@ public class sc_gallery_loader : MonoBehaviour
     {
         textures = new List<Texture2D>();
         filenames = new List<string>();
+        add_examples();
         count_images(Application.persistentDataPath + "/");
         //load textures next and prev
         if (textures.Count >= 1)
@@ -45,7 +48,7 @@ public class sc_gallery_loader : MonoBehaviour
         }
         else
         {
-            grabstele.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Default") as Texture2D;
+            grabstele.GetComponent<Renderer>().material.mainTexture = historic_version;
             sc_connection_handler.instance.send(textures[current_value]);
         }
     }
@@ -75,7 +78,7 @@ public class sc_gallery_loader : MonoBehaviour
 
     public void set_to_default()
     {
-        grabstele.GetComponent<Renderer>().material.mainTexture = Resources.Load("Textures/Default") as Texture2D;
+        grabstele.GetComponent<Renderer>().material.mainTexture = historic_version;
         sc_connection_handler.instance.send(textures[current_value]);
     }
 
@@ -115,6 +118,11 @@ public class sc_gallery_loader : MonoBehaviour
             textures.Add(tex);
             filenames.Add(file.Name);
         }
+    }
+
+    private void add_examples()
+    {
+
     }
 
     private int update_value(bool positive)
