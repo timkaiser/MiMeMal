@@ -163,7 +163,7 @@ public class sc_drawing_handler : MonoBehaviour
         string path = Application.persistentDataPath + "/" + name;
         System.IO.File.WriteAllBytes(path, bytes);
 
-        sc_connection_handler.instance.send(canvasTex2D);
+        try { sc_connection_handler.instance.send(canvasTex2D); } catch (Exception) { }
 
         DestroyImmediate(canvasTex2D);
         return name;
