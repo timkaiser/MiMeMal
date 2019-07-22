@@ -31,16 +31,15 @@ public class sc_gallery_loader : MonoBehaviour
     {
         grabstele = GameObject.FindGameObjectWithTag("paintable");
         historic_version = Resources.Load("Textures/Historic_Version") as Texture2D;
-        load();
+        load_all();
     }
 
-    public void load()
+    public void load_all()
     {
         textures = new List<Texture2D>();
         filenames = new List<string>();
         add_examples();
-        count_images(Application.persistentDataPath + "/");
-        //load textures next and prev
+        load_all_images(Application.persistentDataPath + "/");
         if (textures.Count >= 1)
         {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[current_value];
@@ -51,6 +50,14 @@ public class sc_gallery_loader : MonoBehaviour
             grabstele.GetComponent<Renderer>().material.mainTexture = historic_version;
             sc_connection_handler.instance.send(textures[current_value]);
         }
+    }
+
+    public void load_file(String filename)
+    {
+        byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + "/" + filename);
+        Texture2D tex = new Texture2D(resolution, resolution);
+        tex.LoadImage(bytes);
+        textures.Add(tex);
     }
 
     public void next() {
@@ -94,7 +101,7 @@ public class sc_gallery_loader : MonoBehaviour
         sc_connection_handler.instance.send(textures[current_value]);
     }
 
-    private void count_images(string path)
+    private void load_all_images(string path)
     {
         List<FileInfo> list = new List<FileInfo>();
         DirectoryInfo dir = new DirectoryInfo(path);
@@ -124,6 +131,10 @@ public class sc_gallery_loader : MonoBehaviour
     {
         textures.Add(Resources.Load("Textures/Example1") as Texture2D);
         textures.Add(Resources.Load("Textures/Example2") as Texture2D);
+        textures.Add(Resources.Load("Textures/Example3") as Texture2D);
+        textures.Add(Resources.Load("Textures/Example4") as Texture2D);
+        textures.Add(Resources.Load("Textures/Example5") as Texture2D);
+        textures.Add(Resources.Load("Textures/Example6") as Texture2D);
     }
 
     private int update_value(bool positive)

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class sc_drawing_ui : MonoBehaviour
 {
-    public GameObject brush_size_slider, brush_size_icon, brush_button, bucket_button;
+    public GameObject brush_size_slider, brush_size_icon, brush_button, bucket_button, tutorial_screen;
 
     private GameObject drawing_canvas, color_picker_canvas, gallery_canvas;
     private sc_drawing_handler drawing_script;
@@ -23,7 +23,10 @@ public class sc_drawing_ui : MonoBehaviour
 
     public void save()
     {
-        drawing_script.save_drawing();
+        Debug.Log("Saving drawing");
+        string filename = drawing_script.save_drawing();
+        Debug.Log("loading new drawing into gallery");
+        gallery_loader.load_file(filename);
     }
 
     public void swap_slider()
@@ -54,16 +57,31 @@ public class sc_drawing_ui : MonoBehaviour
 
     public void draw_to_gallery()
     {
+        Debug.Log("deactivating drawing");
         drawing_script.active = false;
+        Debug.Log("deactivating draw canvas");
         drawing_canvas.SetActive(false);
+        Debug.Log("activating gallery canvas");
         gallery_canvas.SetActive(true);
-        gallery_loader.load();
     }
 
     public void draw_to_color_picker()
     {
+        Debug.Log("deactivate drawing");
         drawing_script.active = false;
+        Debug.Log("deactivating draw canvas");
         drawing_canvas.SetActive(false);
+        Debug.Log("activationg color picker canvas");
         color_picker_canvas.SetActive(true);
+    }
+
+    public void open_tutorial()
+    {
+        tutorial_screen.SetActive(true);
+    }
+
+    public void close_tutorial()
+    {
+        tutorial_screen.SetActive(false);
     }
 }

@@ -164,43 +164,58 @@ public class sc_color_picker_ui : MonoBehaviour
 
     public void recent_color_selected(Button b)
     {
+        //Set Info text invisible
+        pigment_name.text = "";
+        pigment_text.text = "";
+        //Set color to selected
         set_color(b.colors.normalColor);
     }
 
     private void save_color(Color c)
     {
-        if (num_currently_saved < num_saved_colors)
+        try
         {
-            recently_selected_obj[num_currently_saved].SetActive(true);
-        }
-        for (int i = num_currently_saved - 1; i > 0; i--)
-        {
-            var colorsPrev = recently_selected[i].colors;
-            colorsPrev.normalColor = recently_selected[i - 1].colors.normalColor;
-            colorsPrev.highlightedColor = recently_selected[i - 1].colors.highlightedColor;
-            colorsPrev.pressedColor = recently_selected[i - 1].colors.pressedColor;
-            colorsPrev.selectedColor = recently_selected[i - 1].colors.selectedColor;
-            recently_selected[i].colors = colorsPrev;
-        }
-        var colorsNew = recently_selected[0].colors;
-        colorsNew.normalColor = c;
-        colorsNew.highlightedColor = c;
-        colorsNew.pressedColor = c;
-        colorsNew.selectedColor = c;
-        recently_selected[0].colors = colorsNew;
+            if (contains_color(c)) return;
+            if (num_currently_saved < num_saved_colors)
+            {
+                recently_selected_obj[num_currently_saved].SetActive(true);
+            }
+            for (int i = num_currently_saved; i > 0; i--)
+            {
+                var colorsPrev = recently_selected[i].colors;
+                colorsPrev.normalColor = recently_selected[i - 1].colors.normalColor;
+                colorsPrev.highlightedColor = recently_selected[i - 1].colors.highlightedColor;
+                colorsPrev.pressedColor = recently_selected[i - 1].colors.pressedColor;
+                colorsPrev.selectedColor = recently_selected[i - 1].colors.selectedColor;
+                recently_selected[i].colors = colorsPrev;
+            }
+            var colorsNew = recently_selected[0].colors;
+            colorsNew.normalColor = c;
+            colorsNew.highlightedColor = c;
+            colorsNew.pressedColor = c;
+            colorsNew.selectedColor = c;
+            recently_selected[0].colors = colorsNew;
 
-        if (num_currently_saved < num_saved_colors - 1)
+            if (num_currently_saved < num_saved_colors - 1)
+            {
+                num_currently_saved++;
+            }
+        } catch (Exception e)
         {
-            num_currently_saved++;
+            Debug.Log("Error while saving current color! " + e.Message);
         }
     }
 
     public void color_to_draw()
     {
+        Debug.Log("Saving color");
         if (!pigmentSelected) save_color(drawing_script.drawing_color);
         pigmentSelected = false;
+        Debug.Log("activating drawing");
         drawing_script.active = true;
+        Debug.Log("activating draw canvas");
         drawing_canvas.SetActive(true);
+        Debug.Log("deactivate color canvas");
         color_picker_canvas.SetActive(false);
     }
 
@@ -209,5 +224,14 @@ public class sc_color_picker_ui : MonoBehaviour
         drawing_script.drawing_color = c;
         brush_image.GetComponent<Image>().color = c;
         bucket_image.GetComponent<Image>().color = c;
+    }
+
+    private bool contains_color(Color c)
+    {
+        foreach (Button b in recently_selected)
+        {
+            if (b.colors.normalColor.Equals(c)) { return true; }
+        }
+        return false;
     }
 }

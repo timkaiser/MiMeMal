@@ -152,7 +152,7 @@ public class sc_drawing_handler : MonoBehaviour
         return col;
     }
 
-    public void save_drawing()
+    public string save_drawing()
     { //source: https://gist.github.com/krzys-h/76c518be0516fb1e94c7efbdcd028830
         convertCanvas();
 
@@ -166,6 +166,7 @@ public class sc_drawing_handler : MonoBehaviour
         sc_connection_handler.instance.send(canvasTex2D);
 
         DestroyImmediate(canvasTex2D);
+        return name;
     }
 
     //method used to change brush size
