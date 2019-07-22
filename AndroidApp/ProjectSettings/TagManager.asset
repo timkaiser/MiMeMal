@@ -11,6 +11,8 @@ TagManager:
   - DrawingCanvas
   - ColorPickerCanvas
   - Tutorial
+  - InfoBox
+  - script_manager
   layers:
   - Default
   - TransparentFX
