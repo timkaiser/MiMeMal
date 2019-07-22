@@ -105,6 +105,11 @@ public class sc_gallery_loader : MonoBehaviour
         sc_connection_handler.instance.send(textures[current_value]);
     }
 
+    public string get_current_filename()
+    {
+        return filenames[current_value];
+    }
+
     private void load_all_images(string path)
     {
         List<FileInfo> list = new List<FileInfo>();
@@ -133,7 +138,7 @@ public class sc_gallery_loader : MonoBehaviour
 
     private void add_examples()
     {
-        for (int i = 0; i < num_examples; i++)
+        for (int i = 1; i <= num_examples; i++)
         {
             textures.Add(Resources.Load("Textures/Example" + i) as Texture2D);
             filenames.Add("Example" + i);

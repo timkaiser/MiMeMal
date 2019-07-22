@@ -208,14 +208,10 @@ public class sc_color_picker_ui : MonoBehaviour
 
     public void color_to_draw()
     {
-        Debug.Log("Saving color");
         if (!pigmentSelected) save_color(drawing_script.drawing_color);
         pigmentSelected = false;
-        Debug.Log("activating drawing");
         drawing_script.active = true;
-        Debug.Log("activating draw canvas");
         drawing_canvas.SetActive(true);
-        Debug.Log("deactivate color canvas");
         color_picker_canvas.SetActive(false);
     }
 

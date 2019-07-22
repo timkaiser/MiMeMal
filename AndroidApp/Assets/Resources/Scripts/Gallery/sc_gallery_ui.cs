@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class sc_gallery_ui : MonoBehaviour
 {
     public GameObject tutorial_screen;
+    public Text filename;
 
     private GameObject info_canvas, gallery_canvas, drawing_canvas;
     private sc_drawing_handler drawing_script;
@@ -26,7 +28,6 @@ public class sc_gallery_ui : MonoBehaviour
         drawing_canvas = sc_canvas.instance.drawing_canvas;
         drawing_script = FindObjectOfType<sc_drawing_handler>();
         gallery_loader = FindObjectOfType<sc_gallery_loader>();
-
     }
 
     //coroutine calls the next function every set time, implements automatic browsing
@@ -53,6 +54,7 @@ public class sc_gallery_ui : MonoBehaviour
     public void open_tutorial()
     {
         tutorial_screen.SetActive(true);
+        filename.text = gallery_loader.get_current_filename();
     }
     public void close_tutorial()
     {
@@ -71,7 +73,6 @@ public class sc_gallery_ui : MonoBehaviour
 
     //cancels autobrowse, then enables it again
     public void restartAutoBrowse() {
-        Debug.Log("restarting autobrowse");
         CancelInvoke();
         InvokeRepeating("AutoBrowse", auto_browse_seconds, auto_browse_seconds);
     }

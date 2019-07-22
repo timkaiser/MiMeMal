@@ -23,9 +23,7 @@ public class sc_drawing_ui : MonoBehaviour
 
     public void save()
     {
-        Debug.Log("Saving drawing");
         string filename = drawing_script.save_drawing();
-        Debug.Log("loading new drawing into gallery");
         gallery_loader.load_file(filename);
     }
 
@@ -54,35 +52,30 @@ public class sc_drawing_ui : MonoBehaviour
         brush_size_icon.SetActive(true);
     }
 
-
     public void draw_to_gallery()
     {
-        Debug.Log("deactivating drawing");
         drawing_script.active = false;
-        Debug.Log("deactivating draw canvas");
         drawing_canvas.SetActive(false);
-        Debug.Log("activating gallery canvas");
         gallery_canvas.SetActive(true);
         gallery_loader.set_to_current();
     }
 
     public void draw_to_color_picker()
     {
-        Debug.Log("deactivate drawing");
         drawing_script.active = false;
-        Debug.Log("deactivating draw canvas");
         drawing_canvas.SetActive(false);
-        Debug.Log("activationg color picker canvas");
         color_picker_canvas.SetActive(true);
     }
 
     public void open_tutorial()
     {
+        drawing_script.active = false;
         tutorial_screen.SetActive(true);
     }
 
     public void close_tutorial()
     {
+        drawing_script.active = true;
         tutorial_screen.SetActive(false);
     }
 }
