@@ -63,6 +63,7 @@ public class sc_drawing_ui : MonoBehaviour
         drawing_canvas.SetActive(false);
         Debug.Log("activating gallery canvas");
         gallery_canvas.SetActive(true);
+        gallery_loader.set_to_current();
     }
 
     public void draw_to_color_picker()

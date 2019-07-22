@@ -6,10 +6,12 @@ using System;
 
 public class sc_gallery_loader : MonoBehaviour
 {
+    public int num_examples = 6;
+
     private GameObject grabstele;
 
     private int resolution = 2048;
-    public List<Texture2D> textures;
+    private List<Texture2D> textures;
     private List<string> filenames;
     private int current_value = 0;
     private Texture2D historic_version;
@@ -58,6 +60,8 @@ public class sc_gallery_loader : MonoBehaviour
         Texture2D tex = new Texture2D(resolution, resolution);
         tex.LoadImage(bytes);
         textures.Add(tex);
+        filenames.Add(filename);
+        current_value = textures.Count - 1;
     }
 
     public void next() {
@@ -129,12 +133,11 @@ public class sc_gallery_loader : MonoBehaviour
 
     private void add_examples()
     {
-        textures.Add(Resources.Load("Textures/Example1") as Texture2D);
-        textures.Add(Resources.Load("Textures/Example2") as Texture2D);
-        textures.Add(Resources.Load("Textures/Example3") as Texture2D);
-        textures.Add(Resources.Load("Textures/Example4") as Texture2D);
-        textures.Add(Resources.Load("Textures/Example5") as Texture2D);
-        textures.Add(Resources.Load("Textures/Example6") as Texture2D);
+        for (int i = 0; i < num_examples; i++)
+        {
+            textures.Add(Resources.Load("Textures/Example" + i) as Texture2D);
+            filenames.Add("Example" + i);
+        }
     }
 
     private int update_value(bool positive)
