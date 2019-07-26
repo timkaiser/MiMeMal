@@ -54,6 +54,7 @@ public class sc_drawing_ui : MonoBehaviour
 
     public void draw_to_gallery()
     {
+        brush_size_slider.SetActive(false);
         drawing_script.active = false;
         drawing_canvas.SetActive(false);
         gallery_canvas.SetActive(true);
@@ -62,6 +63,7 @@ public class sc_drawing_ui : MonoBehaviour
 
     public void draw_to_color_picker()
     {
+        brush_size_slider.SetActive(false);
         drawing_script.active = false;
         drawing_canvas.SetActive(false);
         color_picker_canvas.SetActive(true);

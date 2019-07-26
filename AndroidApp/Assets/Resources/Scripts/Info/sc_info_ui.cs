@@ -5,10 +5,12 @@ public class sc_info_ui : MonoBehaviour
     private GameObject info_canvas, drawing_canvas, gallery_canvas;
     private sc_gallery_loader gallery_loader;
     private sc_drawing_handler drawing_script;
+    private sc_drawing_ui drawing_ui;
 
     // Start is called before the first frame update
     public void Start()
     {
+        drawing_ui = FindObjectOfType<sc_drawing_ui>();
         drawing_script = FindObjectOfType<sc_drawing_handler>();
         gallery_loader = FindObjectOfType<sc_gallery_loader>();
         info_canvas = sc_canvas.instance.info_canvas;
@@ -29,5 +31,8 @@ public class sc_info_ui : MonoBehaviour
         drawing_canvas.SetActive(true);
         drawing_script.active = true;
         drawing_script.reset_canvas();
+        drawing_ui.brush_size_icon.SetActive(true);
+        drawing_ui.bucket_button.SetActive(false);
+        drawing_ui.brush_button.SetActive(true);
     }
 }

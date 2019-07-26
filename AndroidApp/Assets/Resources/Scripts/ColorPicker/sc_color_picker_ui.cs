@@ -27,7 +27,6 @@ public class sc_color_picker_ui : MonoBehaviour
     public int num_saved_colors = 8;
     private int num_currently_saved = 0;
     public GameObject button_prefab;
-    private bool pigmentSelected = false;
 
     public void Awake()
     {
@@ -104,7 +103,6 @@ public class sc_color_picker_ui : MonoBehaviour
 
         //communicate to drawing UI
         set_draw_color(current);
-        pigmentSelected = false;
     }
 
     /*
@@ -126,7 +124,6 @@ public class sc_color_picker_ui : MonoBehaviour
 
         //communicate to drawing UI
         set_draw_color(current);
-        pigmentSelected = false;
     }
 
     /*
@@ -156,10 +153,6 @@ public class sc_color_picker_ui : MonoBehaviour
 
         //communicate to drawing UI
         set_draw_color(c);
-
-        //set in recently used list
-        save_color(c);
-        pigmentSelected = true;
     }
 
     public void recent_color_selected(Button b)
@@ -208,8 +201,7 @@ public class sc_color_picker_ui : MonoBehaviour
 
     public void color_to_draw()
     {
-        if (!pigmentSelected) save_color(drawing_script.drawing_color);
-        pigmentSelected = false;
+        save_color(drawing_script.drawing_color);
         drawing_script.active = true;
         drawing_canvas.SetActive(true);
         color_picker_canvas.SetActive(false);

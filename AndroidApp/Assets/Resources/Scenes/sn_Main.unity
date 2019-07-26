@@ -2578,7 +2578,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &842375919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4211,8 +4211,8 @@ RectTransform:
   m_Father: {fileID: 1868792044}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6826,7 +6826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 092a17a354c7aca40ae2501af86e0faf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayed_color: {fileID: 0}
+  displayed_color: {fileID: 402607457}
 --- !u!224 &1613841842
 RectTransform:
   m_ObjectHideFlags: 0

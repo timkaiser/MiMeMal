@@ -11,6 +11,7 @@ public class sc_gallery_ui : MonoBehaviour
     private GameObject info_canvas, gallery_canvas, drawing_canvas;
     private sc_drawing_handler drawing_script;
     private sc_gallery_loader gallery_loader;
+    private sc_drawing_ui drawing_ui;
 
     public float auto_browse_seconds;
 
@@ -28,6 +29,7 @@ public class sc_gallery_ui : MonoBehaviour
         drawing_canvas = sc_canvas.instance.drawing_canvas;
         drawing_script = FindObjectOfType<sc_drawing_handler>();
         gallery_loader = FindObjectOfType<sc_gallery_loader>();
+        drawing_ui = FindObjectOfType<sc_drawing_ui>();
     }
 
     //coroutine calls the next function every set time, implements automatic browsing
@@ -42,6 +44,9 @@ public class sc_gallery_ui : MonoBehaviour
         gallery_canvas.SetActive(false);
         drawing_script.active = true;
         drawing_script.reset_canvas();
+        drawing_ui.brush_size_icon.SetActive(true);
+        drawing_ui.bucket_button.SetActive(false);
+        drawing_ui.brush_button.SetActive(true);
     }
 
     public void gallery_to_info()

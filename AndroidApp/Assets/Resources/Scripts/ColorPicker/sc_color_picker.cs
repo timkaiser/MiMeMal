@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class sc_color_picker : MonoBehaviour
 {
-    public RawImage displayed_color;
+    public Image displayed_color;
 
     private Material slider_color;
     private sc_drawing_handler drawing_script;
@@ -26,6 +26,6 @@ public class sc_color_picker : MonoBehaviour
     void OnEnable()
     {
         //display current color
-        try { displayed_color.GetComponent<CanvasRenderer>().SetColor(drawing_script.drawing_color); } catch (Exception) { }
+        displayed_color.GetComponent<CanvasRenderer>().SetColor(drawing_script.drawing_color);
     }
 }
