@@ -8,8 +8,8 @@ public class sc_color_picker_ui : MonoBehaviour
 {
     public Button color_picker;
     public Slider value_slider;
-    public RawImage pointer;
-    public RawImage displayed_color;
+    public Image pointer;
+    public Image displayed_color;
     public Text pigment_name, pigment_text;
     public GameObject brush_image, bucket_image;
 
