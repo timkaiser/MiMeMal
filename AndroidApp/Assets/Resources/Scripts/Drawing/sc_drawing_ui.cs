@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class sc_drawing_ui : MonoBehaviour
 {
-    public GameObject brush_size_slider, brush_size_icon, brush_button, bucket_button, tutorial_screen;
+    public GameObject brush_size_slider, brush_size_icon, brush_button, bucket_button, tutorial_screen, warning;
 
     private GameObject drawing_canvas, color_picker_canvas, gallery_canvas;
     private sc_drawing_handler drawing_script;
@@ -52,8 +52,19 @@ public class sc_drawing_ui : MonoBehaviour
         brush_size_icon.SetActive(true);
     }
 
+    public void back_button_pressed()
+    {
+        warning.SetActive(true);
+    }
+
+    public void back_button_no()
+    {
+        warning.SetActive(false);
+    }
+
     public void draw_to_gallery()
     {
+        warning.SetActive(false);
         brush_size_slider.SetActive(false);
         drawing_script.active = false;
         drawing_canvas.SetActive(false);
