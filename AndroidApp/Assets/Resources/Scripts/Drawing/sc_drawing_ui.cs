@@ -55,11 +55,13 @@ public class sc_drawing_ui : MonoBehaviour
     public void back_button_pressed()
     {
         warning.SetActive(true);
+        drawing_script.active = false;
     }
 
     public void back_button_no()
     {
         warning.SetActive(false);
+        drawing_script.active = true;
     }
 
     public void draw_to_gallery()
