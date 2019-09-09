@@ -2,10 +2,10 @@
 
 public class sc_info_ui : MonoBehaviour
 {  
-    private GameObject info_canvas, drawing_canvas, gallery_canvas;
-    private sc_gallery_loader gallery_loader;
-    private sc_drawing_handler drawing_script;
-    private sc_drawing_ui drawing_ui;
+    private GameObject info_canvas, drawing_canvas, gallery_canvas; //the canvases to switch between
+    private sc_gallery_loader gallery_loader; //responsible for loading the images
+    private sc_drawing_handler drawing_script; //responisble for drawing
+    private sc_drawing_ui drawing_ui; //UI control of the drawing screen
 
     // Start is called before the first frame update
     public void Start()
@@ -18,6 +18,7 @@ public class sc_info_ui : MonoBehaviour
         drawing_canvas = sc_canvas.instance.drawing_canvas;
     }
 
+    //switch from the info back to the gallery screen
     public void info_to_gallery()
     {
         info_canvas.SetActive(false);
@@ -25,6 +26,7 @@ public class sc_info_ui : MonoBehaviour
         gallery_loader.set_to_current();
     }
 
+    //switch from the info to the drawing screen
     public void info_to_draw()
     {
         info_canvas.SetActive(false);

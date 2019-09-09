@@ -3,6 +3,7 @@ using UnityEngine;
 
 /*
  * https://stackoverflow.com/questions/36239705/serialize-and-deserialize-json-and-json-array-in-unity
+ * used to parse in a json file to a serializable struct
  */
 public static class JsonHelper
 {
