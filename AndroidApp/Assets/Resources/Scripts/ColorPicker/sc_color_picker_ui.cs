@@ -6,27 +6,27 @@ using UnityEngine.UI;
 
 public class sc_color_picker_ui : MonoBehaviour
 {
-    public Button color_picker;
-    public Slider value_slider;
-    public Image pointer;
-    public Image displayed_color;
-    public Text pigment_name, pigment_text;
-    public GameObject brush_image, bucket_image;
+    public Button color_picker;   //the color wheel
+    public Slider value_slider;   //slider to change the value component of a hsv color
+    public Image pointer;         //pointer showing currently selected color in color wheel
+    public Image displayed_color; //displays currently selected color
+    public Text pigment_name, pigment_text; //shown in the pigment information section
+    public GameObject brush_image, bucket_image; //to set the currently selected color for the tool icons
 
-    private GameObject drawing_canvas, color_picker_canvas;
+    private GameObject drawing_canvas, color_picker_canvas; //other canvases to switch to
 
-    private Vector3 current_color;
-    private Material slider_color;
-    private sc_drawing_handler drawing_script;
+    private Vector3 current_color; //saves currently selected color
+    private Material slider_color; //material of the slider
+    private sc_drawing_handler drawing_script; //script handling the drawing
 
-    private sc_color_picker_ui instance;
+    private sc_color_picker_ui instance; //avoid duplication
 
-    private Button[] recently_selected;
-    private GameObject[] recently_selected_obj;
-    public GameObject recently_selected_container;
-    public int num_saved_colors = 8;
-    private int num_currently_saved = 0;
-    public GameObject button_prefab;
+    private Button[] recently_selected; //array saving all recently selected colors as buttons
+    private GameObject[] recently_selected_obj; //array containing all recently selected color prefabs as objects
+    public GameObject recently_selected_container; //container for the recently selected colors
+    public int num_saved_colors = 8; //number of maximaly saved colors
+    private int num_currently_saved = 0; //number of currently saved colors
+    public GameObject button_prefab; //prefab for displaying colors
 
     public void Awake()
     {
@@ -155,6 +155,9 @@ public class sc_color_picker_ui : MonoBehaviour
         set_draw_color(c);
     }
 
+    /*
+     * Gets called when a recently selected color is clicked.
+     */
     public void recent_color_selected(Button b)
     {
         //Set Info text invisible
@@ -164,11 +167,15 @@ public class sc_color_picker_ui : MonoBehaviour
         set_color(b.colors.normalColor);
     }
 
+    /*
+     * saves the currently selected color
+     */
     private void save_color(Color c)
     {
         try
         {
-            if (contains_color(c)) return;
+            if (contains_color(c)) return; //avoid duplication of colors
+            //add current color to recently selected ones at the front
             if (num_currently_saved < num_saved_colors)
             {
                 recently_selected_obj[num_currently_saved].SetActive(true);
@@ -189,6 +196,7 @@ public class sc_color_picker_ui : MonoBehaviour
             colorsNew.selectedColor = c;
             recently_selected[0].colors = colorsNew;
 
+            //while still smaller than max increase counter
             if (num_currently_saved < num_saved_colors - 1)
             {
                 num_currently_saved++;
@@ -199,6 +207,7 @@ public class sc_color_picker_ui : MonoBehaviour
         }
     }
 
+    //switch back to the drawing screen
     public void color_to_draw()
     {
         save_color(drawing_script.drawing_color);
@@ -207,6 +216,7 @@ public class sc_color_picker_ui : MonoBehaviour
         color_picker_canvas.SetActive(false);
     }
 
+    //communicate the currently selected color to the drawing script and UI icons
     private void set_draw_color(Color c)
     {
         drawing_script.drawing_color = c;
@@ -214,6 +224,7 @@ public class sc_color_picker_ui : MonoBehaviour
         bucket_image.GetComponent<Image>().color = c;
     }
 
+    //check if saved recently selected colors already contain current color
     private bool contains_color(Color c)
     {
         foreach (Button b in recently_selected)

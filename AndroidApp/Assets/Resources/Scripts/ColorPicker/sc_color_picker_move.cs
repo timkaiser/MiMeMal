@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/*
+ * This script is used to smoothly drag the pointer indicating the current color in the color selection cirlce around on touch.
+ */
 public class sc_color_picker_move : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     private bool is_clicked = false;

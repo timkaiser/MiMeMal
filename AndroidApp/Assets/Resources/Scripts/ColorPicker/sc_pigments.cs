@@ -4,16 +4,16 @@ using UnityEngine.UI;
 
 public class sc_pigments : MonoBehaviour
 {
-    public RectTransform container;
-    public GameObject button_prefab;
-    public Text pigment_name;
-    public Text pigment_text;
+    public RectTransform container;  //transform containing all the pigments
+    public GameObject button_prefab; //prefab used for displaying a pigment
+    public Text pigment_name;        //currently shown name in info container
+    public Text pigment_text;        //currently shown text in info container
 
-    public int num_horizontal;
-    public int num_vertical;
+    public int num_horizontal;       //number of pigments to display in a row
+    public int num_vertical;         //number of rows
 
-    private Pigment[] pigments;
-    private sc_color_picker_ui color_picker_ui;
+    private Pigment[] pigments;      //Array containing all pigments to display
+    private sc_color_picker_ui color_picker_ui; //UI containing color picker to display currently selected color
 
     // Start is called before the first frame update
     void Start()
@@ -62,9 +62,12 @@ public class sc_pigments : MonoBehaviour
         pigment_text.text = pigments[0].description;
     }
 
+    //gets called when pigment button is clicked
     public void pigment_selected(Pigment p)
     {
+        //set currently displayed color
         color_picker_ui.set_color(p.get_color());
+        //update pigment information view
         pigment_name.text = p.name;
         pigment_text.text = p.description;
     }
