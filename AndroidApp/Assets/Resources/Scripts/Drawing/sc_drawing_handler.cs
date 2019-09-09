@@ -152,14 +152,14 @@ public class sc_drawing_handler : MonoBehaviour
         return col;
     }
 
-    public string save_drawing()
+    public string save_drawing(string infoText)
     { //source: https://gist.github.com/krzys-h/76c518be0516fb1e94c7efbdcd028830
         convertCanvas();
 
         byte[] bytes;
         bytes = canvasTex2D.EncodeToPNG();
 
-        string name = Time.time + ".png";
+        string name = Time.time + "_" + infoText + ".png";
         string path = Application.persistentDataPath + "/" + name;
         System.IO.File.WriteAllBytes(path, bytes);
 

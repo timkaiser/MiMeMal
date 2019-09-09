@@ -4,6 +4,11 @@ using UnityEngine;
 using System.IO;
 using System;
 
+/*
+ * Used to load the textures to display in the gallery.
+ * The example images are loaded at the beginning, all other images are loaded one by one
+ * when needed to avoid cashes. Sadly the texture loading can only be done in the main thread.
+ */
 public class sc_gallery_loader : MonoBehaviour
 {
     public int num_examples = 6;        //number of provided example drawings
@@ -14,7 +19,7 @@ public class sc_gallery_loader : MonoBehaviour
     private List<Texture2D> textures;   //list of loaded textures from saved drawings
     private List<string> filenames;     //list of the filenames of the textures
     private int current_value = 0;      //index indicating currently displayed texture
-    private int num_inserted = 0;       //number of backwards inserted textures, used for loading
+    private int current_file = 0;       //index of current texture in list of filenames
     private Texture2D historic_version; //used as a default in case of error
 
     private sc_gallery_loader instance; //singelton to avoid dublication
@@ -52,6 +57,7 @@ public class sc_gallery_loader : MonoBehaviour
             if (file.Extension.Contains("png") && !file.Extension.Contains("meta"))
             {
                 filenames.Add(file.Name);
+                Debug.Log(file.Name);
             }
         }
 
@@ -60,6 +66,7 @@ public class sc_gallery_loader : MonoBehaviour
         {
             //start in the middle of the examples
             current_value = textures.Count / 2;
+            current_file = current_value;
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[current_value];
             sc_connection_handler.instance.send(textures[current_value]);
         }
@@ -118,7 +125,7 @@ public class sc_gallery_loader : MonoBehaviour
     //returns the filename of the currently displayed texture
     public string get_current_filename()
     {
-        return filenames[current_value];
+        return filenames[current_file];
     }
 
     //loads a file by filename as texture and adds it to the lists
@@ -141,6 +148,7 @@ public class sc_gallery_loader : MonoBehaviour
     public void display_last()
     {
         current_value = textures.Count - 1;
+        current_file = filenames.Count - 1;
     }
 
     //sets the index counter to the next/previous value by looping along number of loaded textures
@@ -149,11 +157,22 @@ public class sc_gallery_loader : MonoBehaviour
         if (positive) //moving forward through list
         {
             current_value = (current_value + 1) % filenames.Count;
+            current_file = (current_file + 1) % filenames.Count;
             //in case the file is not loaded yet, load it
             if (current_value == textures.Count) load_file(filenames[textures.Count], false);
         }
         else //moving backwards through list
         {
+            //updating file index counter
+            if (current_file == 0)
+            {
+                current_file = filenames.Count - 1;
+            }
+            else
+            {
+                current_file -= 1;
+            }
+            //updating texture index counter
             if (current_value == 0) //if at the beginning of the list
             {
                 if (textures.Count == filenames.Count) //all files loaded
@@ -162,8 +181,7 @@ public class sc_gallery_loader : MonoBehaviour
                 }
                 else //if not loaded insert at beginning and don't update current value
                 {
-                    load_file(filenames[filenames.Count-1-num_inserted], true);
-                    num_inserted++;
+                    load_file(filenames[current_file], true);
                 }
             }
             else //in the normal case just move one index back
@@ -171,6 +189,7 @@ public class sc_gallery_loader : MonoBehaviour
                 current_value -= 1;
             }
         }
+        Debug.Log("file: " + current_file + " value: " + current_value);
         return current_value;
     }
 }

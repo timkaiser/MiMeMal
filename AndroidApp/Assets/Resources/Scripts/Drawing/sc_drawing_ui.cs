@@ -5,11 +5,16 @@ using UnityEngine.UI;
 
 public class sc_drawing_ui : MonoBehaviour
 {
-    public GameObject brush_size_slider, brush_size_icon, brush_button, bucket_button, tutorial_screen, warning; //UI elements
+    public GameObject brush_size_slider, brush_size_icon, brush_button, bucket_button,
+        tutorial_screen, warning, save_dialog; //UI elements
 
     private GameObject drawing_canvas, color_picker_canvas, gallery_canvas; //canvases to switch to
     private sc_drawing_handler drawing_script; //script responsible for drawing
     private sc_gallery_loader gallery_loader; //used to add current image to the gallery on saving
+
+    public InputField name_input, age_input;
+    public Dropdown sex_input;
+    private string info_name = "", info_age = "", info_sex = ""; //infos added while saving
 
     // Start is called before the first frame update
     public void Start()
@@ -22,9 +27,58 @@ public class sc_drawing_ui : MonoBehaviour
     }
 
     //gets called when the save button is pressed
-    public void save()
+    public void save_button_pressed()
     {
-        string filename = drawing_script.save_drawing();
+        save_dialog.SetActive(true);
+        drawing_script.active = false;
+    }
+
+    //gets called when cancel is pressed in the save dialog
+    public void save_button_cancel()
+    {
+        save_dialog.SetActive(false);
+        drawing_script.active = true;
+    }
+
+    //gets called when saving is confirmed in the save dialog
+    public void save_button_yes()
+    {
+        save_to_file(info_name + "_" + info_age + "_" + info_sex);
+        draw_to_gallery();
+    }
+
+    //gets called when a name is entered in the input field
+    public void save_dialog_set_name()
+    {
+        this.info_name = name_input.text.Replace(' ', '_');
+    }
+
+    //gets called when the age is entered in the input field
+    public void save_dialog_set_age()
+    {
+        this.info_age = age_input.text;
+    }
+
+    //gets called when the sex is selected
+    public void save_dialog_set_sex()
+    {
+        switch (sex_input.value)
+        {
+            case 1:
+                this.info_sex = "m"; break;
+            case 2:
+                this.info_sex = "w"; break;
+            case 3:
+                this.info_sex = "d"; break;
+            default:
+                this.info_sex = ""; break;
+        }
+    }
+
+    //saves the current drawing to an image file
+    private void save_to_file(string info)
+    {
+        string filename = drawing_script.save_drawing(info);
         //add the saved image to gallery
         gallery_loader.load_file(filename, false);
         //let the gallery display the just saved image
