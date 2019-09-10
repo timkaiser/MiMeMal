@@ -25,7 +25,7 @@ public class sc_connection_handler : MonoBehaviour {
     private bool mouse_button_down = false;
     public Texture2D component_mask;
     public RenderTexture canvas;
-    public Texture2D uv_image;
+    public RenderTexture uvRT;
     private byte[] uv_image_bytes = null;
 
     // drawing tools
@@ -96,7 +96,7 @@ public class sc_connection_handler : MonoBehaviour {
 
         if(position_changed)
         {
-            tools[(int)position_data.w].perFrame(canvas, uv_image, component_mask, position_data.x, position_data.y, position_data.z, color, mouse_button_down);
+            tools[(int)position_data.w].perFrame(canvas, uvRT, component_mask, position_data.x, position_data.y, position_data.z, color, mouse_button_down);
             position_changed = false;
         }
 
@@ -109,11 +109,14 @@ public class sc_connection_handler : MonoBehaviour {
         if(uv_image_bytes != null && uv_image_bytes.Length > 0)
         {
             Debug.Log("parsing uv image");
-            uv_image = new Texture2D(1536, 2048, TextureFormat.RGBAFloat, false);
+            Texture2D uv_image = new Texture2D(1536, 2048, TextureFormat.RGBAFloat, false);
             uv_image.LoadRawTextureData(uv_image_bytes);
             uv_image.Apply();
-            Debug.Log("received uv image");
             uv_image_bytes = null;
+
+            uvRT = new RenderTexture(1536, 2048, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Default);
+            Graphics.Blit(uv_image, uvRT);
+            Debug.Log("received uv image");
         }
     }
 
@@ -143,8 +146,8 @@ public class sc_connection_handler : MonoBehaviour {
     {
         position_data = UbiiParser.ProtoToUnity(dir.Vector4);
         mouse_button_down = position_data.z >= 1000;
-        position_data.z %= 1000;
-        Debug.Log(position_data);
+        position_data.z = position_data.z >= 1000?position_data.z-1000:position_data.z;
+        Debug.Log(position_data + ", " + mouse_button_down);
         position_changed = true;
     }
 

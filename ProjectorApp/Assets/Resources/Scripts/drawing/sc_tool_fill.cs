@@ -17,7 +17,7 @@ public class sc_tool_fill : sc_tool
         csKernel = cs_fill.FindKernel("filling");
     }
 
-    public override void perFrame(RenderTexture canvas, Texture2D uv_image, Texture2D component_mask, float mouse_x, float mouse_y, float component_id, Color drawing_color, bool is_click_start) {
+    public override void perFrame(RenderTexture canvas, RenderTexture uv_image, Texture2D component_mask, float mouse_x, float mouse_y, float component_id, Color drawing_color, bool is_click_start) {
         if (!is_click_start) { return; }
 
         cs_fill.SetTexture(csKernel, "Canvas", canvas);

@@ -68,9 +68,9 @@ public class sc_drawing_handler : MonoBehaviour
         }
 
         if (Input.GetMouseButton(0)) {
-
-            sc_connection_handler.instance.send(new Vector4(mouse_x, mouse_y, component_id + (Input.GetMouseButtonDown(0)?1000:0), active_tool));
-            tools[active_tool].perFrame(canvas, sc_UVCamera.uv_image, component_mask, mouse_x, mouse_y, component_id, drawing_color, Input.GetMouseButtonDown(0));
+            bool mouse_down = Input.GetMouseButtonDown(0);
+            sc_connection_handler.instance.send(new Vector4(mouse_x, mouse_y, component_id + (mouse_down?1000:0), active_tool));
+            tools[active_tool].perFrame(canvas, sc_UVCamera.uv_image, component_mask, mouse_x, mouse_y, component_id, drawing_color, mouse_down);
         }
 
     }
@@ -182,8 +182,6 @@ public class sc_drawing_handler : MonoBehaviour
     // INPUT/OUTPUT: none
     public void reset_canvas()
     {
-        sc_UVCamera.update_texture();
-        sc_connection_handler.instance.send_uvimage(sc_UVCamera.uv_image_tex);
         sc_connection_handler.instance.send_reset_canvas();
         if (canvas != null)
         {
@@ -197,6 +195,10 @@ public class sc_drawing_handler : MonoBehaviour
 
         // set object texture as canvas
         obj.GetComponent<Renderer>().material.mainTexture = canvas;
+
+        //send uv image
+        sc_UVCamera.update_texture();
+        sc_connection_handler.instance.send_uvimage(sc_UVCamera.uv_image_tex);
     }
 
     // this methode converts the canvas to a Texture2D and stores it in canvasTex2D
