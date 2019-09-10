@@ -36,6 +36,7 @@ public class sc_connection_handler : MonoBehaviour {
 
 
     public void send(Texture2D texture) {
+        Debug.Log(texture.format);
         if (!connected) { return; }
         //send size
         client.Publish(UbiiParser.UnityToProto("image size", new Vector2(texture.width, texture.height)));

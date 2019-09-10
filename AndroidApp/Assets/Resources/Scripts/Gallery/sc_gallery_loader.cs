@@ -39,14 +39,14 @@ public class sc_gallery_loader : MonoBehaviour
     public void Start()
     {
         grabstele = GameObject.FindGameObjectWithTag("paintable");
-        historic_version = Resources.Load("Textures/Historic_Version") as Texture2D;
+        historic_version = load_resource("Textures/Historic_Version", TextureFormat.ARGB32);
         textures = new List<Texture2D>();
         filenames = new List<string>();
 
         //load the example images
         for (int i = 1; i <= num_examples; i++)
         {
-            textures.Add(Resources.Load("Textures/Example" + i) as Texture2D);
+            textures.Add(load_resource("Textures/Example" + i, TextureFormat.ARGB32));
             filenames.Add("Example" + i);
         }
         //load all other texture names from the persistent data path
@@ -189,5 +189,14 @@ public class sc_gallery_loader : MonoBehaviour
             }
         }
         return current_value;
+    }
+
+    private Texture2D load_resource(string name, TextureFormat format)
+    {
+        Texture2D tex = Resources.Load(name) as Texture2D;
+        Texture2D result = new Texture2D(tex.width, tex.height, format, false);
+        result.SetPixels(tex.GetPixels());
+        result.Apply();
+        return result;
     }
 }

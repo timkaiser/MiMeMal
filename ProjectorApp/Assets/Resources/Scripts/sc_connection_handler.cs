@@ -16,9 +16,8 @@ public class sc_connection_handler : MonoBehaviour {
     private Vector2 imageSize = new Vector2(1024, 1024);
     private int imageFormatIndex = 0;
     public bool updated = false;
-    private TextureFormat[] texture_formats = { TextureFormat.RGB24, TextureFormat.ARGB32 };
+    private TextureFormat[] texture_formats = { TextureFormat.RGB24, TextureFormat.ARGB32};
     private string command = "";
-    private Texture2D[] infoTextures;
 
     private sc_texture_loader texture_loader;
 
@@ -31,13 +30,6 @@ public class sc_connection_handler : MonoBehaviour {
         }
 
         texture_loader = FindObjectOfType<sc_texture_loader>();
-        infoTextures = new Texture2D[4];
-        infoTextures[0] = 
-        infoTextures[1] = Resources.Load<Texture2D>("Textures/InfoChild");
-        infoTextures[2] = Resources.Load<Texture2D>("Textures/InfoChair");
-        infoTextures[3] = Resources.Load<Texture2D>("Textures/InfoXanthippos");
-
-
         client = FindObjectOfType<UbiiClient>();
 
         sc_save_management.loadNetConfig(out string ip, out string port);
@@ -64,6 +56,11 @@ public class sc_connection_handler : MonoBehaviour {
 
         //sets every other texture
         if (updated) {
+            if (imageFormatIndex >= texture_formats.Length)
+            {
+                Debug.LogError("Unknown texture format!");
+                return;
+            }
             byte[] b = Convert.FromBase64String(imageData);
 
             Texture2D tex = new Texture2D((int)imageSize.x, (int)imageSize.y, texture_formats[imageFormatIndex], false);
