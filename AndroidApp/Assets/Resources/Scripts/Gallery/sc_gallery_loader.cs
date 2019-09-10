@@ -150,6 +150,11 @@ public class sc_gallery_loader : MonoBehaviour
         current_file = filenames.Count - 1;
     }
 
+    public Texture2D get_current_texture()
+    {
+        return textures[current_value];
+    }
+
     //sets the index counter to the next/previous value by looping along number of loaded textures
     private int update_value(bool positive)
     {

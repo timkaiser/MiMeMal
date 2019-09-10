@@ -21,7 +21,6 @@ public class sc_UVCamera : MonoBehaviour {
         uv_image.filterMode = FilterMode.Point;
         uv_image.anisoLevel = 0;
         uv_image.Create();
-
         GetComponent<Camera>().SetTargetBuffers(uv_image.colorBuffer, uv_image.depthBuffer);
 
         //replacement shader

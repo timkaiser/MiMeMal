@@ -13,10 +13,6 @@ public class sc_tool_brush : sc_tool{
     private float mouse_x_old;
     private float mouse_y_old;
 
-    void Start() {
-        initialize();    
-    }
-
     public override void initialize() {
         mouse_x_old = -1;
         mouse_y_old = -1;
@@ -25,7 +21,7 @@ public class sc_tool_brush : sc_tool{
         csKernel = cs_draw.FindKernel("brush");
     }
 
-    public override void perFrame(RenderTexture canvas, RenderTexture uv_image, Texture2D component_mask, float mouse_x_new, float mouse_y_new, float component_id, Color drawing_color, bool is_click_start) {
+    public override void perFrame(RenderTexture canvas, Texture2D uv_image, Texture2D component_mask, float mouse_x_new, float mouse_y_new, float component_id, Color drawing_color, bool is_click_start) {
         mouse_y_new = Screen.height - mouse_y_new;
         if (is_click_start) {
             mouse_x_old = mouse_x_new;

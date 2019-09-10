@@ -21,8 +21,12 @@ public class sc_connection_handler : MonoBehaviour {
     private Vector4 position_data;
     private Color color = Color.white;
     private bool position_changed = false;
+    private bool reset = false;
+    private bool mouse_button_down = false;
     public Texture2D component_mask;
     public RenderTexture canvas;
+    public Texture2D uv_image;
+    private byte[] uv_image_bytes = null;
 
     // drawing tools
     [SerializeField]
@@ -41,6 +45,11 @@ public class sc_connection_handler : MonoBehaviour {
 
         texture_loader = FindObjectOfType<sc_texture_loader>();
         client = FindObjectOfType<UbiiClient>();
+        //initialize tools
+        foreach (sc_tool t in tools)
+        {
+            t.initialize();
+        }
 
         sc_save_management.loadNetConfig(out string ip, out string port);
         client.ip = ip;
@@ -52,6 +61,8 @@ public class sc_connection_handler : MonoBehaviour {
         await client.Subscribe("image", receiveImage);
         await client.Subscribe("command", receiveCommand);
         await client.Subscribe("position", receivePositionData);
+        await client.Subscribe("reset canvas", reset_canvas_requested);
+        await client.Subscribe("uvimage", receiveUVImage);
 
         Debug.Log("connected");
         connected = true;
@@ -85,11 +96,26 @@ public class sc_connection_handler : MonoBehaviour {
 
         if(position_changed)
         {
-            //tools[(int)position_data.w].perFrame(canvas, sc_UVCamera.uv_image, component_mask, position_data.x, position_data.y, position_data.z, color, true);
+            tools[(int)position_data.w].perFrame(canvas, uv_image, component_mask, position_data.x, position_data.y, position_data.z, color, mouse_button_down);
             position_changed = false;
         }
-    }
 
+        if(reset)
+        {
+            reset_canvas();
+            reset = false;
+        }
+
+        if(uv_image_bytes != null && uv_image_bytes.Length > 0)
+        {
+            Debug.Log("parsing uv image");
+            uv_image = new Texture2D(1536, 2048, TextureFormat.RGBAFloat, false);
+            uv_image.LoadRawTextureData(uv_image_bytes);
+            uv_image.Apply();
+            Debug.Log("received uv image");
+            uv_image_bytes = null;
+        }
+    }
 
     public void receiveImage(TopicDataRecord dir) {
         imageData = (dir.String);
@@ -116,6 +142,8 @@ public class sc_connection_handler : MonoBehaviour {
     public void receivePositionData(TopicDataRecord dir)
     {
         position_data = UbiiParser.ProtoToUnity(dir.Vector4);
+        mouse_button_down = position_data.z >= 1000;
+        position_data.z %= 1000;
         Debug.Log(position_data);
         position_changed = true;
     }
@@ -123,5 +151,46 @@ public class sc_connection_handler : MonoBehaviour {
     public void receiveColor(TopicDataRecord dir)
     {
         color = UbiiParser.ProtoToUnity(dir.Color);
+        Debug.Log("received color " + color);
+    }
+
+
+    public void reset_canvas_requested(TopicDataRecord dir)
+    {
+        reset = true;
+        Debug.Log("canvas reset");
+    }
+
+    public void receiveUVImage(TopicDataRecord dir)
+    {
+        uv_image_bytes = Convert.FromBase64String(dir.String);
+        Debug.Log("received uv image bytes " + uv_image_bytes);
+    }
+
+    // this methode has to be called at the beginning of the drawing screen. It sets the canvas to the default texture and makes sure it's assigend to the object
+    // INPUT/OUTPUT: none
+    public void reset_canvas()
+    {
+        if (canvas != null)
+        {
+            DestroyImmediate(canvas);
+        }
+
+        load_texture(Resources.Load("Textures/Grabstele_texture") as Texture2D, out canvas);
+
+        // set object texture as canvas
+        GameObject obj = GameObject.FindGameObjectWithTag("paintable");
+        obj.GetComponent<Renderer>().material.mainTexture = canvas;
+    }
+
+    private void load_texture(Texture src, out RenderTexture dest)
+    {
+        //setup drawing texture
+        dest = new RenderTexture(src.width, src.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Default);
+        dest.enableRandomWrite = true;
+        dest.filterMode = FilterMode.Point;
+        dest.anisoLevel = 0;
+        dest.Create();
+        Graphics.Blit(src, dest);
     }
 }

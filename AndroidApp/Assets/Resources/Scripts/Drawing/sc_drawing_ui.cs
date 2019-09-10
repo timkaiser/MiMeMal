@@ -46,6 +46,7 @@ public class sc_drawing_ui : MonoBehaviour
     //gets called when saving is confirmed in the save dialog
     public void save_button_yes()
     {
+        save_dialog.SetActive(false);
         save_to_file(info_name + info_age + info_sex);
         draw_to_gallery();
     }

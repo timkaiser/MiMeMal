@@ -7199,8 +7199,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showFPS: 0
-  limitFPS: 0
-  maxFPS: 20
+  limitFPS: 1
+  maxFPS: 30
 --- !u!4 &1286716759
 Transform:
   m_ObjectHideFlags: 0
