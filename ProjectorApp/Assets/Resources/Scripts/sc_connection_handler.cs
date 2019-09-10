@@ -18,6 +18,16 @@ public class sc_connection_handler : MonoBehaviour {
     public bool updated = false;
     private TextureFormat[] texture_formats = { TextureFormat.RGB24, TextureFormat.ARGB32};
     private string command = "";
+    private Vector4 position_data;
+    private Color color = Color.white;
+    private bool position_changed = false;
+    public Texture2D component_mask;
+    public RenderTexture canvas;
+
+    // drawing tools
+    [SerializeField]
+    private int active_tool = 0;       // currently active tool         
+    private sc_tool[] tools = { new sc_tool_brush(), new sc_tool_fill() };           // list of all tools
 
     private sc_texture_loader texture_loader;
 
@@ -41,6 +51,7 @@ public class sc_connection_handler : MonoBehaviour {
         await client.Subscribe("image format", receiveImageFormat);
         await client.Subscribe("image", receiveImage);
         await client.Subscribe("command", receiveCommand);
+        await client.Subscribe("position", receivePositionData);
 
         Debug.Log("connected");
         connected = true;
@@ -71,6 +82,12 @@ public class sc_connection_handler : MonoBehaviour {
 
             updated = false;
         }
+
+        if(position_changed)
+        {
+            //tools[(int)position_data.w].perFrame(canvas, sc_UVCamera.uv_image, component_mask, position_data.x, position_data.y, position_data.z, color, true);
+            position_changed = false;
+        }
     }
 
 
@@ -94,5 +111,17 @@ public class sc_connection_handler : MonoBehaviour {
 
     public void receiveCommand(TopicDataRecord dir) {
         command = dir.String;
+    }
+
+    public void receivePositionData(TopicDataRecord dir)
+    {
+        position_data = UbiiParser.ProtoToUnity(dir.Vector4);
+        Debug.Log(position_data);
+        position_changed = true;
+    }
+
+    public void receiveColor(TopicDataRecord dir)
+    {
+        color = UbiiParser.ProtoToUnity(dir.Color);
     }
 }

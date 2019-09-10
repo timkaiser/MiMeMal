@@ -36,7 +36,6 @@ public class sc_connection_handler : MonoBehaviour {
 
 
     public void send(Texture2D texture) {
-        Debug.Log(texture.format);
         if (!connected) { return; }
         //send size
         client.Publish(UbiiParser.UnityToProto("image size", new Vector2(texture.width, texture.height)));
@@ -52,6 +51,20 @@ public class sc_connection_handler : MonoBehaviour {
         if (!connected) { return; }
         client.Publish(UbiiParser.UnityToProto("command", command));
         Debug.Log("Sent command: " + command);
+    }
+
+    public void send(Vector4 position_data)
+    {
+        if (!connected) { return; }
+        client.Publish(UbiiParser.UnityToProto("position", position_data));
+        Debug.Log("Sent position: " + position_data);
+    }
+
+    public void send(Color c)
+    {
+        if (!connected) { return; }
+        client.Publish(UbiiParser.UnityToProto("color", c));
+        Debug.Log("Sent color: " + c);
     }
 
     public static void loadNetConfig(out string ip, out string port) {
