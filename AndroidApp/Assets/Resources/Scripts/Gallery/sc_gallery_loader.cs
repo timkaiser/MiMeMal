@@ -57,7 +57,6 @@ public class sc_gallery_loader : MonoBehaviour
             if (file.Extension.Contains("png") && !file.Extension.Contains("meta"))
             {
                 filenames.Add(file.Name);
-                Debug.Log(file.Name);
             }
         }
 
@@ -189,7 +188,6 @@ public class sc_gallery_loader : MonoBehaviour
                 current_value -= 1;
             }
         }
-        Debug.Log("file: " + current_file + " value: " + current_value);
         return current_value;
     }
 }

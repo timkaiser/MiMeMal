@@ -12,8 +12,8 @@ public class sc_drawing_ui : MonoBehaviour
     private sc_drawing_handler drawing_script; //script responsible for drawing
     private sc_gallery_loader gallery_loader; //used to add current image to the gallery on saving
 
-    public InputField name_input, age_input;
-    public Dropdown sex_input;
+    private InputField name_input, age_input;
+    private Dropdown sex_input;
     private string info_name = "", info_age = "", info_sex = ""; //infos added while saving
 
     // Start is called before the first frame update
@@ -24,6 +24,9 @@ public class sc_drawing_ui : MonoBehaviour
         drawing_canvas = sc_canvas.instance.drawing_canvas;
         drawing_script = FindObjectOfType<sc_drawing_handler>();
         gallery_loader = FindObjectOfType<sc_gallery_loader>();
+        name_input = save_dialog.transform.Find("NameInput").GetComponent<InputField>();
+        age_input = save_dialog.transform.Find("AgeInput").GetComponent<InputField>();
+        sex_input = save_dialog.transform.Find("SexDropdown").GetComponent<Dropdown>();
     }
 
     //gets called when the save button is pressed
@@ -43,20 +46,20 @@ public class sc_drawing_ui : MonoBehaviour
     //gets called when saving is confirmed in the save dialog
     public void save_button_yes()
     {
-        save_to_file(info_name + "_" + info_age + "_" + info_sex);
+        save_to_file(info_name + info_age + info_sex);
         draw_to_gallery();
     }
 
     //gets called when a name is entered in the input field
     public void save_dialog_set_name()
     {
-        this.info_name = name_input.text.Replace(' ', '_');
+        this.info_name = "_" + name_input.text.Replace(' ', '_');
     }
 
     //gets called when the age is entered in the input field
     public void save_dialog_set_age()
     {
-        this.info_age = age_input.text;
+        this.info_age = "_" + age_input.text;
     }
 
     //gets called when the sex is selected
@@ -65,11 +68,11 @@ public class sc_drawing_ui : MonoBehaviour
         switch (sex_input.value)
         {
             case 1:
-                this.info_sex = "m"; break;
+                this.info_sex = "_m"; break;
             case 2:
-                this.info_sex = "w"; break;
+                this.info_sex = "_w"; break;
             case 3:
-                this.info_sex = "d"; break;
+                this.info_sex = "_d"; break;
             default:
                 this.info_sex = ""; break;
         }

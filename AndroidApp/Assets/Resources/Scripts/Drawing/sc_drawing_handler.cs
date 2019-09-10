@@ -159,7 +159,7 @@ public class sc_drawing_handler : MonoBehaviour
         byte[] bytes;
         bytes = canvasTex2D.EncodeToPNG();
 
-        string name = Time.time + "_" + infoText + ".png";
+        string name = Time.time + infoText + ".png";
         string path = Application.persistentDataPath + "/" + name;
         System.IO.File.WriteAllBytes(path, bytes);
 
