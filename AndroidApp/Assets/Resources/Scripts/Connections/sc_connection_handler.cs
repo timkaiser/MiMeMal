@@ -11,6 +11,7 @@ public class sc_connection_handler : MonoBehaviour {
     public static sc_connection_handler instance { set; get; }
     private UbiiClient client;
     public bool connected = false;
+    private sc_gallery_loader gallery_loader;
 
     private TextureFormat[] texture_formats = { TextureFormat.RGB24, TextureFormat.ARGB32 };
 
@@ -23,6 +24,7 @@ public class sc_connection_handler : MonoBehaviour {
         }
 
         client = FindObjectOfType<UbiiClient>();
+        gallery_loader = FindObjectOfType<sc_gallery_loader>();
 
         /*loadNetConfig(out string ip, out string port);
         client.ip = ip;
@@ -53,6 +55,41 @@ public class sc_connection_handler : MonoBehaviour {
         Debug.Log("Sent command: " + command);
     }
 
+    public void send(Vector4 position_data)
+    {
+        if (!connected) { return; }
+        client.Publish(UbiiParser.UnityToProto("position", position_data));
+        Debug.Log("Sent position: " + position_data);
+    }
+
+    public void send(Color c)
+    {
+        if (!connected) { return; }
+        client.Publish(UbiiParser.UnityToProto("color", c));
+        Debug.Log("Sent color: " + c);
+    }
+
+    public void send_reset_canvas()
+    {
+        if (!connected) { return; }
+        client.Publish(UbiiParser.UnityToProto("reset canvas", ""));
+        Debug.Log("Sent reset canvas");
+    }
+
+    public void send_uvimage(Texture2D image)
+    {
+        Debug.Log(connected + " trying to send uv image");
+        if (!connected) { return; }
+        client.Publish(UbiiParser.UnityToProto("uvimage", Convert.ToBase64String(image.GetRawTextureData())));
+        Debug.Log("Sent uvimage");
+    }
+
+    public void send_brush_size(int size)
+    {
+        if (!connected) { return; }
+        client.Publish(UbiiParser.UnityToProto("brush size", size + ""));
+        Debug.Log("Sent brush size " + size);
+    }
     public static void loadNetConfig(out string ip, out string port) {
         string destination = Application.persistentDataPath + "/netconfig.txt";
 

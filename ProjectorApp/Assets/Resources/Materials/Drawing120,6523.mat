@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Drawing120,6523
-  m_Shader: {fileID: 10708, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 10703, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,12 +19,29 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _ComponentMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ComponentOutline:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 86eb39a92afd5a541b130903d844eddb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OriginalTexture:
         m_Texture: {fileID: 2800000, guid: 86eb39a92afd5a541b130903d844eddb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Glossiness: 0.503
     - _Metallic: 0
+    - _TextureBlendValue: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

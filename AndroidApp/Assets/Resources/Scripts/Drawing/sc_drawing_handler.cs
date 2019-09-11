@@ -68,7 +68,10 @@ public class sc_drawing_handler : MonoBehaviour
         }
 
         if (Input.GetMouseButton(0)) {
-            tools[active_tool].perFrame(canvas, sc_UVCamera.uv_image, component_mask, mouse_x, mouse_y, component_id, drawing_color, Input.GetMouseButtonDown(0));
+            bool mouse_down = Input.GetMouseButtonDown(0);
+            Debug.Log(mouse_down);
+            sc_connection_handler.instance.send(new Vector4(mouse_x, mouse_y, component_id + (mouse_down?1000:0), active_tool));
+            tools[active_tool].perFrame(canvas, sc_UVCamera.uv_image, component_mask, mouse_x, mouse_y, component_id, drawing_color, mouse_down);
         }
 
     }
@@ -156,14 +159,13 @@ public class sc_drawing_handler : MonoBehaviour
     { //source: https://gist.github.com/krzys-h/76c518be0516fb1e94c7efbdcd028830
         convertCanvas();
 
-        byte[] bytes;
-        bytes = canvasTex2D.EncodeToPNG();
+        byte[] bytes = canvasTex2D.EncodeToPNG();
 
-        string name = Time.time + "_" + infoText + ".png";
+        string name = Time.time + infoText + ".png";
         string path = Application.persistentDataPath + "/" + name;
         System.IO.File.WriteAllBytes(path, bytes);
 
-        try { sc_connection_handler.instance.send(canvasTex2D); } catch (Exception) { }
+        //try { sc_connection_handler.instance.send(canvasTex2D); } catch (Exception) { }
 
         DestroyImmediate(canvasTex2D);
         return name;
@@ -181,6 +183,8 @@ public class sc_drawing_handler : MonoBehaviour
     // INPUT/OUTPUT: none
     public void reset_canvas()
     {
+        sc_connection_handler.instance.send_reset_canvas();
+        activate_tool(0);
         if (canvas != null)
         {
             DestroyImmediate(canvas);
@@ -193,6 +197,10 @@ public class sc_drawing_handler : MonoBehaviour
 
         // set object texture as canvas
         obj.GetComponent<Renderer>().material.mainTexture = canvas;
+
+        //send uv image
+        sc_UVCamera.update_texture();
+        sc_connection_handler.instance.send_uvimage(sc_UVCamera.uv_image_tex);
     }
 
     // this methode converts the canvas to a Texture2D and stores it in canvasTex2D

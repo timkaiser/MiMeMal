@@ -39,14 +39,14 @@ public class sc_gallery_loader : MonoBehaviour
     public void Start()
     {
         grabstele = GameObject.FindGameObjectWithTag("paintable");
-        historic_version = Resources.Load("Textures/Historic_Version") as Texture2D;
+        historic_version = load_resource("Textures/Historic_Version", TextureFormat.ARGB32);
         textures = new List<Texture2D>();
         filenames = new List<string>();
 
         //load the example images
         for (int i = 1; i <= num_examples; i++)
         {
-            textures.Add(Resources.Load("Textures/Example" + i) as Texture2D);
+            textures.Add(load_resource("Textures/Example" + i, TextureFormat.ARGB32));
             filenames.Add("Example" + i);
         }
         //load all other texture names from the persistent data path
@@ -57,7 +57,6 @@ public class sc_gallery_loader : MonoBehaviour
             if (file.Extension.Contains("png") && !file.Extension.Contains("meta"))
             {
                 filenames.Add(file.Name);
-                Debug.Log(file.Name);
             }
         }
 
@@ -151,6 +150,11 @@ public class sc_gallery_loader : MonoBehaviour
         current_file = filenames.Count - 1;
     }
 
+    public Texture2D get_current_texture()
+    {
+        return textures[current_value];
+    }
+
     //sets the index counter to the next/previous value by looping along number of loaded textures
     private int update_value(bool positive)
     {
@@ -189,7 +193,15 @@ public class sc_gallery_loader : MonoBehaviour
                 current_value -= 1;
             }
         }
-        Debug.Log("file: " + current_file + " value: " + current_value);
         return current_value;
+    }
+
+    private Texture2D load_resource(string name, TextureFormat format)
+    {
+        Texture2D tex = Resources.Load(name) as Texture2D;
+        Texture2D result = new Texture2D(tex.width, tex.height, format, false);
+        result.SetPixels(tex.GetPixels());
+        result.Apply();
+        return result;
     }
 }
