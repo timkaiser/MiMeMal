@@ -63,6 +63,7 @@ public class sc_connection_handler : MonoBehaviour {
         await client.Subscribe("position", receivePositionData);
         await client.Subscribe("reset canvas", reset_canvas_requested);
         await client.Subscribe("uvimage", receiveUVImage);
+        await client.Subscribe("color", receiveColor);
 
         Debug.Log("connected");
         connected = true;
@@ -109,7 +110,7 @@ public class sc_connection_handler : MonoBehaviour {
         if(uv_image_bytes != null && uv_image_bytes.Length > 0)
         {
             Debug.Log("parsing uv image");
-            Texture2D uv_image = new Texture2D(1536, 2048, TextureFormat.RGBAFloat, false);
+            Texture2D uv_image = new Texture2D(1536, 2048, TextureFormat.RGBAFloat, false); //todo: remove hardcoded tablet resolution
             uv_image.LoadRawTextureData(uv_image_bytes);
             uv_image.Apply();
             uv_image_bytes = null;
@@ -145,8 +146,8 @@ public class sc_connection_handler : MonoBehaviour {
     public void receivePositionData(TopicDataRecord dir)
     {
         position_data = UbiiParser.ProtoToUnity(dir.Vector4);
-        mouse_button_down = position_data.z >= 1000;
-        position_data.z = position_data.z >= 1000?position_data.z-1000:position_data.z;
+        mouse_button_down = position_data.z >= 999;
+        position_data.z = position_data.z >= 999?position_data.z-1000:position_data.z;
         Debug.Log(position_data + ", " + mouse_button_down);
         position_changed = true;
     }

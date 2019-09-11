@@ -22,7 +22,7 @@ public class sc_tool_brush : sc_tool{
     }
 
     public override void perFrame(RenderTexture canvas, RenderTexture uv_image, Texture2D component_mask, float mouse_x_new, float mouse_y_new, float component_id, Color drawing_color, bool is_click_start) {
-        mouse_y_new = 2048 - mouse_y_new;
+        mouse_y_new = 2048 - mouse_y_new; //todo: remove hardcoded tablet resolution
         if (is_click_start) {
             mouse_x_old = mouse_x_new;
             mouse_y_old = mouse_y_new;
