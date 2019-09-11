@@ -184,6 +184,7 @@ public class sc_drawing_handler : MonoBehaviour
     public void reset_canvas()
     {
         sc_connection_handler.instance.send_reset_canvas();
+        activate_tool(0);
         if (canvas != null)
         {
             DestroyImmediate(canvas);

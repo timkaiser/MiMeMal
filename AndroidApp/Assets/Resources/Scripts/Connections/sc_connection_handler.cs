@@ -84,6 +84,12 @@ public class sc_connection_handler : MonoBehaviour {
         Debug.Log("Sent uvimage");
     }
 
+    public void send_brush_size(int size)
+    {
+        if (!connected) { return; }
+        client.Publish(UbiiParser.UnityToProto("brush size", size + ""));
+        Debug.Log("Sent brush size " + size);
+    }
     public static void loadNetConfig(out string ip, out string port) {
         string destination = Application.persistentDataPath + "/netconfig.txt";
 

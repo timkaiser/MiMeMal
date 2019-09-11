@@ -100,6 +100,7 @@ public class sc_drawing_ui : MonoBehaviour
     {
         float size = brush_size_slider.GetComponent<Slider>().value;
         (drawing_script.get_tool("brush") as sc_tool_brush).brush_size = (int)size;
+        sc_connection_handler.instance.send_brush_size((int)size);
     }
 
     //gets called when the tool icon is pressed and switches between brush and bucket
@@ -136,6 +137,8 @@ public class sc_drawing_ui : MonoBehaviour
     //switches from the drawing ui to the gallery
     public void draw_to_gallery()
     {
+        brush_button.transform.Find("BrushHead").GetComponent<Image>().color = Color.white;
+        drawing_script.drawing_color = Color.white;
         warning.SetActive(false);
         brush_size_slider.SetActive(false);
         drawing_script.active = false;

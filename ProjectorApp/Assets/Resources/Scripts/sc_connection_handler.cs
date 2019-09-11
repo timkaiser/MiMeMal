@@ -64,6 +64,7 @@ public class sc_connection_handler : MonoBehaviour {
         await client.Subscribe("reset canvas", reset_canvas_requested);
         await client.Subscribe("uvimage", receiveUVImage);
         await client.Subscribe("color", receiveColor);
+        await client.Subscribe("brush size", receive_brush_size);
 
         Debug.Log("connected");
         connected = true;
@@ -99,6 +100,7 @@ public class sc_connection_handler : MonoBehaviour {
         {
             tools[(int)position_data.w].perFrame(canvas, uvRT, component_mask, position_data.x, position_data.y, position_data.z, color, mouse_button_down);
             position_changed = false;
+            mouse_button_down = false;
         }
 
         if(reset)
@@ -146,7 +148,7 @@ public class sc_connection_handler : MonoBehaviour {
     public void receivePositionData(TopicDataRecord dir)
     {
         position_data = UbiiParser.ProtoToUnity(dir.Vector4);
-        mouse_button_down = position_data.z >= 999;
+        mouse_button_down = mouse_button_down || position_data.z >= 999;
         position_data.z = position_data.z >= 999?position_data.z-1000:position_data.z;
         Debug.Log(position_data + ", " + mouse_button_down);
         position_changed = true;
@@ -171,10 +173,18 @@ public class sc_connection_handler : MonoBehaviour {
         Debug.Log("received uv image bytes " + uv_image_bytes);
     }
 
+    public void receive_brush_size(TopicDataRecord dir)
+    {
+        int brush_size = Convert.ToInt32(dir.String);
+        (tools[0] as sc_tool_brush).brush_size = brush_size;
+        Debug.Log("received brush size " + brush_size);
+    }
+
     // this methode has to be called at the beginning of the drawing screen. It sets the canvas to the default texture and makes sure it's assigend to the object
     // INPUT/OUTPUT: none
-    public void reset_canvas()
+    private void reset_canvas()
     {
+        color = Color.white;
         if (canvas != null)
         {
             DestroyImmediate(canvas);
