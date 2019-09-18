@@ -10,7 +10,7 @@ public class sc_color_picker_ui : MonoBehaviour
     public Slider value_slider;   //slider to change the value component of a hsv color
     public Image pointer;         //pointer showing currently selected color in color wheel
     public Image displayed_color; //displays currently selected color
-    public Text pigment_name, pigment_text; //shown in the pigment information section
+    //public Text pigment_name, pigment_text; //shown in the pigment information section
     public GameObject brush_image, bucket_image; //to set the currently selected color for the tool icons
 
     private GameObject drawing_canvas, color_picker_canvas; //other canvases to switch to
@@ -98,8 +98,8 @@ public class sc_color_picker_ui : MonoBehaviour
         slider_color.SetVector("_HSVColor", new Vector4(hue, saturation, current_color.z, 1));
 
         //Set Info text invisible
-        pigment_name.text = "";
-        pigment_text.text = "";
+        //pigment_name.text = "";
+        //pigment_text.text = "";
 
         //communicate to drawing UI
         set_draw_color(current);
@@ -119,8 +119,8 @@ public class sc_color_picker_ui : MonoBehaviour
         displayed_color.GetComponent<CanvasRenderer>().SetColor(current);
 
         //Set Info text invisible
-        pigment_name.text = "";
-        pigment_text.text = "";
+        //pigment_name.text = "";
+        //pigment_text.text = "";
 
         //communicate to drawing UI
         set_draw_color(current);
@@ -161,8 +161,8 @@ public class sc_color_picker_ui : MonoBehaviour
     public void recent_color_selected(Button b)
     {
         //Set Info text invisible
-        pigment_name.text = "";
-        pigment_text.text = "";
+        //pigment_name.text = "";
+        //pigment_text.text = "";
         //Set color to selected
         set_color(b.colors.normalColor);
     }

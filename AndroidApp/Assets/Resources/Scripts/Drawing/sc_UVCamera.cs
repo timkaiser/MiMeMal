@@ -42,5 +42,7 @@ public class sc_UVCamera : MonoBehaviour
         uv_image_tex.ReadPixels(new Rect(0, 0, uv_image.width, uv_image.height), 0, 0);
         uv_image_tex.Apply();
         RenderTexture.active = oldRT;
+
+        sc_connection_handler.instance.send_uvimage(sc_UVCamera.uv_image_tex);
     }
 }

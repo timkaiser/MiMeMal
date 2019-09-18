@@ -11,7 +11,6 @@ public class sc_connection_handler : MonoBehaviour {
     public static sc_connection_handler instance { set; get; }
     private UbiiClient client;
     public bool connected = false;
-    private sc_gallery_loader gallery_loader;
 
     private TextureFormat[] texture_formats = { TextureFormat.RGB24, TextureFormat.ARGB32 };
 
@@ -24,7 +23,6 @@ public class sc_connection_handler : MonoBehaviour {
         }
 
         client = FindObjectOfType<UbiiClient>();
-        gallery_loader = FindObjectOfType<sc_gallery_loader>();
 
         /*loadNetConfig(out string ip, out string port);
         client.ip = ip;

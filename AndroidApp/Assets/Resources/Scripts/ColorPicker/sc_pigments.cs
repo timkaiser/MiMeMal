@@ -58,8 +58,8 @@ public class sc_pigments : MonoBehaviour
         }
 
         //Set default text
-        pigment_name.text = pigments[0].name;
-        pigment_text.text = pigments[0].description;
+        //pigment_name.text = pigments[0].name;
+        //pigment_text.text = pigments[0].description;
     }
 
     //gets called when pigment button is clicked
@@ -68,7 +68,7 @@ public class sc_pigments : MonoBehaviour
         //set currently displayed color
         color_picker_ui.set_color(p.get_color());
         //update pigment information view
-        pigment_name.text = p.name;
-        pigment_text.text = p.description;
+        //pigment_name.text = p.name;
+       // pigment_text.text = p.description;
     }
 }

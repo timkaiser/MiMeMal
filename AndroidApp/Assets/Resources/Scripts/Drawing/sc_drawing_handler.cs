@@ -200,7 +200,6 @@ public class sc_drawing_handler : MonoBehaviour
 
         //send uv image
         sc_UVCamera.update_texture();
-        sc_connection_handler.instance.send_uvimage(sc_UVCamera.uv_image_tex);
     }
 
     // this methode converts the canvas to a Texture2D and stores it in canvasTex2D

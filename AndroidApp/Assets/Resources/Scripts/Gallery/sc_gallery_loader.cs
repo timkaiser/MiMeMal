@@ -16,10 +16,9 @@ public class sc_gallery_loader : MonoBehaviour
     private GameObject grabstele;       //the paintable object
 
     private int resolution = 2048;      //the resolution of the loaded textures
-    private List<Texture2D> textures;   //list of loaded textures from saved drawings
+    private Texture2D[] textures;   //list of loaded textures from saved drawings
     private List<string> filenames;     //list of the filenames of the textures
     private int current_value = 0;      //index indicating currently displayed texture
-    private int current_file = 0;       //index of current texture in list of filenames
     private Texture2D historic_version; //used as a default in case of error
 
     private sc_gallery_loader instance; //singelton to avoid dublication
@@ -40,13 +39,11 @@ public class sc_gallery_loader : MonoBehaviour
     {
         grabstele = GameObject.FindGameObjectWithTag("paintable");
         historic_version = load_resource("Textures/Historic_Version", TextureFormat.ARGB32);
-        textures = new List<Texture2D>();
         filenames = new List<string>();
 
         //load the example images
         for (int i = 1; i <= num_examples; i++)
         {
-            textures.Add(load_resource("Textures/Example" + i, TextureFormat.ARGB32));
             filenames.Add("Example" + i);
         }
         //load all other texture names from the persistent data path
@@ -60,12 +57,17 @@ public class sc_gallery_loader : MonoBehaviour
             }
         }
 
+        textures = new Texture2D[filenames.Count+200];
+        for (int i = 1; i <= num_examples; i++)
+        {
+            textures[i-1] = load_resource("Textures/Example" + i, TextureFormat.ARGB32);
+        }
+
         //if there are loaded images display them, otherwise display default
-        if (textures.Count >= 1)
+        if (filenames.Count >= 1)
         {
             //start in the middle of the examples
-            current_value = textures.Count / 2;
-            current_file = current_value;
+            current_value = num_examples / 2;
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[current_value];
             sc_connection_handler.instance.send(textures[current_value]);
         }
@@ -124,30 +126,22 @@ public class sc_gallery_loader : MonoBehaviour
     //returns the filename of the currently displayed texture
     public string get_current_filename()
     {
-        return filenames[current_file];
+        return filenames[current_value];
     }
 
     //loads a file by filename as texture and adds it to the lists
-    public void load_file(String filename, bool insertAtBeginning)
+    public void load_file(String filename)
     {
         byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + "/" + filename);
         Texture2D tex = new Texture2D(resolution, resolution);
         tex.LoadImage(bytes);
-        if (insertAtBeginning)
-        {
-            textures.Insert(0, tex);
-        }
-        else
-        {
-            textures.Add(tex);
-        }
         if(!filenames.Contains(filename)) filenames.Add(filename);
+        textures[filenames.IndexOf(filename)] = tex;
     }
 
     public void display_last()
     {
-        current_value = textures.Count - 1;
-        current_file = filenames.Count - 1;
+        current_value = filenames.Count - 1;
     }
 
     public Texture2D get_current_texture()
@@ -161,37 +155,22 @@ public class sc_gallery_loader : MonoBehaviour
         if (positive) //moving forward through list
         {
             current_value = (current_value + 1) % filenames.Count;
-            current_file = (current_file + 1) % filenames.Count;
             //in case the file is not loaded yet, load it
-            if (current_value == textures.Count) load_file(filenames[textures.Count], false);
+            if (textures[current_value] == null) load_file(filenames[current_value]);
         }
         else //moving backwards through list
         {
             //updating file index counter
-            if (current_file == 0)
+            if (current_value == 0)
             {
-                current_file = filenames.Count - 1;
+                current_value = filenames.Count - 1;
             }
             else
             {
-                current_file -= 1;
-            }
-            //updating texture index counter
-            if (current_value == 0) //if at the beginning of the list
-            {
-                if (textures.Count == filenames.Count) //all files loaded
-                {
-                    current_value = textures.Count - 1; //set to end of list
-                }
-                else //if not loaded insert at beginning and don't update current value
-                {
-                    load_file(filenames[current_file], true);
-                }
-            }
-            else //in the normal case just move one index back
-            {
                 current_value -= 1;
             }
+            //loading texture
+            if (textures[current_value] == null) load_file(filenames[current_value]);
         }
         return current_value;
     }

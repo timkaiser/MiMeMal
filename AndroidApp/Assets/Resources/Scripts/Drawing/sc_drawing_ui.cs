@@ -11,6 +11,7 @@ public class sc_drawing_ui : MonoBehaviour
     private GameObject drawing_canvas, color_picker_canvas, gallery_canvas; //canvases to switch to
     private sc_drawing_handler drawing_script; //script responsible for drawing
     private sc_gallery_loader gallery_loader; //used to add current image to the gallery on saving
+    private sc_color_picker_ui color_picker;
 
     private InputField name_input, age_input;
     private Dropdown sex_input;
@@ -24,6 +25,7 @@ public class sc_drawing_ui : MonoBehaviour
         drawing_canvas = sc_canvas.instance.drawing_canvas;
         drawing_script = FindObjectOfType<sc_drawing_handler>();
         gallery_loader = FindObjectOfType<sc_gallery_loader>();
+        color_picker = FindObjectOfType<sc_color_picker_ui>();
         name_input = save_dialog.transform.Find("NameInput").GetComponent<InputField>();
         age_input = save_dialog.transform.Find("AgeInput").GetComponent<InputField>();
         sex_input = save_dialog.transform.Find("SexDropdown").GetComponent<Dropdown>();
@@ -48,6 +50,9 @@ public class sc_drawing_ui : MonoBehaviour
     {
         save_dialog.SetActive(false);
         save_to_file(info_name + info_age + info_sex);
+        info_name = "";
+        info_age = "";
+        info_sex = "";
         draw_to_gallery();
     }
 
@@ -84,7 +89,7 @@ public class sc_drawing_ui : MonoBehaviour
     {
         string filename = drawing_script.save_drawing(info);
         //add the saved image to gallery
-        gallery_loader.load_file(filename, false);
+        gallery_loader.load_file(filename);
         //let the gallery display the just saved image
         gallery_loader.display_last();
     }
@@ -137,7 +142,9 @@ public class sc_drawing_ui : MonoBehaviour
     //switches from the drawing ui to the gallery
     public void draw_to_gallery()
     {
-        brush_button.transform.Find("BrushHead").GetComponent<Image>().color = Color.white;
+        brush_button.transform.Find("BrushIcon").Find("BrushHead").GetComponent<Image>().color = Color.white;
+        bucket_button.transform.Find("BucketIcon").Find("BucketContents").GetComponent<Image>().color = Color.white;
+        color_picker.set_color(Color.white);
         drawing_script.drawing_color = Color.white;
         warning.SetActive(false);
         brush_size_slider.SetActive(false);
