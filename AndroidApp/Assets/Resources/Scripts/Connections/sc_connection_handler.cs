@@ -35,6 +35,23 @@ public class sc_connection_handler : MonoBehaviour {
         connected = true;
     }
 
+    public void Start()
+    {
+        if(!connected)
+        {
+            //InvokeRepeating("reconnect", 15, 15);
+        }
+    }
+
+    //private async void reconnect()
+    //{
+    //    if (connected) CancelInvoke();
+    //    await client.InitializeClient();
+    //    Debug.Log("connected");
+    //    connected = true;
+    //    CancelInvoke();
+    //}
+
 
     public void send(Texture2D texture) {
         if (!connected) { return; }
@@ -75,12 +92,14 @@ public class sc_connection_handler : MonoBehaviour {
         Debug.Log("Sent reset canvas");
     }
 
-    public void send_uvimage(Texture2D image)
+    public bool send_uvimage(Texture2D image, Vector2 resolution)
     {
         Debug.Log(connected + " trying to send uv image");
-        if (!connected) { return; }
+        if (!connected) { return false; }
+        client.Publish(UbiiParser.UnityToProto("uvimage resolution", resolution));
         client.Publish(UbiiParser.UnityToProto("uvimage", Convert.ToBase64String(image.GetRawTextureData())));
         Debug.Log("Sent uvimage");
+        return true;
     }
 
     public void send_brush_size(int size)
@@ -109,13 +128,4 @@ public class sc_connection_handler : MonoBehaviour {
             Debug.LogError("[custom error] netconfig.txt not found. Loading default configuration (loacalhost:8101)");
         }
     }
-
-    /*void OnGUI() {
-        GUIStyle style = new GUIStyle();
-        style.fontSize = Screen.height / 40;
-        style.normal.textColor = Color.yellow;
-        GUI.Label(new Rect(30, 10, 20, 20),
-            sc_connection_handler.instance.client.ip + ":" + sc_connection_handler.instance.client.port + " | connected: " + sc_connection_handler.instance.connected,
-            style);
-    }*/
 }

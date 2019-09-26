@@ -69,7 +69,6 @@ public class sc_drawing_handler : MonoBehaviour
 
         if (Input.GetMouseButton(0)) {
             bool mouse_down = Input.GetMouseButtonDown(0);
-            Debug.Log(mouse_down);
             sc_connection_handler.instance.send(new Vector4(mouse_x, mouse_y, component_id + (mouse_down?1000:0), active_tool));
             tools[active_tool].perFrame(canvas, sc_UVCamera.uv_image, component_mask, mouse_x, mouse_y, component_id, drawing_color, mouse_down);
         }

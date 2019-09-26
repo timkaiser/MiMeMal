@@ -43,6 +43,6 @@ public class sc_UVCamera : MonoBehaviour
         uv_image_tex.Apply();
         RenderTexture.active = oldRT;
 
-        sc_connection_handler.instance.send_uvimage(sc_UVCamera.uv_image_tex);
+        if(!sc_connection_handler.instance.send_uvimage(uv_image_tex, new Vector2(uv_image.width, uv_image.height))) uv_image_tex = null;
     }
 }
