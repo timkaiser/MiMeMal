@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Resources/Scenes/sn_Drawing.unity
+    guid: e5e0aaa424d0e3d40b206aeff4011047
   m_configObjects: {}
