@@ -54,6 +54,7 @@ public class sc_debug_ui : MonoBehaviour {
             msg.AppendLine();
         }
 
+        msg.Append("UV Image received? ").Append(sc_connection_handler.instance.uv_image_received).AppendLine();
 
         //Display FPS counter
         if (showFPS) {

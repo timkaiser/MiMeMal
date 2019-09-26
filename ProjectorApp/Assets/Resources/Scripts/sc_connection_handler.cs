@@ -27,6 +27,8 @@ public class sc_connection_handler : MonoBehaviour {
     public RenderTexture canvas;
     public RenderTexture uvRT;
     private byte[] uv_image_bytes = null;
+    public Vector2 uv_resolution = new Vector2(0, 0);
+    public bool uv_image_received = false;
 
     // drawing tools
     [SerializeField]
@@ -63,6 +65,7 @@ public class sc_connection_handler : MonoBehaviour {
         await client.Subscribe("position", receivePositionData);
         await client.Subscribe("reset canvas", reset_canvas_requested);
         await client.Subscribe("uvimage", receiveUVImage);
+        await client.Subscribe("uvimage resolution", receiveUVImage_resolution);
         await client.Subscribe("color", receiveColor);
         await client.Subscribe("brush size", receive_brush_size);
 
@@ -111,16 +114,43 @@ public class sc_connection_handler : MonoBehaviour {
 
         if(uv_image_bytes != null && uv_image_bytes.Length > 0)
         {
-            Debug.Log("parsing uv image");
-            Texture2D uv_image = new Texture2D(1536, 2048, TextureFormat.RGBAFloat, false); //todo: remove hardcoded tablet resolution
-            uv_image.LoadRawTextureData(uv_image_bytes);
-            uv_image.Apply();
-            uv_image_bytes = null;
-
-            uvRT = new RenderTexture(1536, 2048, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Default);
-            Graphics.Blit(uv_image, uvRT);
-            Debug.Log("received uv image");
+            if (uv_resolution.x == 0 || uv_resolution.y == 0)
+            {
+                Debug.Log("error while parsing uv image: wrong resolution. trying s4 resolution.");
+                uv_resolution = new Vector2(1600, 2560);
+                try
+                {
+                    parse_uv_image();
+                } catch (Exception)
+                {
+                    Debug.Log("error while parsing uv image: wrong resolution. trying s3 resolution.");
+                    uv_resolution = new Vector2(1536, 2048);
+                    try
+                    {
+                        parse_uv_image();
+                    }
+                    catch (Exception)
+                    {
+                        Debug.LogError("could not parse uv image");
+                    }
+                }
+            }
+            parse_uv_image();
         }
+    }
+
+    private void parse_uv_image()
+    {
+        Debug.Log("parsing uv image");
+        Texture2D uv_image = new Texture2D((int)uv_resolution.x, (int)uv_resolution.y, TextureFormat.RGBAFloat, false);
+        uv_image.LoadRawTextureData(uv_image_bytes);
+        uv_image.Apply();
+        uv_image_bytes = null;
+
+        uvRT = new RenderTexture((int)uv_resolution.x, (int)uv_resolution.y, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Default);
+        Graphics.Blit(uv_image, uvRT);
+        Debug.Log("received uv image");
+        uv_image_received = true;
     }
 
     public void receiveImage(TopicDataRecord dir) {
@@ -171,6 +201,12 @@ public class sc_connection_handler : MonoBehaviour {
     {
         uv_image_bytes = Convert.FromBase64String(dir.String);
         Debug.Log("received uv image bytes " + uv_image_bytes);
+    }
+
+    public void receiveUVImage_resolution(TopicDataRecord dir)
+    {
+        uv_resolution = UbiiParser.ProtoToUnity(dir.Vector2);
+        Debug.Log("received uv image resolution " + uv_resolution);
     }
 
     public void receive_brush_size(TopicDataRecord dir)
