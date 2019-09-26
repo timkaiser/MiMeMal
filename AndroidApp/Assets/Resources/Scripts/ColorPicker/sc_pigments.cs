@@ -4,21 +4,20 @@ using UnityEngine.UI;
 
 public class sc_pigments : MonoBehaviour
 {
-    public RectTransform container;  //transform containing all the pigments
     public GameObject button_prefab; //prefab used for displaying a pigment
-    public Text pigment_name;        //currently shown name in info container
-    public Text pigment_text;        //currently shown text in info container
 
     public int num_horizontal;       //number of pigments to display in a row
     public int num_vertical;         //number of rows
 
     private Pigment[] pigments;      //Array containing all pigments to display
     private sc_color_picker_ui color_picker_ui; //UI containing color picker to display currently selected color
+    private Canvas color_picker_canvas;
 
     // Start is called before the first frame update
     void Start()
     {
         color_picker_ui = FindObjectOfType<sc_color_picker_ui>();
+        color_picker_canvas = sc_canvas.instance.color_picker_canvas.GetComponent<Canvas>();
 
         //read in pigments from json
         TextAsset file = Resources.Load("Data/pigments") as TextAsset;
@@ -27,8 +26,9 @@ public class sc_pigments : MonoBehaviour
         int numberOfPigments = pigments.Length;
 
         //Add pigment buttons as regular grid
-        int intervalX = (int)container.rect.width / (num_horizontal+1);
-        int intervalY = -(int)container.rect.height / (num_vertical+1);
+        RectTransform container = this.GetComponent<RectTransform>();
+        int intervalX = (int)((container.rect.width * color_picker_canvas.scaleFactor) / (num_horizontal+1));
+        int intervalY = -(int)((container.rect.height * color_picker_canvas.scaleFactor) / (num_vertical+1));
         int offsetX = intervalX;
         int offsetY = (int)(intervalY + (0.25*intervalY));
 

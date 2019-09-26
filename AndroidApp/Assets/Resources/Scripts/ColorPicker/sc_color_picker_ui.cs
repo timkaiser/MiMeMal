@@ -10,7 +10,6 @@ public class sc_color_picker_ui : MonoBehaviour
     public Slider value_slider;   //slider to change the value component of a hsv color
     public Image pointer;         //pointer showing currently selected color in color wheel
     public Image displayed_color; //displays currently selected color
-    //public Text pigment_name, pigment_text; //shown in the pigment information section
     public GameObject brush_image, bucket_image; //to set the currently selected color for the tool icons
 
     private GameObject drawing_canvas, color_picker_canvas; //other canvases to switch to
@@ -56,10 +55,18 @@ public class sc_color_picker_ui : MonoBehaviour
         //init recently used
         recently_selected = new Button[num_saved_colors];
         recently_selected_obj = new GameObject[num_saved_colors];
+
+        RectTransform container = recently_selected_container.GetComponent<RectTransform>();
+        int rect_width = (int)(container.rect.width * color_picker_canvas.GetComponent<Canvas>().scaleFactor);
+        int rect_height = (int)(container.rect.height * color_picker_canvas.GetComponent<Canvas>().scaleFactor);
+        int intervalX = rect_width / (num_saved_colors + 1);
+        int intervalY = -rect_height / 2;
+        intervalY = (int)(intervalY + (0.25 * intervalY));
         for (int i = 0; i < num_saved_colors; i++)
         {
             GameObject o = Instantiate(button_prefab, recently_selected_container.transform);
-            o.transform.localPosition = new Vector3(-467 + 133 * i, -30, 0);
+            o.transform.localPosition = new Vector3(-(rect_width/2 - intervalX) + intervalX * i, (float)Math.IEEERemainder(intervalY,100), 0);
+            //o.transform.Translate(new Vector3(intervalX + intervalX * i, intervalY, 0));
             Button b = o.transform.Find("Button").GetComponent<Button>();
             recently_selected[i] = b;
             recently_selected_obj[i] = o;
@@ -76,8 +83,10 @@ public class sc_color_picker_ui : MonoBehaviour
     {
         //Get relative position
         RectTransform boundingRect = color_picker.GetComponent<RectTransform>();
-        float x = (Input.mousePosition.x - boundingRect.position.x) / boundingRect.rect.size.x * 2;
-        float y = (Input.mousePosition.y - boundingRect.position.y) / boundingRect.rect.size.y * 2;
+        float x = (Input.mousePosition.x - boundingRect.position.x) / 
+                  (boundingRect.rect.width * color_picker_canvas.GetComponent<Canvas>().scaleFactor) * 2;
+        float y = (Input.mousePosition.y - boundingRect.position.y) / 
+                  (boundingRect.rect.height * color_picker_canvas.GetComponent<Canvas>().scaleFactor) * 2;
 
         //Compute polar coords
         float saturation = Mathf.Sqrt((x * x) + (y * y));
@@ -97,10 +106,6 @@ public class sc_color_picker_ui : MonoBehaviour
         //Communicate color to slider shader
         slider_color.SetVector("_HSVColor", new Vector4(hue, saturation, current_color.z, 1));
 
-        //Set Info text invisible
-        //pigment_name.text = "";
-        //pigment_text.text = "";
-
         //communicate to drawing UI
         set_draw_color(current);
     }
@@ -117,10 +122,6 @@ public class sc_color_picker_ui : MonoBehaviour
         //Display new color
         Color current = Color.HSVToRGB(current_color.x, current_color.y, current_color.z);
         displayed_color.GetComponent<CanvasRenderer>().SetColor(current);
-
-        //Set Info text invisible
-        //pigment_name.text = "";
-        //pigment_text.text = "";
 
         //communicate to drawing UI
         set_draw_color(current);
@@ -147,8 +148,10 @@ public class sc_color_picker_ui : MonoBehaviour
         float x = saturation * Mathf.Cos(phi);
         float y = saturation * Mathf.Sin(phi);
         RectTransform boundingRect = color_picker.GetComponent<RectTransform>();
-        float worldX = (x * boundingRect.rect.size.x) / 2 + boundingRect.position.x;
-        float worldY = (y * boundingRect.rect.size.y) / 2 + boundingRect.position.y;
+        float worldX = (x * boundingRect.rect.width * color_picker_canvas.GetComponent<Canvas>().scaleFactor)
+                       / 2 + boundingRect.position.x;
+        float worldY = (y * boundingRect.rect.height * color_picker_canvas.GetComponent<Canvas>().scaleFactor)
+                       / 2 + boundingRect.position.y;
         pointer.transform.position = new Vector3(worldX, worldY);
 
         //communicate to drawing UI
@@ -160,9 +163,6 @@ public class sc_color_picker_ui : MonoBehaviour
      */
     public void recent_color_selected(Button b)
     {
-        //Set Info text invisible
-        //pigment_name.text = "";
-        //pigment_text.text = "";
         //Set color to selected
         set_color(b.colors.normalColor);
     }
