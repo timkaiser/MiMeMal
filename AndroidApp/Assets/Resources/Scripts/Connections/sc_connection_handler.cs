@@ -24,10 +24,11 @@ public class sc_connection_handler : MonoBehaviour {
 
         client = FindObjectOfType<UbiiClient>();
 
-        /*loadNetConfig(out string ip, out string port);
+        loadNetConfig(out string ip, out string port);
+        Debug.Log(ip + ":" + port);
         client.ip = ip;
         client.port = int.Parse(port);
-        */
+        
 
         await client.InitializeClient();
         Debug.Log("connected");
@@ -105,7 +106,7 @@ public class sc_connection_handler : MonoBehaviour {
             ip = "localhost";
             port = "8101";
 
-            Debug.LogError("netconfig.txt not found. Loading default configuration (loacalhost:8101)");
+            Debug.LogError("[custom error] netconfig.txt not found. Loading default configuration (loacalhost:8101)");
         }
     }
 
