@@ -319,7 +319,7 @@ MonoBehaviour:
   - prespective
   - scale
   current_mode: 0
-  show_ui: 1
+  show_ui: 0
   matrix:
     e00: 0
     e01: 0
@@ -416,6 +416,9 @@ MonoBehaviour:
   updated: 0
   component_mask: {fileID: 2800000, guid: 97175e9cb73ba184eb86086572e4fa3f, type: 3}
   canvas: {fileID: 0}
+  uvRT: {fileID: 0}
+  uv_resolution: {x: 0, y: 0}
+  uv_image_received: 0
   active_tool: 0
 --- !u!114 &1005360587
 MonoBehaviour:
