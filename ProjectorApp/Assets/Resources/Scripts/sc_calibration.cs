@@ -26,7 +26,7 @@ public class sc_calibration : MonoBehaviour {
     public string[] modes = { "translate", "prespective", "scale" };
     public int current_mode = 0;
 
-    public bool show_ui = true; // indicates wether to show the debug ui
+    public bool show_ui = false; // indicates wether to show the debug ui
 
     // vectors thant indicate what changes in different modes
     public Vector4[][] manipulation_vectors = {

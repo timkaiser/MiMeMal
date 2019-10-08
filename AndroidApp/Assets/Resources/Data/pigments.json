@@ -1,4 +1,4 @@
-{
+﻿{
   "Items": [
     {
       "name": "Kalkweiß",
@@ -67,6 +67,12 @@
       "category": "yellow"
     },
     {
+      "name": "Neapelgelb",
+      "description": "",
+      "color": [ 255, 204, 68 ],
+      "category": "yellow"
+    },
+    {
       "name": "Auripigment",
       "description": "",
       "color": [ 230, 230, 20 ],
@@ -131,12 +137,6 @@
       "description": "",
       "color": [ 102, 2, 60 ],
       "category": "purple"
-    },
-    {
-      "name": "Holzkohle",
-      "description": "",
-      "color": [ 0, 0, 2 ],
-      "category": "black"
     },
     {
       "name": "Elfenbeinschwarz",
