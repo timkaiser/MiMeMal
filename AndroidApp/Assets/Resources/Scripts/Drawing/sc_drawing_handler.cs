@@ -6,6 +6,7 @@ using UnityEngine;
 public class sc_drawing_handler : MonoBehaviour
 {
     public Color drawing_color;         // current drawing color
+    public Color default_color;         // default drawing color
 
     public bool active;                 // drawing enabled
 
@@ -45,6 +46,9 @@ public class sc_drawing_handler : MonoBehaviour
 
         // set component mask
         component_mask = (Texture2D)obj.GetComponent<Renderer>().material.GetTexture("_ComponentMask");
+
+        // set default color
+        default_color = new Color(160f / 255f, 100f / 255f, 30f / 255f, 1);
     }
 
     void Update()    {

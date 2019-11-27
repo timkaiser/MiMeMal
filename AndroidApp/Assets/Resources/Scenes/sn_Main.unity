@@ -382,7 +382,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Speichern und zur\xFCck zur Infoansicht?"
+  m_Text: Speichern und in Galerie ansehen?
 --- !u!222 &63993433
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7029,6 +7029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawing_color: {r: 1, g: 1, b: 1, a: 1}
+  default_color: {r: 0, g: 0, b: 0, a: 1}
   active: 0
   canvas: {fileID: 0}
   active_tool: 0

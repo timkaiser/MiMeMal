@@ -47,10 +47,11 @@ public class sc_color_picker_ui : MonoBehaviour
         drawing_canvas = sc_canvas.instance.drawing_canvas;
         color_picker_canvas = sc_canvas.instance.color_picker_canvas;
 
-        //set to white color
-        current_color = new Vector3(0, 0, 1);
+        //set to default color
+        Color.RGBToHSV(drawing_script.default_color, out float h, out float s, out float v);
+        current_color = new Vector3(h, s, v);
         slider_color = Resources.Load("Materials/m_slider") as Material;
-        slider_color.SetVector("_HSVColor", new Vector4(0, 0, 1, 1));
+        slider_color.SetVector("_HSVColor", new Vector4(h, s, v, 1));
 
         //init recently used
         recently_selected = new Button[num_saved_colors];

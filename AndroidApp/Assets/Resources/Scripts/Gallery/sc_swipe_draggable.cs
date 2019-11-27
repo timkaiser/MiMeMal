@@ -7,7 +7,7 @@ public class sc_swipe_draggable : MonoBehaviour
 
     public float rotationSpeed;
 
-    private bool locked = false;
+    private bool locked = true;
 
     //lerp variables
     private bool lerpLock = true;

@@ -29,6 +29,9 @@ public class sc_drawing_ui : MonoBehaviour
         name_input = save_dialog.transform.Find("NameInput").GetComponent<InputField>();
         age_input = save_dialog.transform.Find("AgeInput").GetComponent<InputField>();
         sex_input = save_dialog.transform.Find("SexDropdown").GetComponent<Dropdown>();
+        brush_button.transform.Find("BrushIcon").Find("BrushHead").GetComponent<Image>().color = drawing_script.default_color;
+        bucket_button.transform.Find("BucketIcon").Find("BucketContents").GetComponent<Image>().color = drawing_script.default_color;
+        drawing_script.drawing_color = drawing_script.default_color;
     }
 
     //gets called when the save button is pressed
@@ -151,10 +154,10 @@ public class sc_drawing_ui : MonoBehaviour
     //switches from the drawing ui to the gallery
     public void draw_to_gallery()
     {
-        brush_button.transform.Find("BrushIcon").Find("BrushHead").GetComponent<Image>().color = Color.white;
-        bucket_button.transform.Find("BucketIcon").Find("BucketContents").GetComponent<Image>().color = Color.white;
-        color_picker.set_color(Color.white);
-        drawing_script.drawing_color = Color.white;
+        brush_button.transform.Find("BrushIcon").Find("BrushHead").GetComponent<Image>().color = drawing_script.default_color;
+        bucket_button.transform.Find("BucketIcon").Find("BucketContents").GetComponent<Image>().color = drawing_script.default_color;
+        color_picker.set_color(drawing_script.default_color);
+        drawing_script.drawing_color = drawing_script.default_color;
         warning.SetActive(false);
         brush_size_slider.SetActive(false);
         drawing_script.active = false;
