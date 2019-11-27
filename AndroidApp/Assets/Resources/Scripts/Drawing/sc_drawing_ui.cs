@@ -43,6 +43,12 @@ public class sc_drawing_ui : MonoBehaviour
     {
         save_dialog.SetActive(false);
         drawing_script.active = true;
+        info_name = "";
+        info_age = "";
+        info_sex = "";
+        name_input.text = "";
+        age_input.text = "";
+        sex_input.SetValueWithoutNotify(0);
     }
 
     //gets called when saving is confirmed in the save dialog
@@ -53,6 +59,9 @@ public class sc_drawing_ui : MonoBehaviour
         info_name = "";
         info_age = "";
         info_sex = "";
+        name_input.text = "";
+        age_input.text = "";
+        sex_input.SetValueWithoutNotify(0);
         draw_to_gallery();
     }
 
