@@ -48,7 +48,7 @@ public class sc_drawing_handler : MonoBehaviour
         component_mask = (Texture2D)obj.GetComponent<Renderer>().material.GetTexture("_ComponentMask");
 
         // set default color
-        default_color = new Color(160f / 255f, 100f / 255f, 30f / 255f, 1);
+        default_color = new Color(220f / 255f, 160f / 255f, 90f / 255f, 1);
     }
 
     void Update()    {

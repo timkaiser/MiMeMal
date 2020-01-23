@@ -61,12 +61,11 @@ public class sc_color_picker_ui : MonoBehaviour
         int rect_width = (int)(container.rect.width * color_picker_canvas.GetComponent<Canvas>().scaleFactor);
         int rect_height = (int)(container.rect.height * color_picker_canvas.GetComponent<Canvas>().scaleFactor);
         int intervalX = rect_width / (num_saved_colors + 1);
-        int intervalY = -rect_height / 2;
-        intervalY = (int)(intervalY + (0.25 * intervalY));
+        int intervalY = -rect_height/10;
         for (int i = 0; i < num_saved_colors; i++)
         {
             GameObject o = Instantiate(button_prefab, recently_selected_container.transform);
-            o.transform.localPosition = new Vector3(-(rect_width/2 - intervalX) + intervalX * i, (float)Math.IEEERemainder(intervalY,100), 0);
+            o.transform.localPosition = new Vector3(-(rect_width/2 - intervalX) + intervalX * i, intervalY, 0);
             //o.transform.Translate(new Vector3(intervalX + intervalX * i, intervalY, 0));
             Button b = o.transform.Find("Button").GetComponent<Button>();
             recently_selected[i] = b;

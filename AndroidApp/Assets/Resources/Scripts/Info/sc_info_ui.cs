@@ -16,6 +16,8 @@ public class sc_info_ui : MonoBehaviour
         info_canvas = sc_canvas.instance.info_canvas;
         gallery_canvas = sc_canvas.instance.gallery_canvas;
         drawing_canvas = sc_canvas.instance.drawing_canvas;
+
+        gallery_loader.set_to_default();
     }
 
     //switch from the info back to the gallery screen
