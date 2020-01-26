@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class sc_pigments : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class sc_pigments : MonoBehaviour
 
     public int num_horizontal;       //number of pigments to display in a row
     public int num_vertical;         //number of rows
+    public string cathegory;
 
     private Pigment[] pigments;      //Array containing all pigments to display
     private sc_color_picker_ui color_picker_ui; //UI containing color picker to display currently selected color
@@ -23,6 +25,15 @@ public class sc_pigments : MonoBehaviour
         TextAsset file = Resources.Load("Data/pigments") as TextAsset;
         string json = file.ToString();
         pigments = JsonHelper.FromJson<Pigment>(json);
+        List<Pigment> pigments_needed = new List<Pigment>();
+        for (int i = 0; i < pigments.Length; i++)
+        {
+            if(pigments[i].category == cathegory)
+            {
+                pigments_needed.Add(pigments[i]);
+            }
+        }
+        pigments = pigments_needed.ToArray();
         int numberOfPigments = pigments.Length;
 
         //Add pigment buttons as regular grid

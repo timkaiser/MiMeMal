@@ -61,7 +61,7 @@ public class sc_color_picker_ui : MonoBehaviour
         int rect_width = (int)(container.rect.width * color_picker_canvas.GetComponent<Canvas>().scaleFactor);
         int rect_height = (int)(container.rect.height * color_picker_canvas.GetComponent<Canvas>().scaleFactor);
         int intervalX = rect_width / (num_saved_colors + 1);
-        int intervalY = -rect_height/10;
+        int intervalY = -rect_height/8;
         for (int i = 0; i < num_saved_colors; i++)
         {
             GameObject o = Instantiate(button_prefab, recently_selected_container.transform);

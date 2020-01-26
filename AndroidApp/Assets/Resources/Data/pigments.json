@@ -143,6 +143,247 @@
       "description": "",
       "color": [ 0, 0, 0 ],
       "category": "black"
+    },
+    {
+      "name": "Skin1",
+      "description": "",
+      "color": [ 249, 215, 202 ],
+      "category": "skin"
+    },
+    {
+      "name": "Skin2",
+      "description": "",
+      "color": [ 244, 169, 137 ],
+      "category": "skin"
+    },
+    {
+      "name": "Skin3",
+      "description": "",
+      "color": [ 116, 63, 49 ],
+      "category": "skin"
+    },
+    {
+      "name": "Skin4",
+      "description": "",
+      "color": [ 82, 37, 0 ],
+      "category": "skin"
+    },
+    {
+      "name": "Skin5",
+      "description": "",
+      "color": [ 133, 73, 23 ],
+      "category": "skin"
+    },
+    {
+      "name": "Skin6",
+      "description": "",
+      "color": [ 223, 162, 111 ],
+      "category": "skin"
+    },
+    {
+      "name": "Skin7",
+      "description": "",
+      "color": [ 255, 218, 180 ],
+      "category": "skin"
+    },
+    {
+      "name": "Skin8",
+      "description": "",
+      "color": [ 235, 203, 126 ],
+      "category": "skin"
+    },
+    {
+      "name": "Hair1",
+      "description": "",
+      "color": [ 36, 28, 17 ],
+      "category": "hair"
+    },
+    {
+      "name": "Hair2",
+      "description": "",
+      "color": [ 79, 26, 0 ],
+      "category": "hair"
+    },
+    {
+      "name": "Hair3",
+      "description": "",
+      "color": [ 154, 51, 0 ],
+      "category": "hair"
+    },
+    {
+      "name": "Hair4",
+      "description": "",
+      "color": [ 149, 106, 55 ],
+      "category": "hair"
+    },
+    {
+      "name": "Hair5",
+      "description": "",
+      "color": [ 228, 176, 39 ],
+      "category": "hair"
+    },
+    {
+      "name": "Hair6",
+      "description": "",
+      "color": [ 255, 250, 132 ],
+      "category": "hair"
+    },
+    {
+      "name": "Hair7",
+      "description": "",
+      "color": [ 251, 231, 161 ],
+      "category": "hair"
+    },
+    {
+      "name": "Hair8",
+      "description": "",
+      "color": [ 220, 220, 220 ],
+      "category": "hair"
+    },
+    {
+      "name": "OthersPastel1",
+      "description": "",
+      "color": [ 255, 192, 207 ],
+      "category": "others"
+    },
+    {
+      "name": "OthersPastel2",
+      "description": "",
+      "color": [ 192, 250, 245 ],
+      "category": "others"
+    },
+    {
+      "name": "OthersPastel3",
+      "description": "",
+      "color": [ 206, 201, 229 ],
+      "category": "others"
+    },
+    {
+      "name": "OthersPastel4",
+      "description": "",
+      "color": [ 113, 199, 229 ],
+      "category": "others"
+    },
+    {
+      "name": "OthersPastel5",
+      "description": "",
+      "color": [ 194, 234, 206 ],
+      "category": "others"
+    },
+    {
+      "name": "OthersSat1",
+      "description": "",
+      "color": [ 250, 53, 162 ],
+      "category": "others"
+    },
+    {
+      "name": "OthersSat7",
+      "description": "",
+      "color": [ 114, 71, 161 ],
+      "category": "others"
+    },
+    {
+      "name": "OthersSat5",
+      "description": "",
+      "color": [ 95, 30, 118 ],
+      "category": "others"
+    },
+    {
+      "name": "OthersSat6",
+      "description": "",
+      "color": [ 52, 10, 88 ],
+      "category": "others"
+    },
+    {
+      "name": "OthersNature1",
+      "description": "",
+      "color": [ 5, 29, 146 ],
+      "category": "others"
+    },
+    {
+      "name": "OthersNature2",
+      "description": "",
+      "color": [ 9, 100, 184 ],
+      "category": "others"
+    },
+    {
+      "name": "OthersNature5",
+      "description": "",
+      "color": [ 2, 210, 164 ],
+      "category": "others"
+    },
+    {
+      "name": "OthersNature4",
+      "description": "",
+      "color": [ 37, 88, 79 ],
+      "category": "others"
+    },
+    {
+      "name": "OthersNature4",
+      "description": "",
+      "color": [ 0, 82, 0 ],
+      "category": "others"
+    },
+    {
+      "name": "OthersNature3",
+      "description": "",
+      "color": [ 0, 147, 22 ],
+      "category": "others"
+    },
+    {
+      "name": "Others",
+      "description": "",
+      "color": [ 89, 199, 41 ],
+      "category": "others"
+    },
+    {
+      "name": "Others",
+      "description": "",
+      "color": [ 108, 146, 0 ],
+      "category": "others"
+    },
+    {
+      "name": "Others",
+      "description": "",
+      "color": [ 255, 228, 0 ],
+      "category": "others"
+    },
+    {
+      "name": "Others",
+      "description": "",
+      "color": [ 253, 165, 0 ],
+      "category": "others"
+    },
+    {
+      "name": "Others",
+      "description": "",
+      "color": [ 230, 108, 15 ],
+      "category": "others"
+    },
+    {
+      "name": "Others",
+      "description": "",
+      "color": [ 255, 0, 0 ],
+      "category": "others"
+    },
+    {
+      "name": "Others",
+      "description": "",
+      "color": [ 124, 4, 4 ],
+      "category": "others"
+    },
+    {
+      "name": "Others",
+      "description": "",
+      "color": [ 0, 0, 0 ],
+      "category": "others"
+    },
+    {
+      "name": "Others",
+      "description": "",
+      "color": [ 255, 255, 255 ],
+      "category": "others"
     }
+
   ]
 }
