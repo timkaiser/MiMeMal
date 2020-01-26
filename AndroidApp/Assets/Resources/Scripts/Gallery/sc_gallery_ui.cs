@@ -48,6 +48,7 @@ public class sc_gallery_ui : MonoBehaviour
         drawing_ui.enableBrushThicknessButton();
         drawing_ui.bucket_button.SetActive(false);
         drawing_ui.brush_button.SetActive(true);
+        tutorial_screen.SetActive(false);
     }
 
     //switch to the info screen
@@ -56,20 +57,20 @@ public class sc_gallery_ui : MonoBehaviour
         info_canvas.SetActive(true);
         gallery_canvas.SetActive(false);
         gallery_loader.set_to_default();
-    }
-
-    //shows the tutorial, is called when help button is pressed
-    public void open_tutorial()
-    {
-        tutorial_screen.SetActive(true);
-        filename.text = gallery_loader.get_current_filename();
-    }
-
-    //closes the tutorial, is called when screen is touched anywhere
-    public void close_tutorial()
-    {
         tutorial_screen.SetActive(false);
     }
+
+    //shows the name of the current drawing, is called when help title text is pressed
+    public void toggleName()
+    {
+        if (!tutorial_screen.active) {
+            tutorial_screen.SetActive(true);
+            filename.text = gallery_loader.get_current_filename();
+        } else {
+            tutorial_screen.SetActive(false);
+        }
+    }
+
 
     //cancels autobrowse, then enables it again
     public void restartAutoBrowse() {
