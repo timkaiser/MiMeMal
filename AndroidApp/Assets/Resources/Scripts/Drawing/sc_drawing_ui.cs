@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class sc_drawing_ui : MonoBehaviour
 {
     public GameObject brush_size_slider, brush_button, bucket_button,
-        tutorial_screen, /*warning,*/ save_dialog; //UI elements
+        tutorial_screen, /*warning,*/ save_dialog, tutorial_background; //UI elements
     public Button brush_size_icon;
     private GameObject drawing_canvas, color_picker_canvas, gallery_canvas; //canvases to switch to
     private sc_drawing_handler drawing_script; //script responsible for drawing
@@ -194,6 +194,7 @@ public class sc_drawing_ui : MonoBehaviour
     //closes the tutorial screen, called upon touching screen anywhere
     public void close_tutorial()
     {
+        tutorial_background.SetActive(false);
         drawing_script.active = true;
         tutorial_screen.SetActive(false);
     }
