@@ -180,7 +180,7 @@ public class sc_drawing_ui : MonoBehaviour
     {
         brush_size_slider.SetActive(false);
         drawing_script.active = false; //deactivate drawing so touches are not interpreted as drawing
-        drawing_canvas.SetActive(false);
+        //drawing_canvas.SetActive(false);
         color_picker_canvas.SetActive(true);
     }
 

@@ -16,7 +16,7 @@ public class sc_gallery_ui : MonoBehaviour
     public void Awake()
     {
         //init auto browse
-        restartAutoBrowse();
+        //restartAutoBrowse();
     }
 
     // Start is called before the first frame update

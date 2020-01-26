@@ -32,13 +32,15 @@ public class sc_gallery_loader : MonoBehaviour
         } else {
             instance = this;
         }
+
+        // read in historic texture version such that default is available
+        historic_version = load_resource("Textures/Historic_Version", TextureFormat.ARGB32);
+        grabstele = GameObject.FindGameObjectWithTag("paintable");
     }
 
     // Start is called before the first frame update
     public void Start()
     {
-        grabstele = GameObject.FindGameObjectWithTag("paintable");
-        historic_version = load_resource("Textures/Historic_Version", TextureFormat.ARGB32);
         filenames = new List<string>();
 
         //load the example images
@@ -68,8 +70,8 @@ public class sc_gallery_loader : MonoBehaviour
         {
             //start in the middle of the examples
             current_value = num_examples / 2;
-            grabstele.GetComponent<Renderer>().material.mainTexture = textures[current_value];
-            sc_connection_handler.instance.send(textures[current_value]);
+            //grabstele.GetComponent<Renderer>().material.mainTexture = textures[current_value];
+            //sc_connection_handler.instance.send(textures[current_value]);
         }
         else
         {
