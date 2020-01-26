@@ -33,7 +33,7 @@ public class sc_info_ui : MonoBehaviour
         drawing_canvas.SetActive(true);
         drawing_script.active = true;
         drawing_script.reset_canvas();
-        drawing_ui.brush_size_icon.SetActive(true);
+        drawing_ui.enableBrushThicknessButton();
         drawing_ui.bucket_button.SetActive(false);
         drawing_ui.brush_button.SetActive(true);
     }

@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class sc_drawing_ui : MonoBehaviour
 {
-    public GameObject brush_size_slider, brush_size_icon, brush_button, bucket_button,
-        tutorial_screen, warning, save_dialog; //UI elements
-
+    public GameObject brush_size_slider, brush_button, bucket_button,
+        tutorial_screen, /*warning,*/ save_dialog; //UI elements
+    public Button brush_size_icon;
     private GameObject drawing_canvas, color_picker_canvas, gallery_canvas; //canvases to switch to
     private sc_drawing_handler drawing_script; //script responsible for drawing
     private sc_gallery_loader gallery_loader; //used to add current image to the gallery on saving
@@ -127,15 +127,24 @@ public class sc_drawing_ui : MonoBehaviour
         {
             brush_button.SetActive(false);
             bucket_button.SetActive(true);
-            brush_size_icon.SetActive(false);
+            disableBrushThicknessButton();
             return;
         }
         bucket_button.SetActive(false);
         brush_button.SetActive(true);
-        brush_size_icon.SetActive(true);
+        enableBrushThicknessButton();
     }
 
-    //gets called when back arrow icon is pressed
+    public void disableBrushThicknessButton() {
+        brush_size_slider.SetActive(false);
+        brush_size_icon.interactable = false;
+    }
+
+    public void enableBrushThicknessButton() {
+        brush_size_icon.interactable = true;
+    }
+
+    /*//gets called when back arrow icon is pressed
     //shows a warning
     public void back_button_pressed()
     {
@@ -149,7 +158,7 @@ public class sc_drawing_ui : MonoBehaviour
     {
         warning.SetActive(false);
         drawing_script.active = true;
-    }
+    }*/
 
     //switches from the drawing ui to the gallery
     public void draw_to_gallery()
@@ -158,7 +167,7 @@ public class sc_drawing_ui : MonoBehaviour
         bucket_button.transform.Find("BucketIcon").Find("BucketContents").GetComponent<Image>().color = drawing_script.default_color;
         color_picker.set_color(drawing_script.default_color);
         drawing_script.drawing_color = drawing_script.default_color;
-        warning.SetActive(false);
+        save_dialog.SetActive(false);
         brush_size_slider.SetActive(false);
         drawing_script.active = false;
         drawing_canvas.SetActive(false);
