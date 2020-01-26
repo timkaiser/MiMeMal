@@ -19,7 +19,7 @@ public class sc_connection_handler : MonoBehaviour {
     private TextureFormat[] texture_formats = { TextureFormat.RGB24, TextureFormat.ARGB32};
     private string command = "";
     private Vector4 position_data;
-    private Color color = Color.white;
+    private Color color = new Color(160f / 255f, 100f / 255f, 30f / 255f, 1);
     private bool position_changed = false;
     private bool reset = false;
     private bool mouse_button_down = false;
@@ -36,6 +36,10 @@ public class sc_connection_handler : MonoBehaviour {
     private sc_tool[] tools = { new sc_tool_brush(), new sc_tool_fill() };           // list of all tools
 
     private sc_texture_loader texture_loader;
+
+    // undo
+    public bool undoStep = false;
+    public RenderTexture undoCanvas;
 
     public async void Awake() {
         //singelton initialization
@@ -68,6 +72,7 @@ public class sc_connection_handler : MonoBehaviour {
         await client.Subscribe("uvimage resolution", receiveUVImage_resolution);
         await client.Subscribe("color", receiveColor);
         await client.Subscribe("brush size", receive_brush_size);
+        await client.Subscribe("undo", receiveUndo);
 
         Debug.Log("connected");
         connected = true;
@@ -79,6 +84,11 @@ public class sc_connection_handler : MonoBehaviour {
             updated = false;
             texture_loader.setTexture(Resources.Load<Texture2D>("Textures/"+command));
             command = "";
+        }
+        //undo
+        if (undoStep) { 
+            undo();
+            undoStep = false;
         }
 
         //sets every other texture
@@ -101,6 +111,10 @@ public class sc_connection_handler : MonoBehaviour {
 
         if(position_changed)
         {
+            if (mouse_button_down && position_data.z != -1) {
+                saveForUndo();
+            }
+
             tools[(int)position_data.w].perFrame(canvas, uvRT, component_mask, position_data.x, position_data.y, position_data.z, color, mouse_button_down);
             position_changed = false;
             mouse_button_down = false;
@@ -173,6 +187,11 @@ public class sc_connection_handler : MonoBehaviour {
 
     public void receiveCommand(TopicDataRecord dir) {
         command = dir.String;
+        Debug.Log("Received command: " + command);
+    }
+    public void receiveUndo(TopicDataRecord dir) {
+        undoStep = dir.Bool;
+        Debug.Log("Received undo command: " + undoStep);
     }
 
     public void receivePositionData(TopicDataRecord dir)
@@ -180,7 +199,9 @@ public class sc_connection_handler : MonoBehaviour {
         position_data = UbiiParser.ProtoToUnity(dir.Vector4);
         mouse_button_down = mouse_button_down || position_data.z >= 999;
         position_data.z = position_data.z >= 999?position_data.z-1000:position_data.z;
-        Debug.Log(position_data + ", " + mouse_button_down);
+        //Debug.Log(position_data + ", " + mouse_button_down);
+        Debug.Log("Recieved Position");
+
         position_changed = true;
     }
 
@@ -220,7 +241,7 @@ public class sc_connection_handler : MonoBehaviour {
     // INPUT/OUTPUT: none
     private void reset_canvas()
     {
-        color = Color.white;
+        color = new Color(160f / 255f, 100f / 255f, 30f / 255f, 1);
         if (canvas != null)
         {
             DestroyImmediate(canvas);
@@ -242,5 +263,29 @@ public class sc_connection_handler : MonoBehaviour {
         dest.anisoLevel = 0;
         dest.Create();
         Graphics.Blit(src, dest);
+    }
+
+    // this methode saves the current canvas for a potential undo
+    private void saveForUndo() {
+        if (undoCanvas == null) {
+            //setup drawing texture
+            undoCanvas = new RenderTexture(canvas.width, canvas.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Default);
+            undoCanvas.enableRandomWrite = true;
+            undoCanvas.filterMode = FilterMode.Point;
+            undoCanvas.anisoLevel = 0;
+            undoCanvas.Create();
+        }
+        Graphics.Blit(canvas, undoCanvas);
+        Debug.Log("Saved for undo");
+    }
+
+    //undo last step
+    public void undo() {
+        if (undoCanvas == null) {
+            saveForUndo();
+            return;
+        }
+        Graphics.Blit(undoCanvas, canvas);
+        Debug.Log("undone");
     }
 }

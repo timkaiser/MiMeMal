@@ -85,6 +85,15 @@ public class sc_connection_handler : MonoBehaviour {
         Debug.Log("Sent color: " + c);
     }
 
+    public void send_undo() {
+        if (!connected) {
+            Debug.Log("Couldn't send undo command. Not connected.");
+            return; 
+        }
+        client.Publish(UbiiParser.UnityToProto("undo", true));
+        Debug.Log("Sent undo command");
+    }
+
     public void send_reset_canvas()
     {
         if (!connected) { return; }

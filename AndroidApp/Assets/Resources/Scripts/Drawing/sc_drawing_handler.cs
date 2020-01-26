@@ -15,7 +15,12 @@ public class sc_drawing_handler : MonoBehaviour
     private Texture2D component_mask;  // mask containing all informatinon about the components
 
     public RenderTexture canvas;       // canvas to draw on, used as new object texture
-    private Texture2D canvasTex2D;   // Texture2D version of the canvas. update via convertCanvas(). used for saving and sending
+    private Texture2D canvasTex2D;      // Texture2D version of the canvas. update via convertCanvas(). used for saving and sending
+    public RenderTexture undoCanvas;    // backup of the canvas, used to undo the last step
+    public bool isUndone = true;        // bool that indicates wether or not the undo button has already been pressed
+
+    public bool debug_undo = false;
+
 
     private float component_id;        // id of the component at current mouse position
 
@@ -66,9 +71,15 @@ public class sc_drawing_handler : MonoBehaviour
             Color color_at_cursor = read_pixel(sc_UVCamera.uv_image, mouse_x, mouse_y);
             if (color_at_cursor.a != 0) {
                 component_id = component_mask.GetPixel((int)(color_at_cursor.r * component_mask.width), (int)(color_at_cursor.g * component_mask.height)).r;
+                saveForUndo();
             } else {
                 component_id = -1;
             }
+        }
+
+        if (debug_undo) {
+            undo();
+            debug_undo = false;
         }
 
         if (Input.GetMouseButton(0)) {
@@ -200,6 +211,11 @@ public class sc_drawing_handler : MonoBehaviour
 
         // set object texture as canvas
         obj.GetComponent<Renderer>().material.mainTexture = canvas;
+        
+        //reset undo
+        DestroyImmediate(undoCanvas);
+        undoCanvas = null;
+        saveForUndo();
 
         //send uv image
         sc_UVCamera.update_texture();
@@ -211,5 +227,31 @@ public class sc_drawing_handler : MonoBehaviour
         canvasTex2D = new Texture2D(canvas.width, canvas.height, TextureFormat.RGB24, false);
         canvasTex2D.ReadPixels(new Rect(0, 0, canvas.width, canvas.height), 0, 0);
         RenderTexture.active = null;
+    }
+
+    // this methode saves the current canvas for a potential undo
+    private void saveForUndo() {
+        if(undoCanvas == null) {
+            //setup drawing texture
+            undoCanvas = new RenderTexture(canvas.width, canvas.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Default);
+            undoCanvas.enableRandomWrite = true;
+            undoCanvas.filterMode = FilterMode.Point;
+            undoCanvas.anisoLevel = 0;
+            undoCanvas.Create();
+        }
+        Graphics.Blit(canvas, undoCanvas);
+        isUndone = false;
+    }
+
+    //undo last step
+    public void undo() {
+        Debug.Log("undo");
+        if(undoCanvas == null) {
+            saveForUndo();
+            return;
+        }
+        Graphics.Blit(undoCanvas, canvas);
+        sc_connection_handler.instance.send_undo();
+        isUndone = true;
     }
 }
