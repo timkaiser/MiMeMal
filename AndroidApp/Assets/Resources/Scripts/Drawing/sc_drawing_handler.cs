@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class sc_drawing_handler : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class sc_drawing_handler : MonoBehaviour
     public bool isUndone = true;        // bool that indicates wether or not the undo button has already been pressed
 
     public bool debug_undo = false;
-
+    public Button undo_button;
 
     private float component_id;        // id of the component at current mouse position
 
@@ -241,6 +242,7 @@ public class sc_drawing_handler : MonoBehaviour
         }
         Graphics.Blit(canvas, undoCanvas);
         isUndone = false;
+        undo_button.interactable = true;
     }
 
     //undo last step
@@ -253,5 +255,6 @@ public class sc_drawing_handler : MonoBehaviour
         Graphics.Blit(undoCanvas, canvas);
         sc_connection_handler.instance.send_undo();
         isUndone = true;
+        undo_button.interactable = false;
     }
 }
