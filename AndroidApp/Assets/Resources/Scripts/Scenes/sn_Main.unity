@@ -7878,6 +7878,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1286716759}
   - component: {fileID: 1286716758}
+  - component: {fileID: 1286716767}
   - component: {fileID: 1286716757}
   - component: {fileID: 1286716760}
   - component: {fileID: 1286716761}
@@ -8068,6 +8069,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connected: 0
+--- !u!114 &1286716767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1286716755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5efdfe5c8ac04264eb69473e7b4a918b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popup_prefab: {fileID: 3096703315228271376, guid: bf4caa08ff8bb1545b46eb7ddbbe3ecb,
+    type: 3}
+  drawing_canvas: {fileID: 206244958}
 --- !u!1 &1300673499
 GameObject:
   m_ObjectHideFlags: 0

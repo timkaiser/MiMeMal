@@ -9,6 +9,7 @@ public class sc_tool_fill : sc_tool
     //compute shader
     ComputeShader cs_fill;
     private int csKernel;
+    private sc_popup_info popup;
 
     void Start() {
         initialize();
@@ -18,6 +19,7 @@ public class sc_tool_fill : sc_tool
         //setup compute shader
         cs_fill = (ComputeShader)Resources.Load("Shader/cs_filltool");
         csKernel = cs_fill.FindKernel("filling");
+        popup = FindObjectOfType<sc_popup_info>();
     }
 
     public override void perFrame(RenderTexture canvas, RenderTexture uv_image, Texture2D component_mask, float mouse_x, float mouse_y, float component_id, Color drawing_color, bool is_click_start) {
@@ -33,6 +35,8 @@ public class sc_tool_fill : sc_tool
         cs_fill.SetFloat("component_id", component_id);
 
         cs_fill.Dispatch(csKernel, canvas.width / 8, canvas.height / 8, 1);
+
+        popup.show_popup((int)(component_id * 255));
     }
 
 
