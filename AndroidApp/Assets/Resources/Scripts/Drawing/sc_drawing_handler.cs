@@ -153,13 +153,15 @@ public class sc_drawing_handler : MonoBehaviour
     // OUTPUT:
     //      Color, Color at pixel x,y in texture rt
     Color read_pixel(RenderTexture rt, int x, int y)
-    {
+    {     
+        if(x >= rt.width || x < 0 || y >= rt.height || y < 0) { return Color.clear;  };
         Camera cam = GameObject.FindGameObjectWithTag("UVCamera").GetComponent<Camera>();
         cam.targetTexture = rt;
         cam.Render();
 
         RenderTexture.active = rt;
-
+        
+       
         Texture2D pixel = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
 
         pixel.ReadPixels(new Rect(x, y, 1, 1), 0, 0);
@@ -196,8 +198,8 @@ public class sc_drawing_handler : MonoBehaviour
 
     // this methode has to be called at the beginning of the drawing screen. It sets the canvas to the default texture and makes sure it's assigend to the object
     // INPUT/OUTPUT: none
-    public void reset_canvas()
-    {
+    public void reset_canvas() {
+        Debug.Log("Reset Canvas");
         sc_connection_handler.instance.send_reset_canvas();
         activate_tool(0);
         if (canvas != null)
@@ -224,6 +226,7 @@ public class sc_drawing_handler : MonoBehaviour
 
     // this methode converts the canvas to a Texture2D and stores it in canvasTex2D
     private void convertCanvas() {
+        Debug.Log("Convert Canvas");
         RenderTexture.active = canvas;
         canvasTex2D = new Texture2D(canvas.width, canvas.height, TextureFormat.RGB24, false);
         canvasTex2D.ReadPixels(new Rect(0, 0, canvas.width, canvas.height), 0, 0);
@@ -232,7 +235,8 @@ public class sc_drawing_handler : MonoBehaviour
 
     // this methode saves the current canvas for a potential undo
     private void saveForUndo() {
-        if(undoCanvas == null) {
+        Debug.Log("Save for undo");
+        /*if(undoCanvas == null) {
             //setup drawing texture
             undoCanvas = new RenderTexture(canvas.width, canvas.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Default);
             undoCanvas.enableRandomWrite = true;
@@ -242,19 +246,19 @@ public class sc_drawing_handler : MonoBehaviour
         }
         Graphics.Blit(canvas, undoCanvas);
         isUndone = false;
-        undo_button.interactable = true;
+        undo_button.interactable = true;*/
     }
 
     //undo last step
     public void undo() {
         Debug.Log("undo");
-        if(undoCanvas == null) {
+        /*if(undoCanvas == null) {
             saveForUndo();
             return;
         }
         Graphics.Blit(undoCanvas, canvas);
         sc_connection_handler.instance.send_undo();
         isUndone = true;
-        undo_button.interactable = false;
+        undo_button.interactable = false;*/
     }
 }
