@@ -6,8 +6,9 @@ using UnityEngine.UI;
 public class sc_drawing_ui : MonoBehaviour
 {
     public GameObject brush_size_slider, brush_button, bucket_button,
-        tutorial_screen, /*warning,*/ save_dialog, tutorial_background; //UI elements
+        tutorial_screen, save_dialog, tutorial_background; //UI elements
     public Button brush_size_icon;
+
     private GameObject drawing_canvas, color_picker_canvas, gallery_canvas; //canvases to switch to
     private sc_drawing_handler drawing_script; //script responsible for drawing
     private sc_gallery_loader gallery_loader; //used to add current image to the gallery on saving
@@ -32,6 +33,32 @@ public class sc_drawing_ui : MonoBehaviour
         brush_button.transform.Find("BrushIcon").Find("BrushHead").GetComponent<Image>().color = drawing_script.default_color;
         bucket_button.transform.Find("BucketIcon").Find("BucketContents").GetComponent<Image>().color = drawing_script.default_color;
         drawing_script.drawing_color = drawing_script.default_color;
+    }
+
+    //gets called whenever switched to drawing ui and shows help
+    public void init_UI()
+    {
+        // init drawing script
+        drawing_script.active = false;
+        drawing_script.reset_canvas();
+
+        // set default tool to brush
+        enableBrushThicknessButton();
+        bucket_button.SetActive(false);
+        brush_button.SetActive(true);
+
+        // open tutorial
+        drawing_script.active = false;
+        tutorial_screen.SetActive(true);
+        tutorial_background.SetActive(true);
+    }
+
+    //closes the tutorial screen, called upon touching screen anywhere
+    public void close_tutorial()
+    {
+        tutorial_background.SetActive(false);
+        drawing_script.active = true;
+        tutorial_screen.SetActive(false);
     }
 
     //gets called when the save button is pressed
@@ -135,42 +162,33 @@ public class sc_drawing_ui : MonoBehaviour
         enableBrushThicknessButton();
     }
 
+    //deactivate the brush thickness button for the filling tool
     public void disableBrushThicknessButton() {
         brush_size_slider.SetActive(false);
         brush_size_icon.interactable = false;
     }
 
+    //activate the brush thickness button when the brush is used
     public void enableBrushThicknessButton() {
         brush_size_icon.interactable = true;
     }
 
-    /*//gets called when back arrow icon is pressed
-    //shows a warning
-    public void back_button_pressed()
-    {
-        warning.SetActive(true);
-        drawing_script.active = false;
-    }
-
-    //gets called when no is selected in the warning message
-    //stays in the current drawing ui
-    public void back_button_no()
-    {
-        warning.SetActive(false);
-        drawing_script.active = true;
-    }*/
-
     //switches from the drawing ui to the gallery
     public void draw_to_gallery()
     {
+        // reset to default color
         brush_button.transform.Find("BrushIcon").Find("BrushHead").GetComponent<Image>().color = drawing_script.default_color;
         bucket_button.transform.Find("BucketIcon").Find("BucketContents").GetComponent<Image>().color = drawing_script.default_color;
         color_picker.set_color(drawing_script.default_color);
         drawing_script.drawing_color = drawing_script.default_color;
+
+        // close drawing screen
         save_dialog.SetActive(false);
         brush_size_slider.SetActive(false);
         drawing_script.active = false;
         drawing_canvas.SetActive(false);
+
+        // open gallery
         gallery_canvas.SetActive(true);
         gallery_loader.set_to_current();
     }
@@ -180,22 +198,6 @@ public class sc_drawing_ui : MonoBehaviour
     {
         brush_size_slider.SetActive(false);
         drawing_script.active = false; //deactivate drawing so touches are not interpreted as drawing
-        //drawing_canvas.SetActive(false);
         color_picker_canvas.SetActive(true);
-    }
-
-    //gets called whenever switched to drawing ui and shows help
-    public void open_tutorial()
-    {
-        drawing_script.active = false;
-        tutorial_screen.SetActive(true);
-    }
-
-    //closes the tutorial screen, called upon touching screen anywhere
-    public void close_tutorial()
-    {
-        tutorial_background.SetActive(false);
-        drawing_script.active = true;
-        tutorial_screen.SetActive(false);
     }
 }

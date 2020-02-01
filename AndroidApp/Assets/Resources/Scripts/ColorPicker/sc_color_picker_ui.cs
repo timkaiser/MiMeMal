@@ -167,6 +167,15 @@ public class sc_color_picker_ui : MonoBehaviour
         set_color(b.colors.normalColor);
     }
 
+    //switch back to the drawing screen
+    public void color_to_draw()
+    {
+        save_color(drawing_script.drawing_color);
+        drawing_script.active = true;
+        drawing_canvas.SetActive(true);
+        color_picker_canvas.SetActive(false);
+    }
+
     /*
      * saves the currently selected color
      */
@@ -205,15 +214,6 @@ public class sc_color_picker_ui : MonoBehaviour
         {
             Debug.Log("Error while saving current color! " + e.Message);
         }
-    }
-
-    //switch back to the drawing screen
-    public void color_to_draw()
-    {
-        save_color(drawing_script.drawing_color);
-        drawing_script.active = true;
-        drawing_canvas.SetActive(true);
-        color_picker_canvas.SetActive(false);
     }
 
     //communicate the currently selected color to the drawing script and UI icons
