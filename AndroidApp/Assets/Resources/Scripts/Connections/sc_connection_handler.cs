@@ -33,6 +33,9 @@ public class sc_connection_handler : MonoBehaviour {
         await client.InitializeClient();
         Debug.Log("connected");
         connected = true;
+
+        sc_gallery_loader loader = FindObjectOfType<sc_gallery_loader>();
+        send(loader.load_resource("Textures/Historic_Version", TextureFormat.ARGB32));
     }
 
     public void Start()

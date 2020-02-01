@@ -182,7 +182,7 @@ public class sc_gallery_loader : MonoBehaviour
         return current_value;
     }
 
-    private Texture2D load_resource(string name, TextureFormat format)
+    public Texture2D load_resource(string name, TextureFormat format)
     {
         Texture2D tex = Resources.Load(name) as Texture2D;
         Texture2D result = new Texture2D(tex.width, tex.height, format, false);
