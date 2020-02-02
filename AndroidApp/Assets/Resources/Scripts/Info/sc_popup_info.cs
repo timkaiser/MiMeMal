@@ -43,7 +43,30 @@ public class sc_popup_info : MonoBehaviour
             GameObject o = Instantiate(popup_prefab, drawing_canvas.transform);
             Text t = o.transform.Find("Text").GetComponent("Text") as Text;
             t.text = info_texts[component_id];
-            GameObject.Destroy(o, 5);
+            StartCoroutine("fade", o);
         }
+    }
+
+    public IEnumerator fade(GameObject o)
+    {
+        CanvasGroup ui_element = o.GetComponent<CanvasGroup>();
+        float duration = 0.5f;
+        float currentTime = 0f;
+        while (currentTime < duration)
+        {
+            ui_element.alpha = Mathf.Lerp(0f, 1f, currentTime / duration);
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+        yield return new WaitForSeconds(10);
+        currentTime = 0f;
+        while (currentTime < duration)
+        {
+            ui_element.alpha = Mathf.Lerp(1f, 0f, currentTime / duration);
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+        Destroy(o);
+        yield break;
     }
 }
