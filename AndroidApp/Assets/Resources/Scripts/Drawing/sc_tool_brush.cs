@@ -11,6 +11,8 @@ public class sc_tool_brush : sc_tool{
     ComputeShader cs_draw;
     private int csKernel;
 
+    //info popup while drawing
+    private sc_popup_info popup;
 
     //old mouse position
     private float mouse_x_old;
@@ -19,6 +21,7 @@ public class sc_tool_brush : sc_tool{
     public override void initialize() {
         mouse_x_old = -1;
         mouse_y_old = -1;
+        popup = FindObjectOfType<sc_popup_info>();
         //setup compute shader
         cs_draw = (ComputeShader)Resources.Load("Shader/cs_brush");
         csKernel = cs_draw.FindKernel("brush");
@@ -29,6 +32,7 @@ public class sc_tool_brush : sc_tool{
         if (is_click_start) {
             mouse_x_old = mouse_x_new;
             mouse_y_old = mouse_y_new;
+            popup.show_popup((int)(component_id * 255), true);
         }
 
         // call compute shader

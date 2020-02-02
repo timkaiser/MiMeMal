@@ -5,10 +5,10 @@ using static sc_drawing_handler;
 
 public class sc_tool_fill : sc_tool
 {
- 
     //compute shader
     ComputeShader cs_fill;
     private int csKernel;
+    //info popup while drawing
     private sc_popup_info popup;
 
     void Start() {
@@ -36,7 +36,7 @@ public class sc_tool_fill : sc_tool
 
         cs_fill.Dispatch(csKernel, canvas.width / 8, canvas.height / 8, 1);
 
-        popup.show_popup((int)(component_id * 255));
+        popup.show_popup((int)(component_id * 255), false);
     }
 
 

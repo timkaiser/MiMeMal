@@ -12,6 +12,9 @@ public class sc_popup_info : MonoBehaviour
 
     private Dictionary<int, string> info_texts;
 
+    private bool popup_currently_visible = false;
+    private int current_popup_id = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,10 +39,16 @@ public class sc_popup_info : MonoBehaviour
         
     }
 
-    public void show_popup(int component_id)
+    public void show_popup(int component_id, bool brush)
     {
         if (info_texts.ContainsKey(component_id))
         {
+            if(brush && popup_currently_visible && current_popup_id == component_id)
+            {
+                return;
+            }
+            popup_currently_visible = true;
+            current_popup_id = component_id;
             GameObject o = Instantiate(popup_prefab, drawing_canvas.transform);
             Text t = o.transform.Find("Text").GetComponent("Text") as Text;
             t.text = info_texts[component_id];
@@ -67,6 +76,7 @@ public class sc_popup_info : MonoBehaviour
             yield return null;
         }
         Destroy(o);
+        popup_currently_visible = false;
         yield break;
     }
 }
