@@ -10,6 +10,7 @@ public class sc_gallery_ui : MonoBehaviour
     private GameObject info_canvas, gallery_canvas, drawing_canvas; //for switching views
     private sc_gallery_loader gallery_loader; //script responsible for loading the texture files
     private sc_drawing_ui drawing_ui; //UI of the drawing screen
+    private sc_info_ui info_ui;
 
     public float auto_browse_seconds; //timerate at which displayed image is changed
 
@@ -33,6 +34,7 @@ public class sc_gallery_ui : MonoBehaviour
         drawing_canvas = sc_canvas.instance.drawing_canvas;
         gallery_loader = FindObjectOfType<sc_gallery_loader>();
         drawing_ui = FindObjectOfType<sc_drawing_ui>();
+        info_ui = FindObjectOfType<sc_info_ui>();
     }
 
     //gets called when switching from the gallery to the drawing screen
@@ -50,7 +52,7 @@ public class sc_gallery_ui : MonoBehaviour
         filename_display.SetActive(false);
         info_canvas.SetActive(true);
         gallery_canvas.SetActive(false);
-        gallery_loader.set_to_default();
+        info_ui.init_UI();
     }
 
     //shows the name of the current drawing, is called when help title text is pressed
@@ -64,21 +66,6 @@ public class sc_gallery_ui : MonoBehaviour
         else
         {
             filename_display.SetActive(false);
-        }
-    }
-
-    //cancels autobrowse, then enables it again
-    public void restartAutoBrowse() {
-        CancelInvoke();
-        InvokeRepeating("AutoBrowse", auto_browse_seconds, auto_browse_seconds);
-    }
-
-    //coroutine calls the next function every set time, implements automatic browsing
-    void AutoBrowse()
-    {
-        if (gallery_canvas.activeSelf)
-        {
-            gallery_loader.next();
         }
     }
 }

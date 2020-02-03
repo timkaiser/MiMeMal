@@ -77,6 +77,5 @@ public class sc_popup_info : MonoBehaviour
         }
         Destroy(o);
         popup_currently_visible = false;
-        yield break;
     }
 }

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class sc_info_ui : MonoBehaviour
@@ -19,13 +21,13 @@ public class sc_info_ui : MonoBehaviour
         drawing_canvas = sc_canvas.instance.drawing_canvas;
         InfoButtons = GameObject.FindGameObjectsWithTag("InfoButton");
 
-        gallery_loader.set_to_default();
+        init_UI();
     }
 
     //switch from the info back to the gallery screen
     public void info_to_gallery()
     {
-        exit();
+        exit_UI();
         info_canvas.SetActive(false);
         gallery_canvas.SetActive(true);
         gallery_loader.set_to_current();
@@ -34,17 +36,54 @@ public class sc_info_ui : MonoBehaviour
     //switch from the info to the drawing screen
     public void info_to_draw()
     {
-        exit();
+        exit_UI();
         info_canvas.SetActive(false);
         drawing_canvas.SetActive(true);
         drawing_ui.init_UI();
     }
 
-    private void exit()
+    //reset the color of the info buttons and stop wobbling
+    private void exit_UI()
     {
         foreach(GameObject info in InfoButtons)
         {
             info.GetComponent<Image>().color = Color.white;
         }
+        CancelInvoke("start_wobble");
+    }
+
+    //restart to wobble
+    public void init_UI()
+    {
+        gallery_loader.set_to_default();
+        InvokeRepeating("start_wobble", 5, 5);
+    }
+
+    //wobble a random info button
+    private void start_wobble()
+    {
+        int idx = Random.Range(0, InfoButtons.Length);
+        Debug.Log(idx);
+        StartCoroutine("wobble", InfoButtons[idx]);
+    }
+
+    public IEnumerator wobble(GameObject o)
+    {
+        float speed = 25.0f;
+        float amount = 4f;
+
+        float duration = 1f;
+        float currentTime = 0f;
+
+        Vector3 startPosition = o.transform.position;
+        while (currentTime < duration)
+        {
+            o.transform.Translate(Mathf.Sin(currentTime * speed) * amount, Mathf.Sin(currentTime * speed) * amount, 0);
+            Debug.Log(o.transform.position);
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+        //reset to old position
+        o.transform.SetPositionAndRotation(startPosition, Quaternion.identity);
     }
 }
