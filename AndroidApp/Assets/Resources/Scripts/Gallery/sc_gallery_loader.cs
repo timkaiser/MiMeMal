@@ -11,7 +11,7 @@ using System;
  */
 public class sc_gallery_loader : MonoBehaviour
 {
-    public int num_examples = 6;        //number of provided example drawings
+    public int num_examples = 5;        //number of provided example drawings
 
     private GameObject grabstele;       //the paintable object
 
@@ -184,6 +184,7 @@ public class sc_gallery_loader : MonoBehaviour
 
     public Texture2D load_resource(string name, TextureFormat format)
     {
+        //Debug.Log(name);
         Texture2D tex = Resources.Load(name) as Texture2D;
         Texture2D result = new Texture2D(tex.width, tex.height, format, false);
         result.SetPixels(tex.GetPixels());
