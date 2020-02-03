@@ -8,15 +8,23 @@ public class sc_popup_info : MonoBehaviour
     private static sc_popup_info instance; // singelton instance to avoid the doubeling of this script
 
     public GameObject popup_prefab;
-    public GameObject drawing_canvas;
+
+    private GameObject drawing_canvas;
+    private sc_info_ui info_ui;
 
     private Dictionary<int, string> info_texts;
+
+    private bool popup_currently_visible = false;
+    private int current_popup_id = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         // avoid doubeling of this script
         if (instance != null && instance != this) { Destroy(this.gameObject); } else { instance = this; }
+
+        drawing_canvas = sc_canvas.instance.drawing_canvas;
+        info_ui = FindObjectOfType<sc_info_ui>();
 
         info_texts = new Dictionary<int, string>();
         info_texts[175] = "Mit einem Bart kennzeichneten die Griechen unabhänig von seinem tatsächlichen Aussehen einen älteren Mann und Familienvorstand.";
@@ -30,20 +38,47 @@ public class sc_popup_info : MonoBehaviour
         info_texts[26] = "Der Schusterleisten weist auf den Beruf des Verstorbenen als Schuster hin.";
     }
 
-    // Update is called once per frame
-    void Update()
+    //is called by the tools when an area is selected for drawing
+    public void show_popup(int component_id, bool brush)
     {
-        
-    }
-
-    public void show_popup(int component_id)
-    {
-        if (info_texts.ContainsKey(component_id))
+        if (info_texts.ContainsKey(component_id)) // if there is an interesting text to display
         {
+            // if brush tool is used do not show new popup every click on same area if old one is still visible
+            if(brush && popup_currently_visible && current_popup_id == component_id)
+            {
+                return;
+            }
+            popup_currently_visible = true;
+            current_popup_id = component_id;
+            // create a new popup and set the displayed text accordingly
             GameObject o = Instantiate(popup_prefab, drawing_canvas.transform);
             Text t = o.transform.Find("Text").GetComponent("Text") as Text;
             t.text = info_texts[component_id];
-            GameObject.Destroy(o, 5);
+            StartCoroutine("fade", o);
         }
+    }
+
+    //fades in a canvas group and fades it out after some time
+    public IEnumerator fade(GameObject o)
+    {
+        CanvasGroup ui_element = o.GetComponent<CanvasGroup>();
+        float duration = 0.5f;
+        float currentTime = 0f;
+        while (currentTime < duration)
+        {
+            ui_element.alpha = Mathf.Lerp(0f, 1f, currentTime / duration);
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+        yield return new WaitForSeconds(info_ui.popup_drawing_duration);
+        currentTime = 0f;
+        while (currentTime < duration)
+        {
+            ui_element.alpha = Mathf.Lerp(1f, 0f, currentTime / duration);
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+        Destroy(o);
+        popup_currently_visible = false;
     }
 }

@@ -13,6 +13,7 @@ TagManager:
   - Tutorial
   - InfoBox
   - script_manager
+  - InfoButton
   layers:
   - Default
   - TransparentFX

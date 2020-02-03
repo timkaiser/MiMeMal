@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 534214171688765868}
   - component: {fileID: 1619544767507860126}
   - component: {fileID: 7872415910087701730}
+  - component: {fileID: 1738022833532810588}
   m_Layer: 5
   m_Name: InfoPopup
   m_TagString: Untagged
@@ -77,6 +78,18 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!225 &1738022833532810588
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3096703315228271376}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3203097043074822688
 GameObject:
   m_ObjectHideFlags: 0
