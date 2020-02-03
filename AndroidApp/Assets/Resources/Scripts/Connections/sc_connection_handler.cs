@@ -104,14 +104,10 @@ public class sc_connection_handler : MonoBehaviour {
         Debug.Log("Sent reset canvas");
     }
 
-    public bool send_uvimage(Texture2D image, Vector2 resolution)
-    {
-        Debug.Log(connected + " trying to send uv image");
-        if (!connected) { return false; }
+    public void sendUVResolution(Vector2 resolution) {
+        if (!connected) { return; }
         client.Publish(UbiiParser.UnityToProto("uvimage resolution", resolution));
-        client.Publish(UbiiParser.UnityToProto("uvimage", Convert.ToBase64String(image.GetRawTextureData())));
-        Debug.Log("Sent uvimage");
-        return true;
+        Debug.Log("Sent uv resolution");
     }
 
     public void send_brush_size(int size)
