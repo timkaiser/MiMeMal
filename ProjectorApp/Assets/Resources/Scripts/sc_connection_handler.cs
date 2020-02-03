@@ -25,10 +25,10 @@ public class sc_connection_handler : MonoBehaviour {
     private bool mouse_button_down = false;
     public Texture2D component_mask;
     public RenderTexture canvas;
-    public RenderTexture uvRT;
-    private byte[] uv_image_bytes = null;
     public Vector2 uv_resolution = new Vector2(0, 0);
-    public bool uv_image_received = false;
+
+    public Texture2D uv_1600x2560;
+    public Texture2D uv_1536x2048;
 
     // drawing tools
     [SerializeField]
@@ -57,6 +57,24 @@ public class sc_connection_handler : MonoBehaviour {
             t.initialize();
         }
 
+        //load uv textures
+        string path = "Assets/Resources/Textures/uv_1600x2560";
+        byte[] data = System.IO.File.ReadAllBytes(path);
+
+        uv_1600x2560 = new Texture2D(1600, 2560, TextureFormat.RGBAFloat, false);
+        uv_1600x2560.LoadRawTextureData(data);
+        uv_1600x2560.Apply();
+
+
+        path = "Assets/Resources/Textures/uv_1536x2048";
+        data = System.IO.File.ReadAllBytes(path);
+
+        uv_1536x2048 = new Texture2D(1536, 2048, TextureFormat.RGBAFloat, false);
+        uv_1536x2048.LoadRawTextureData(data);
+        uv_1536x2048.Apply();
+
+
+        //connect to server
         sc_save_management.loadNetConfig(out string ip, out string port);
         client.ip = ip;
         client.port = int.Parse(port);
@@ -68,7 +86,6 @@ public class sc_connection_handler : MonoBehaviour {
         await client.Subscribe("command", receiveCommand);
         await client.Subscribe("position", receivePositionData);
         await client.Subscribe("reset canvas", reset_canvas_requested);
-        await client.Subscribe("uvimage", receiveUVImage);
         await client.Subscribe("uvimage resolution", receiveUVImage_resolution);
         await client.Subscribe("color", receiveColor);
         await client.Subscribe("brush size", receive_brush_size);
@@ -109,15 +126,17 @@ public class sc_connection_handler : MonoBehaviour {
             updated = false;
         }
 
-        if(position_changed)
+        if(position_changed && uv_resolution.x != 0)
         {
             if (mouse_button_down && position_data.z != -1) {
                 saveForUndo();
             }
 
-            tools[(int)position_data.w].perFrame(canvas, uvRT, component_mask, position_data.x, position_data.y, position_data.z, color, mouse_button_down);
+            tools[(int)position_data.w].perFrame(canvas, uv_resolution.x == 1600?uv_1600x2560:uv_1536x2048, component_mask, position_data.x, uv_resolution.y-position_data.y, position_data.z, color, mouse_button_down);
             position_changed = false;
             mouse_button_down = false;
+        }else if(uv_resolution.x == 0) {
+            Debug.Log("Resolution == 0");
         }
 
         if(reset)
@@ -125,46 +144,6 @@ public class sc_connection_handler : MonoBehaviour {
             reset_canvas();
             reset = false;
         }
-
-        if(uv_image_bytes != null && uv_image_bytes.Length > 0)
-        {
-            if (uv_resolution.x == 0 || uv_resolution.y == 0)
-            {
-                Debug.Log("error while parsing uv image: wrong resolution. trying s4 resolution.");
-                uv_resolution = new Vector2(1600, 2560);
-                try
-                {
-                    parse_uv_image();
-                } catch (Exception)
-                {
-                    Debug.Log("error while parsing uv image: wrong resolution. trying s3 resolution.");
-                    uv_resolution = new Vector2(1536, 2048);
-                    try
-                    {
-                        parse_uv_image();
-                    }
-                    catch (Exception)
-                    {
-                        Debug.LogError("could not parse uv image");
-                    }
-                }
-            }
-            parse_uv_image();
-        }
-    }
-
-    private void parse_uv_image()
-    {
-        Debug.Log("parsing uv image");
-        Texture2D uv_image = new Texture2D((int)uv_resolution.x, (int)uv_resolution.y, TextureFormat.RGBAFloat, false);
-        uv_image.LoadRawTextureData(uv_image_bytes);
-        uv_image.Apply();
-        uv_image_bytes = null;
-
-        uvRT = new RenderTexture((int)uv_resolution.x, (int)uv_resolution.y, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Default);
-        Graphics.Blit(uv_image, uvRT);
-        Debug.Log("received uv image");
-        uv_image_received = true;
     }
 
     public void receiveImage(TopicDataRecord dir) {
@@ -216,12 +195,6 @@ public class sc_connection_handler : MonoBehaviour {
     {
         reset = true;
         Debug.Log("canvas reset");
-    }
-
-    public void receiveUVImage(TopicDataRecord dir)
-    {
-        uv_image_bytes = Convert.FromBase64String(dir.String);
-        Debug.Log("received uv image bytes " + uv_image_bytes);
     }
 
     public void receiveUVImage_resolution(TopicDataRecord dir)

@@ -21,8 +21,8 @@ public class sc_tool_brush : sc_tool{
         csKernel = cs_draw.FindKernel("brush");
     }
 
-    public override void perFrame(RenderTexture canvas, RenderTexture uv_image, Texture2D component_mask, float mouse_x_new, float mouse_y_new, float component_id, Color drawing_color, bool is_click_start) {
-        mouse_y_new = sc_connection_handler.instance.uv_resolution.y - mouse_y_new;
+    public override void perFrame(RenderTexture canvas, Texture uv_image, Texture2D component_mask, float mouse_x_new, float mouse_y_new, float component_id, Color drawing_color, bool is_click_start) {
+        //mouse_y_new = sc_connection_handler.instance.uv_resolution.y - mouse_y_new;
         if (is_click_start) {
             mouse_x_old = mouse_x_new;
             mouse_y_old = mouse_y_new;

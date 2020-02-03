@@ -14,6 +14,7 @@ public class sc_drawing_handler : MonoBehaviour
     private static sc_drawing_handler instance; // singelton instance to avoid the doubeling of this script
 
     private Texture2D component_mask;  // mask containing all informatinon about the components
+    public Texture2D uvImage;
 
     public RenderTexture canvas;       // canvas to draw on, used as new object texture
     private Texture2D canvasTex2D;      // Texture2D version of the canvas. update via convertCanvas(). used for saving and sending
@@ -53,23 +54,36 @@ public class sc_drawing_handler : MonoBehaviour
         // set component mask
         component_mask = (Texture2D)obj.GetComponent<Renderer>().material.GetTexture("_ComponentMask");
 
+        Camera cam = FindObjectOfType<Camera>();
+        if (!((cam.pixelWidth == 1600 && cam.pixelHeight == 2560) || (cam.pixelWidth == 1536 && cam.pixelHeight == 2048))) {
+            Debug.LogError("Wrong resolution. This app only works with 1600x2560 or 1536x2048");
+            return;
+        }
+
+        //load uv textures
+        string path = "Assets/Resources/Textures/uv_" + cam.pixelWidth + "x" + cam.pixelHeight;
+        byte[] data = System.IO.File.ReadAllBytes(path);
+
+        uvImage = new Texture2D(cam.pixelWidth, cam.pixelHeight, TextureFormat.RGBAFloat, false);
+        uvImage.LoadRawTextureData(data);
+        uvImage.Apply();
+        /*uvImage = new RenderTexture(tex.width, tex.height, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Default);
+        Graphics.Blit(tex, uvImage);*/
+
+
+
         // set default color
         default_color = new Color(220f / 255f, 160f / 255f, 90f / 255f, 1);
     }
 
     void Update()    {
         if (!active) { return; }
-        /*if (time_last_sent + time_between_sending < Time.time) {
-            convertCanvas();
-            sc_connection_handler.instance.send(canvasTex2D);
-            time_last_sent = Time.time;
-        }*/
 
         int mouse_x = (int)Input.mousePosition.x;
         int mouse_y = Screen.height - (int)Input.mousePosition.y;
 
         if (Input.GetMouseButtonDown(0)) {
-            Color color_at_cursor = read_pixel(sc_UVCamera.uv_image, mouse_x, mouse_y);
+            Color color_at_cursor = uvImage.GetPixel(mouse_x, uvImage.height-mouse_y);
             if (color_at_cursor.a != 0) {
                 component_id = component_mask.GetPixel((int)(color_at_cursor.r * component_mask.width), (int)(color_at_cursor.g * component_mask.height)).r;
                 saveForUndo();
@@ -86,7 +100,7 @@ public class sc_drawing_handler : MonoBehaviour
         if (Input.GetMouseButton(0)) {
             bool mouse_down = Input.GetMouseButtonDown(0);
             sc_connection_handler.instance.send(new Vector4(mouse_x, mouse_y, component_id + (mouse_down?1000:0), active_tool));
-            tools[active_tool].perFrame(canvas, sc_UVCamera.uv_image, component_mask, mouse_x, mouse_y, component_id, drawing_color, mouse_down);
+            tools[active_tool].perFrame(canvas, uvImage, component_mask, mouse_x, mouse_y, component_id, drawing_color, mouse_down);
         }
 
     }
@@ -145,31 +159,6 @@ public class sc_drawing_handler : MonoBehaviour
         Graphics.Blit(src, dest);
     }
 
-
-    // This methode reads a single pixel of a rendertexture. This is not very efficient. Do not use it too much.
-    // INPUT:
-    //      rt:  RenderTexture, Texture that should be read off
-    //      x,y: int, Position off the pixel that should be read
-    // OUTPUT:
-    //      Color, Color at pixel x,y in texture rt
-    Color read_pixel(RenderTexture rt, int x, int y)
-    {
-        Camera cam = GameObject.FindGameObjectWithTag("UVCamera").GetComponent<Camera>();
-        cam.targetTexture = rt;
-        cam.Render();
-
-        RenderTexture.active = rt;
-
-        Texture2D pixel = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
-
-        pixel.ReadPixels(new Rect(x, y, 1, 1), 0, 0);
-        pixel.Apply();
-
-        Color col = pixel.GetPixel(0, 0);
-        DestroyImmediate(pixel);
-        return col;
-    }
-
     public string save_drawing(string infoText)
     { //source: https://gist.github.com/krzys-h/76c518be0516fb1e94c7efbdcd028830
         convertCanvas();
@@ -218,8 +207,7 @@ public class sc_drawing_handler : MonoBehaviour
         undoCanvas = null;
         saveForUndo();
 
-        //send uv image
-        sc_UVCamera.update_texture();
+        sc_connection_handler.instance.sendUVResolution(new Vector2(uvImage.width, uvImage.height));
     }
 
     // this methode converts the canvas to a Texture2D and stores it in canvasTex2D

@@ -32,7 +32,7 @@ public class sc_UVCamera : MonoBehaviour
         GetComponent<Camera>().SetReplacementShader((Shader)Resources.Load("Shader/sh_UVShader"), "");
     }
 
-    public static void update_texture()
+    /*public static void update_texture()
     {
         if (uv_image_tex != null) return;
 
@@ -44,5 +44,5 @@ public class sc_UVCamera : MonoBehaviour
         RenderTexture.active = oldRT;
 
         if(!sc_connection_handler.instance.send_uvimage(uv_image_tex, new Vector2(uv_image.width, uv_image.height))) uv_image_tex = null;
-    }
+    }*/
 }
