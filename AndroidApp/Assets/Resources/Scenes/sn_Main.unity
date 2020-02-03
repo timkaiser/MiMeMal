@@ -8000,6 +8000,7 @@ MonoBehaviour:
   drawing_color: {r: 1, g: 1, b: 1, a: 1}
   default_color: {r: 0, g: 0, b: 0, a: 1}
   active: 0
+  uvImage: {fileID: 0}
   canvas: {fileID: 0}
   undoCanvas: {fileID: 0}
   isUndone: 1
@@ -8098,6 +8099,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1eb9769046cf184780b5b5dc1e528b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wobbling_speed: 25
+  wobbling_amount: 4
+  wobbling_duration: 1
+  wobbling_interval: 5
+  popup_drawing_duration: 10
 --- !u!114 &1286716764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8154,7 +8160,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popup_prefab: {fileID: 3096703315228271376, guid: bf4caa08ff8bb1545b46eb7ddbbe3ecb,
     type: 3}
-  drawing_canvas: {fileID: 206244958}
 --- !u!1 &1300673499
 GameObject:
   m_ObjectHideFlags: 0
