@@ -23,10 +23,12 @@ public class sc_calibration : MonoBehaviour {
     public int current_step_size = 0;
 
     // modes
-    public string[] modes = { "translate", "prespective", "scale" };
+    public string[] modes = { "translate", "prespective", "scale", "color" };
     public int current_mode = 0;
 
     public bool show_ui = false; // indicates wether to show the debug ui
+
+    public GameObject stele;
 
     // vectors thant indicate what changes in different modes
     public Vector4[][] manipulation_vectors = {
@@ -81,30 +83,39 @@ public class sc_calibration : MonoBehaviour {
             time_since_last_change = -10;
             sc_save_management.saveCalibration(matrix);
         }
-        
 
-        // manipulate projection matrix on input
-        Vector4[] new_proj_vec = new Vector4[3];
-
-        for (int i = 0; i < 3; i++) {
-            if (Input.GetKeyDown(key_codes[i * 2])) {
-                new_proj_vec[i] = matrix.GetRow(i) + manipulation_vectors[current_mode][i] * step_sizes[current_step_size];
-            } else if (Input.GetKeyDown(key_codes[i * 2 + 1])) {
-                new_proj_vec[i] = matrix.GetRow(i) + manipulation_vectors[current_mode][i] * step_sizes[current_step_size] * -1;
-            } else {
-                new_proj_vec[i] = matrix.GetRow(i);
+        if (current_mode == 3) {//color
+            if (Input.GetKeyDown(key_codes[0])){
+                stele.GetComponent<Renderer>().material.SetFloat("_TextureBlendValue", Mathf.Max(stele.GetComponent<Renderer>().material.GetFloat("_TextureBlendValue") - step_sizes[current_step_size],0));
             }
+            if (Input.GetKeyDown(key_codes[1])) {
+                stele.GetComponent<Renderer>().material.SetFloat("_TextureBlendValue", Mathf.Min(stele.GetComponent<Renderer>().material.GetFloat("_TextureBlendValue") + step_sizes[current_step_size], 1));
+            }
+        } else {//projection
+            // manipulate projection matrix on input
+            Vector4[] new_proj_vec = new Vector4[3];
+
+            for (int i = 0; i < 3; i++) {
+                if (Input.GetKeyDown(key_codes[i * 2])) {
+                    new_proj_vec[i] = matrix.GetRow(i) + manipulation_vectors[current_mode][i] * step_sizes[current_step_size];
+                } else if (Input.GetKeyDown(key_codes[i * 2 + 1])) {
+                    new_proj_vec[i] = matrix.GetRow(i) + manipulation_vectors[current_mode][i] * step_sizes[current_step_size] * -1;
+                } else {
+                    new_proj_vec[i] = matrix.GetRow(i);
+                }
+            }
+
+
+            // apply manipulation
+            matrix = new Matrix4x4(new_proj_vec[0], new_proj_vec[1], new_proj_vec[2], matrix.GetRow(3)).transpose;
+
+            //remeber time for saving
+            if (matrix != cam.worldToCameraMatrix) {
+                time_since_last_change = Time.time;
+            }
+
+            cam.worldToCameraMatrix = matrix;
         }
-
-        // apply manipulation
-        matrix = new Matrix4x4(new_proj_vec[0], new_proj_vec[1], new_proj_vec[2], matrix.GetRow(3)).transpose;
-
-        //remeber time for saving
-        if(matrix != cam.worldToCameraMatrix) {
-            time_since_last_change = Time.time;
-        }
-
-        cam.worldToCameraMatrix = matrix;
     }
 
 }

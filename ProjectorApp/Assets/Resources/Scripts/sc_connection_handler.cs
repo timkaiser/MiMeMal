@@ -135,8 +135,6 @@ public class sc_connection_handler : MonoBehaviour {
             tools[(int)position_data.w].perFrame(canvas, uv_resolution.x == 1600?uv_1600x2560:uv_1536x2048, component_mask, position_data.x, uv_resolution.y-position_data.y, position_data.z, color, mouse_button_down);
             position_changed = false;
             mouse_button_down = false;
-        }else if(uv_resolution.x == 0) {
-            Debug.Log("Resolution == 0");
         }
 
         if(reset)

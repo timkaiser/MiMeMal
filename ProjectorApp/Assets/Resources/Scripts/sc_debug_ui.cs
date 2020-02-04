@@ -39,18 +39,23 @@ public class sc_debug_ui : MonoBehaviour {
             .Append("  Step size: ").Append(calibration_script.step_sizes[calibration_script.current_step_size])
             .AppendLine();
 
-        for (int i = 0; i<4; i++) {
-            for (int j = 0; j < 4; j++) {
-                bool manipulated = i<3 && calibration_script.manipulation_vectors[calibration_script.current_mode][i][j] != 0;
+        if (calibration_script.current_mode < 3) {
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    bool manipulated = i < 3 && calibration_script.manipulation_vectors[calibration_script.current_mode][i][j] != 0;
 
-                float m_ij = Mathf.Round(calibration_script.matrix.GetRow(i)[j]*100)/100.0f;
+                    float m_ij = Mathf.Round(calibration_script.matrix.GetRow(i)[j] * 100) / 100.0f;
 
-                msg.Append(m_ij >= 0? " ": "")
-                    .Append(manipulated?"(":" ")
-                    .Append(m_ij)
-                    .Append(manipulated ? ")" : " ")
-                    .Append("\t");
+                    msg.Append(m_ij >= 0 ? " " : "")
+                        .Append(manipulated ? "(" : " ")
+                        .Append(m_ij)
+                        .Append(manipulated ? ")" : " ")
+                        .Append("\t");
+                }
+                msg.AppendLine();
             }
+        } else {
+            msg.Append(calibration_script.stele.GetComponent<Renderer>().material.GetFloat("_TextureBlendValue"));
             msg.AppendLine();
         }
 
