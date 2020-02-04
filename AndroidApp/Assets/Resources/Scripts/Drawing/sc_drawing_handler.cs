@@ -14,7 +14,7 @@ public class sc_drawing_handler : MonoBehaviour
     private static sc_drawing_handler instance; // singelton instance to avoid the doubeling of this script
 
     private Texture2D component_mask;  // mask containing all informatinon about the components
-    public Texture2D uvImage;
+    public static Texture2D uvImage;
 
     public RenderTexture canvas;       // canvas to draw on, used as new object texture
     private Texture2D canvasTex2D;      // Texture2D version of the canvas. update via convertCanvas(). used for saving and sending
@@ -55,7 +55,7 @@ public class sc_drawing_handler : MonoBehaviour
         component_mask = (Texture2D)obj.GetComponent<Renderer>().material.GetTexture("_ComponentMask");
 
         Camera cam = FindObjectOfType<Camera>();
-        if (!((cam.pixelWidth == 1600 && cam.pixelHeight == 2560) || (cam.pixelWidth == 1536 && cam.pixelHeight == 2048))) {
+        /*if (!((cam.pixelWidth == 1600 && cam.pixelHeight == 2560) || (cam.pixelWidth == 1536 && cam.pixelHeight == 2048))) {
             Debug.LogError("Wrong resolution. This app only works with 1600x2560 or 1536x2048");
             return;
         }
@@ -66,11 +66,9 @@ public class sc_drawing_handler : MonoBehaviour
 
         uvImage = new Texture2D(cam.pixelWidth, cam.pixelHeight, TextureFormat.RGBAFloat, false);
         uvImage.LoadRawTextureData(data);
-        uvImage.Apply();
+        uvImage.Apply();*/
         /*uvImage = new RenderTexture(tex.width, tex.height, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Default);
         Graphics.Blit(tex, uvImage);*/
-
-
 
         // set default color
         default_color = new Color(220f / 255f, 160f / 255f, 90f / 255f, 1);
@@ -187,6 +185,8 @@ public class sc_drawing_handler : MonoBehaviour
     // INPUT/OUTPUT: none
     public void reset_canvas()
     {
+        sc_UVCamera.update_texture();
+
         sc_connection_handler.instance.send_reset_canvas();
         activate_tool(0);
         if (canvas != null)
