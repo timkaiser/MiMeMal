@@ -32,9 +32,8 @@ public class sc_UVCamera : MonoBehaviour
         GetComponent<Camera>().SetReplacementShader((Shader)Resources.Load("Shader/sh_UVShader"), "");
     }
 
-    /*public static void update_texture()
+    public static void update_texture()
     {
-        if (uv_image_tex != null) return;
 
         var oldRT = RenderTexture.active;
         uv_image_tex = new Texture2D(uv_image.width, uv_image.height, TextureFormat.RGBAFloat, false);
@@ -43,6 +42,7 @@ public class sc_UVCamera : MonoBehaviour
         uv_image_tex.Apply();
         RenderTexture.active = oldRT;
 
-        if(!sc_connection_handler.instance.send_uvimage(uv_image_tex, new Vector2(uv_image.width, uv_image.height))) uv_image_tex = null;
-    }*/
+        sc_drawing_handler.uvImage = uv_image_tex;
+        //if(!sc_connection_handler.instance.send_uvimage(uv_image_tex, new Vector2(uv_image.width, uv_image.height))) uv_image_tex = null;
+    }
 }
