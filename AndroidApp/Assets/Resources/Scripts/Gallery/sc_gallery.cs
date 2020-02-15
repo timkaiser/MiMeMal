@@ -21,18 +21,18 @@ public class sc_gallery : MonoBehaviour
     {
         rotation_script.Unlock();
         //restart the auto browse
-        InvokeRepeating("auto_browse", gallery_ui_script.auto_browse_seconds, gallery_ui_script.auto_browse_seconds);
+        //InvokeRepeating("auto_browse", gallery_ui_script.auto_browse_seconds, gallery_ui_script.auto_browse_seconds);
     }
 
     private void OnDisable()
     {
         rotation_script.Lock();
-        CancelInvoke("auto_browse");
+        //CancelInvoke("auto_browse");
     }
 
     //coroutine calls the next function every set time, implements automatic browsing
-    void auto_browse()
-    {
-        gallery_loader.next();
-    }
+    //void auto_browse()
+    //{
+        //gallery_loader.next();
+    //}
 }

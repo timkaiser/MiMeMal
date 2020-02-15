@@ -12,7 +12,8 @@ public class sc_drawing_ui : MonoBehaviour
     private GameObject drawing_canvas, color_picker_canvas, gallery_canvas; //canvases to switch to
     private sc_drawing_handler drawing_script; //script responsible for drawing
     private sc_gallery_loader gallery_loader; //used to add current image to the gallery on saving
-    private sc_color_picker_ui color_picker;
+    private sc_color_picker_ui color_picker; //UI of the color picker
+    private sc_gallery_ui gallery_ui; //UI of the gallery
 
     private InputField name_input, age_input;
     private Dropdown sex_input;
@@ -27,6 +28,7 @@ public class sc_drawing_ui : MonoBehaviour
         drawing_script = FindObjectOfType<sc_drawing_handler>();
         gallery_loader = FindObjectOfType<sc_gallery_loader>();
         color_picker = FindObjectOfType<sc_color_picker_ui>();
+        gallery_ui = FindObjectOfType<sc_gallery_ui>();
         name_input = save_dialog.transform.Find("NameInput").GetComponent<InputField>();
         age_input = save_dialog.transform.Find("AgeInput").GetComponent<InputField>();
         sex_input = save_dialog.transform.Find("SexDropdown").GetComponent<Dropdown>();
@@ -176,6 +178,14 @@ public class sc_drawing_ui : MonoBehaviour
     //switches from the drawing ui to the gallery
     public void draw_to_gallery()
     {
+        exit_UI();
+        drawing_canvas.SetActive(false);
+        gallery_canvas.SetActive(true);
+        gallery_ui.init_UI();
+    }
+
+    public void exit_UI()
+    {
         // reset to default color
         brush_button.transform.Find("BrushIcon").Find("BrushHead").GetComponent<Image>().color = drawing_script.default_color;
         bucket_button.transform.Find("BucketIcon").Find("BucketContents").GetComponent<Image>().color = drawing_script.default_color;
@@ -186,11 +196,6 @@ public class sc_drawing_ui : MonoBehaviour
         save_dialog.SetActive(false);
         brush_size_slider.SetActive(false);
         drawing_script.active = false;
-        drawing_canvas.SetActive(false);
-
-        // open gallery
-        gallery_canvas.SetActive(true);
-        gallery_loader.set_to_current();
     }
 
     //switches from the drawing ui to color selection

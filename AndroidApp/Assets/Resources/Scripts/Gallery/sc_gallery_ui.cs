@@ -40,7 +40,7 @@ public class sc_gallery_ui : MonoBehaviour
     //gets called when switching from the gallery to the drawing screen
     public void gallery_to_draw()
     {
-        filename_display.SetActive(false);
+        exit_UI();
         drawing_canvas.SetActive(true);
         gallery_canvas.SetActive(false);
         drawing_ui.init_UI();
@@ -49,10 +49,20 @@ public class sc_gallery_ui : MonoBehaviour
     //switch to the info screen
     public void gallery_to_info()
     {
-        filename_display.SetActive(false);
+        exit_UI();
         info_canvas.SetActive(true);
         gallery_canvas.SetActive(false);
         info_ui.init_UI();
+    }
+
+    public void exit_UI()
+    {
+        filename_display.SetActive(false);
+    }
+
+    public void init_UI()
+    {
+        gallery_loader.set_to_current();
     }
 
     //shows the name of the current drawing, is called when help title text is pressed

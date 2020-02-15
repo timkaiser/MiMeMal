@@ -14,6 +14,7 @@ public class sc_info_ui : MonoBehaviour
     private GameObject info_canvas, drawing_canvas, gallery_canvas; //the canvases to switch between
     private sc_gallery_loader gallery_loader; //responsible for loading the images
     private sc_drawing_ui drawing_ui; //UI control of the drawing screen
+    private sc_gallery_ui gallery_ui;
 
     private GameObject[] InfoButtons;
     private List<GameObject> InfoRead;
@@ -22,6 +23,7 @@ public class sc_info_ui : MonoBehaviour
     public void Start()
     {
         drawing_ui = FindObjectOfType<sc_drawing_ui>();
+        gallery_ui = FindObjectOfType<sc_gallery_ui>();
         gallery_loader = FindObjectOfType<sc_gallery_loader>();
         info_canvas = sc_canvas.instance.info_canvas;
         gallery_canvas = sc_canvas.instance.gallery_canvas;
@@ -38,7 +40,7 @@ public class sc_info_ui : MonoBehaviour
         exit_UI();
         info_canvas.SetActive(false);
         gallery_canvas.SetActive(true);
-        gallery_loader.set_to_current();
+        gallery_ui.init_UI();
     }
 
     //switch from the info to the drawing screen

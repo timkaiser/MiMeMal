@@ -170,10 +170,15 @@ public class sc_color_picker_ui : MonoBehaviour
     //switch back to the drawing screen
     public void color_to_draw()
     {
-        save_color(drawing_script.drawing_color);
+        exit_UI();
         drawing_script.active = true;
         drawing_canvas.SetActive(true);
         color_picker_canvas.SetActive(false);
+    }
+
+    public void exit_UI()
+    {
+        save_color(drawing_script.drawing_color);
     }
 
     /*
