@@ -26,6 +26,7 @@ public class sc_drawing_handler : MonoBehaviour
 
     private float component_id;        // id of the component at current mouse position
 
+    bool startOfClick = false;          //true if this is the first frame of the click that draws
 
     private float time_last_sent;
     private float time_between_sending = 1.0f;
@@ -80,7 +81,8 @@ public class sc_drawing_handler : MonoBehaviour
         int mouse_x = (int)Input.mousePosition.x;
         int mouse_y = Screen.height - (int)Input.mousePosition.y;
 
-        if (Input.GetMouseButtonDown(0)) {
+        startOfClick = startOfClick || Input.GetMouseButtonDown(0);
+        if (startOfClick) {
             Color color_at_cursor = uvImage.GetPixel(mouse_x, uvImage.height-mouse_y);
             if (color_at_cursor.a != 0) {
                 component_id = component_mask.GetPixel((int)(color_at_cursor.r * component_mask.width), (int)(color_at_cursor.g * component_mask.height)).r;
@@ -101,6 +103,9 @@ public class sc_drawing_handler : MonoBehaviour
             tools[active_tool].perFrame(canvas, uvImage, component_mask, mouse_x, mouse_y, component_id, drawing_color, mouse_down);
         }
 
+        if(component_id != -1) {
+            startOfClick = false;
+        }
     }
 
     public void activate_tool(int tool_id)
