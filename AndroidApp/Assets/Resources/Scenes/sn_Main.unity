@@ -8000,7 +8000,6 @@ MonoBehaviour:
   drawing_color: {r: 1, g: 1, b: 1, a: 1}
   default_color: {r: 0, g: 0, b: 0, a: 1}
   active: 0
-  uvImage: {fileID: 0}
   canvas: {fileID: 0}
   undoCanvas: {fileID: 0}
   isUndone: 1
@@ -11553,10 +11552,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 1889558000}
   m_HandleRect: {fileID: 1596537572}
   m_Direction: 0
-  m_MinValue: 10
+  m_MinValue: 4
   m_MaxValue: 120
   m_WholeNumbers: 1
-  m_Value: 50
+  m_Value: 2
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:

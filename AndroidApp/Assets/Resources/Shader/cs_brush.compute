@@ -25,39 +25,40 @@ float size;							// Brush size
  * INPUT:  float2 p:		point to be checked
  * OUTPUT: bool:			wether or not the point has to be draw
  */
-bool isInLine(float2 p) {
+float distToLine(float2 p) {
 	float2 a = float2(x_old, y_old);	// Define point A (for some reason the y coords have to be switched, probably not the best solution but it works)
 	float2 b = float2(x_new, y_new);	// Define point B
 
 	float2 ap = p - a;					// Define vector A to P
 	float2 bp = p - b;					// Define vector B to P
 
-	bool draw = length(ap) <= size / 2 || length(bp) <= size / 2;		// Check wether or not point P is close enough to A or B to be drawn
+	
+	//if (length(ap) <= size / 2 || length(bp) <= size / 2) return 0;	// Check wether or not point P is close enough to A or B to be drawn
 
-	if (!draw) {														// If not check wether or not P is between A and B
-		float2 ab = b - a;												// Define vector A to B
-		float2 o = normalize(float2(-ab.y, ab.x));						// Define vector orthogonal to AB
+	float2 ab = b - a;												// Define vector A to B
+	float2 o = normalize(float2(-ab.y, ab.x));						// Define vector orthogonal to AB
 
-		float d_o = abs(dot(o, ap));									// Calculate distance between A and P alongside the orthogonal vector
-		float d_ab = dot(normalize(ab), ap);							// Calculate distance between A and P alongside vector AB
+	float d_o = abs(dot(o, ap));									// Calculate distance between A and P alongside the orthogonal vector
+	float d_ab = dot(normalize(ab), ap);							// Calculate distance between A and P alongside vector AB
 
-		draw = d_o <= size / 2 && d_ab <= length(ab) && d_ab >= 0;		// Check wether P is between A and B
-	}
+	//draw = d_o <= size / 2 && d_ab <= length(ab) && d_ab >= 0;		// Check wether P is between A and B
 
-	return draw;
+	//return  ? 0 : max(0, d_o-(size/2));
+	return (d_ab <= length(ab) && d_ab >= 0) ? d_o : min(length(ap), length(bp));
 }
 
 /* This is the main part of the shader
  * INPUT: uint3 id: coordinate on the UV texture exerpt
  */
-[numthreads(8,8,1)]
+[numthreads(4,4,1)]
 void brush (uint3 id : SV_DispatchThreadID)
 {
+	float blurr = 0.7f;
 	// Calculate screen position
 	uint2 pos = id.xy + uint2(corner_x, corner_y);
 
 	// If the pixel at position id.xy is not in the line between A and B then cancel
-	if (!isInLine(float2(pos.x, pos.y))) { return; }
+	//if (!isInLine(float2(pos.x, pos.y))) { return; }
 
 	// Get size of the component mask
 	uint2 component_mask_size;
@@ -73,7 +74,9 @@ void brush (uint3 id : SV_DispatchThreadID)
 	// Calculate position on texture
 	int2 px = int2(UV[pos].x*width, (UV[pos].y)*height);
 
+	int d = distToLine(float2(pos.x, pos.y));
+	float alpha = d <= (size / 2) * blurr ? 1 : d <= size / 2 ? (size/2 - d)/((1-blurr)*size/2) : 0;
 	// Set pixel to color
-	Texture[px] = float4(red, green, blue, 1);
+	Texture[px] = Texture[px] * (1-alpha) + float4(red, green, blue, 1) * alpha;
 	
 }
