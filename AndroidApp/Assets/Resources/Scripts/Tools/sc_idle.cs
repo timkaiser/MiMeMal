@@ -40,7 +40,7 @@ public class sc_idle : MonoBehaviour
                 idle_warning_canvas.SetActive(false);
             }
         }
-        else
+        else if (counter < max_time)
         {
             counter++;
         }

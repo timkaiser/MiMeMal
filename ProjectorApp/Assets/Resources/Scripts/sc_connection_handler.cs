@@ -28,7 +28,9 @@ public class sc_connection_handler : MonoBehaviour {
     public Texture2D component_mask;
     public RenderTexture canvas;
     public Vector2 uv_resolution = new Vector2(0, 0);
+    public bool received = false;
 
+    // Render Textures
     public Texture2D uv_1600x2560;
     public Texture2D uv_1536x2048;
 
@@ -46,6 +48,8 @@ public class sc_connection_handler : MonoBehaviour {
     // textures
     public Dictionary<string, Texture2D> textures;
 
+    private sc_idle_gallery idle_gallery;
+
     public async void Awake() {
         //singelton initialization
         if (instance != null) {
@@ -57,6 +61,7 @@ public class sc_connection_handler : MonoBehaviour {
         texture_loader = FindObjectOfType<sc_texture_loader>();
         client = FindObjectOfType<UbiiClient>();
         textures = new Dictionary<string, Texture2D>();
+        idle_gallery = FindObjectOfType<sc_idle_gallery>();
 
         //initialize tools
         foreach (sc_tool t in tools)
@@ -105,6 +110,11 @@ public class sc_connection_handler : MonoBehaviour {
     }
 
     public void Update() {
+        if(received)
+        {
+            idle_gallery.reset_counter();
+            received = false;
+        }
         //Sets textures for info screen
         if(command != "") {
             updated = false;
@@ -125,7 +135,7 @@ public class sc_connection_handler : MonoBehaviour {
             }
             else
             {
-                Texture2D tex = texture_loader.loadTexture(Application.persistentDataPath + "/" + filename, (int)imageSize.x);
+                Texture2D tex = texture_loader.loadTexture(Application.persistentDataPath + "/" + filename);
                 textures.Add(gallery_command, tex);
                 texture_loader.setTexture(tex);
             }
@@ -185,12 +195,14 @@ public class sc_connection_handler : MonoBehaviour {
         updated = true;
 
         Debug.Log("Received Image Data");
+        received = true;
     }
     public void receiveImageSize(TopicDataRecord dir) 
     {
         imageSize = UbiiParser.ProtoToUnity(dir.Vector2);
 
         Debug.Log("Received Image Size");
+        received = true;
     }
 
     public void receiveImageFormat(TopicDataRecord dir) 
@@ -198,27 +210,33 @@ public class sc_connection_handler : MonoBehaviour {
         imageFormatIndex = (int)UbiiParser.ProtoToUnity(dir.Double)-1;      //added -1 to not send empty data (0)
         Debug.Log(imageFormatIndex);
         Debug.Log("Received Image Format");
+        received = true;
     }
 
     public void receiveImageName(TopicDataRecord dir)
     {
         filename = dir.String;
+        received = true;
     }
 
     public void receiveCommand(TopicDataRecord dir) 
     {
         command = dir.String;
         Debug.Log("Received command: " + command);
+        received = true;
     }
 
     public void receiveGalleryCommand(TopicDataRecord dir)
     {
         gallery_command = dir.String;
+        Debug.Log("Received gallery command" + filename);
+        received = true;
     }
 
     public void receiveUndo(TopicDataRecord dir) {
         undoStep = dir.Bool;
         Debug.Log("Received undo command: " + undoStep);
+        received = true;
     }
 
     public void receivePositionData(TopicDataRecord dir)
@@ -230,12 +248,14 @@ public class sc_connection_handler : MonoBehaviour {
         Debug.Log("Recieved Position");
 
         position_changed = true;
+        received = true;
     }
 
     public void receiveColor(TopicDataRecord dir)
     {
         color = UbiiParser.ProtoToUnity(dir.Color);
         Debug.Log("received color " + color);
+        received = true;
     }
 
 
@@ -243,12 +263,14 @@ public class sc_connection_handler : MonoBehaviour {
     {
         reset = true;
         Debug.Log("canvas reset");
+        received = true;
     }
 
     public void receiveUVImage_resolution(TopicDataRecord dir)
     {
         uv_resolution = UbiiParser.ProtoToUnity(dir.Vector2);
         Debug.Log("received uv image resolution " + uv_resolution);
+        received = true;
     }
 
     public void receive_brush_size(TopicDataRecord dir)
@@ -256,6 +278,7 @@ public class sc_connection_handler : MonoBehaviour {
         int brush_size = Convert.ToInt32(dir.String);
         (tools[0] as sc_tool_brush).brush_size = brush_size;
         Debug.Log("received brush size " + brush_size);
+        received = true;
     }
 
     // this methode has to be called at the beginning of the drawing screen. It sets the canvas to the default texture and makes sure it's assigend to the object

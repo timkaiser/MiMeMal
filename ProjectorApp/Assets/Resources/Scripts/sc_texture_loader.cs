@@ -22,7 +22,7 @@ public class sc_texture_loader : MonoBehaviour
         obj.GetComponent<Renderer>().material.mainTexture = tex;
     }
 
-    public Texture2D loadTexture(string path, int resolution)
+    public Texture2D loadTexture(string path, int resolution = 1024)
     {
         byte[] data = File.ReadAllBytes(path);
         Texture2D tex = new Texture2D(resolution, resolution);
@@ -35,7 +35,7 @@ public class sc_texture_loader : MonoBehaviour
         return Resources.Load(path) as Texture2D;
     }
 
-    public Texture2D loadFromBytes(byte[] data, int resolution)
+    public Texture2D loadFromBytes(byte[] data, int resolution = 1024)
     {
         Texture2D result = new Texture2D(resolution, resolution);
         result.LoadImage(data);
