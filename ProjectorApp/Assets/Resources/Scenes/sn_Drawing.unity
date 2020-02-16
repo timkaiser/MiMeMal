@@ -453,7 +453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   num_examples: 6
   counter_max: 4000
-  auto_browse_seconds: 15
+  auto_browse_seconds: 20
 --- !u!23 &1952770373565235298
 MeshRenderer:
   m_ObjectHideFlags: 0
