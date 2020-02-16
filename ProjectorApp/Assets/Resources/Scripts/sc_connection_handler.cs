@@ -8,7 +8,7 @@ using System;
 public class sc_connection_handler : MonoBehaviour {
     //singelton instance
     public static sc_connection_handler instance { set; get; }
-    private UbiiClient client;
+    public UbiiClient client;
     public bool connected = false;
 
     //received data
@@ -68,18 +68,19 @@ public class sc_connection_handler : MonoBehaviour {
         {
             t.initialize();
         }
+      
 
         //load uv textures
-        string path = "Assets/Resources/Textures/uv_1600x2560";
-        byte[] data = System.IO.File.ReadAllBytes(path);
+        string path = "Textures/uv_1600x2560";
+        byte[] data = (Resources.Load(path) as TextAsset).bytes;
 
         uv_1600x2560 = new Texture2D(1600, 2560, TextureFormat.RGBAFloat, false);
         uv_1600x2560.LoadRawTextureData(data);
         uv_1600x2560.Apply();
 
 
-        path = "Assets/Resources/Textures/uv_1536x2048";
-        data = System.IO.File.ReadAllBytes(path);
+        path = "Textures/uv_1536x2048";
+        data = (Resources.Load(path) as TextAsset).bytes;
 
         uv_1536x2048 = new Texture2D(1536, 2048, TextureFormat.RGBAFloat, false);
         uv_1536x2048.LoadRawTextureData(data);
