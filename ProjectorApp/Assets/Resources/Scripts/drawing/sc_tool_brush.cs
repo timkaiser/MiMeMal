@@ -50,7 +50,7 @@ public class sc_tool_brush : sc_tool{
 
         cs_draw.SetFloat("component_id", component_id);
         
-        cs_draw.Dispatch(csKernel, (int)(Mathf.Abs(mouse_x_new - mouse_x_old) + brush_size  / 8), (int)(Mathf.Abs(mouse_y_new - mouse_y_old) + brush_size / 8), 1);
+        cs_draw.Dispatch(csKernel, (int)(Mathf.Abs(mouse_x_new - mouse_x_old) + brush_size  / 4), (int)(Mathf.Abs(mouse_y_new - mouse_y_old) + brush_size / 4), 1);
 
         // set new mouse position
         mouse_x_old = mouse_x_new;
