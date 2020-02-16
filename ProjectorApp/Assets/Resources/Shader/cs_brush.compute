@@ -50,7 +50,7 @@ bool isInLine(float2 p) {
 /* This is the main part of the shader
  * INPUT: uint3 id: coordinate on the UV texture exerpt
  */
-[numthreads(8,8,1)]
+[numthreads(4,4,1)]
 void brush (uint3 id : SV_DispatchThreadID)
 {
 	// Calculate screen position

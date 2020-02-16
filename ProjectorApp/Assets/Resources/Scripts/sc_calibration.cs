@@ -52,6 +52,8 @@ public class sc_calibration : MonoBehaviour {
         }
     };
 
+    public float colorBlend = 0.16f;
+
     public Matrix4x4 matrix;    // Projection matrix
     private Camera cam;    // Main Camera
 
@@ -60,8 +62,13 @@ public class sc_calibration : MonoBehaviour {
     // Called on Startup
     public void Start() {
         cam = this.GetComponent<Camera>();              // get main camera
-        matrix = sc_save_management.loadCalibration();//cam.worldToCameraMatrix;    // get projection matrix
+
+        sc_save_management.loadCalibration(out matrix, out colorBlend);//cam.worldToCameraMatrix;    // get projection matrix
+
+
+        stele.GetComponent<Renderer>().material.SetFloat("_TextureBlendValue", colorBlend);
         Screen.fullScreen = true;
+
     }
 
     // Update is called once per frame
@@ -81,15 +88,17 @@ public class sc_calibration : MonoBehaviour {
         // save calibration
         if (time_since_last_change+3 < Time.time) {
             time_since_last_change = -10;
-            sc_save_management.saveCalibration(matrix);
+            sc_save_management.saveCalibration(matrix, colorBlend);
         }
 
         if (current_mode == 3) {//color
             if (Input.GetKeyDown(key_codes[0])){
-                stele.GetComponent<Renderer>().material.SetFloat("_TextureBlendValue", Mathf.Max(stele.GetComponent<Renderer>().material.GetFloat("_TextureBlendValue") - step_sizes[current_step_size],0));
+                colorBlend = Mathf.Max(colorBlend - step_sizes[current_step_size], 0);
+                stele.GetComponent<Renderer>().material.SetFloat("_TextureBlendValue", colorBlend);
             }
             if (Input.GetKeyDown(key_codes[1])) {
-                stele.GetComponent<Renderer>().material.SetFloat("_TextureBlendValue", Mathf.Min(stele.GetComponent<Renderer>().material.GetFloat("_TextureBlendValue") + step_sizes[current_step_size], 1));
+                colorBlend = Mathf.Min(colorBlend + step_sizes[current_step_size], 1);
+                stele.GetComponent<Renderer>().material.SetFloat("_TextureBlendValue", colorBlend);
             }
         } else {//projection
             // manipulate projection matrix on input

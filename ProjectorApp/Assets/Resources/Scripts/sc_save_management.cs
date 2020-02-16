@@ -10,18 +10,19 @@ public class sc_save_management : MonoBehaviour {
     [System.Serializable]
     struct CalibrationData{
         public float[] matrix;
-
-        public CalibrationData(Matrix4x4 m) {
+        public float colorBlend;
+        public CalibrationData(Matrix4x4 m, float colorBlend) {
             matrix = new float[16];
             for(int i=0; i<16; i++) {
                 matrix[i] = m[i];
             }
+            this.colorBlend = colorBlend;
         }
     }
 
     //saves settings
-    public static void saveCalibration(Matrix4x4 matrix) {
-        CalibrationData data = new CalibrationData(matrix);
+    public static void saveCalibration(Matrix4x4 matrix, float colorBlend) {
+        CalibrationData data = new CalibrationData(matrix, colorBlend);
 
         string destination = Application.persistentDataPath + "/calibration.dat";
         FileStream file;
@@ -35,17 +36,18 @@ public class sc_save_management : MonoBehaviour {
     }
 
     //loads settings
-    public static Matrix4x4 loadCalibration() {
+    public static void loadCalibration(out Matrix4x4 result, out float colorBlend) {
         string destination = Application.persistentDataPath + "/calibration.dat";
         FileStream file;
-        Matrix4x4 result = new Matrix4x4();
+        result = new Matrix4x4();
 
         if (File.Exists(destination)) file = File.OpenRead(destination);
         else {
             result = Matrix4x4.identity;
             result.m22 = -1;
             result.m23 = -5;
-            return result;
+            colorBlend = 0.16f;
+            return;
         }
 
         BinaryFormatter bf = new BinaryFormatter();
@@ -56,7 +58,7 @@ public class sc_save_management : MonoBehaviour {
             result[i] = data.matrix[i];
         }
 
-        return result;
+        colorBlend = data.colorBlend;
     }
 
     //loads settings
