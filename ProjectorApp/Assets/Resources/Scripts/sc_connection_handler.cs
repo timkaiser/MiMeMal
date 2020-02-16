@@ -17,7 +17,9 @@ public class sc_connection_handler : MonoBehaviour {
     private int imageFormatIndex = 0;
     public bool updated = false;
     private TextureFormat[] texture_formats = { TextureFormat.RGB24, TextureFormat.ARGB32};
+    private string filename = "";
     private string command = "";
+    private string gallery_command = "";
     private Vector4 position_data;
     private Color color = new Color(160f / 255f, 100f / 255f, 30f / 255f, 1);
     private bool position_changed = false;
@@ -41,6 +43,9 @@ public class sc_connection_handler : MonoBehaviour {
     public bool undoStep = false;
     public RenderTexture undoCanvas;
 
+    // textures
+    public Dictionary<string, Texture2D> textures;
+
     public async void Awake() {
         //singelton initialization
         if (instance != null) {
@@ -51,6 +56,8 @@ public class sc_connection_handler : MonoBehaviour {
 
         texture_loader = FindObjectOfType<sc_texture_loader>();
         client = FindObjectOfType<UbiiClient>();
+        textures = new Dictionary<string, Texture2D>();
+
         //initialize tools
         foreach (sc_tool t in tools)
         {
@@ -80,10 +87,12 @@ public class sc_connection_handler : MonoBehaviour {
         client.port = int.Parse(port);
 
         await client.InitializeClient();
+        await client.Subscribe("image name", receiveImageName);
         await client.Subscribe("image size", receiveImageSize);
         await client.Subscribe("image format", receiveImageFormat);
         await client.Subscribe("image", receiveImage);
         await client.Subscribe("command", receiveCommand);
+        await client.Subscribe("gallery command", receiveGalleryCommand);
         await client.Subscribe("position", receivePositionData);
         await client.Subscribe("reset canvas", reset_canvas_requested);
         await client.Subscribe("uvimage resolution", receiveUVImage_resolution);
@@ -102,13 +111,34 @@ public class sc_connection_handler : MonoBehaviour {
             texture_loader.setTexture(Resources.Load<Texture2D>("Textures/"+command));
             command = "";
         }
+
+        //sets texture for gallery
+        if(gallery_command != "")
+        {
+            if(textures.ContainsKey(gallery_command))
+            {
+                texture_loader.setTexture(textures[gallery_command]);
+            }
+            else if(gallery_command.StartsWith("Example"))
+            {
+                texture_loader.setTexture(Resources.Load<Texture2D>("Textures/" + gallery_command));
+            }
+            else
+            {
+                Texture2D tex = texture_loader.loadTexture(Application.persistentDataPath + "/" + filename, (int)imageSize.x);
+                textures.Add(gallery_command, tex);
+                texture_loader.setTexture(tex);
+            }
+            gallery_command = "";
+        }
+
         //undo
         if (undoStep) { 
             undo();
             undoStep = false;
         }
 
-        //sets every other texture
+        //load a received texture
         if (updated) {
             if (imageFormatIndex >= texture_formats.Length)
             {
@@ -116,12 +146,17 @@ public class sc_connection_handler : MonoBehaviour {
                 return;
             }
             byte[] b = Convert.FromBase64String(imageData);
-
             Texture2D tex = new Texture2D((int)imageSize.x, (int)imageSize.y, texture_formats[imageFormatIndex], false);
             tex.LoadRawTextureData(b);
             tex.Apply();
 
-            texture_loader.setTexture(tex);
+            //save texture to file
+            byte[] bytes = tex.EncodeToPNG();
+            string path = Application.persistentDataPath + "/" + filename;
+            System.IO.File.WriteAllBytes(path, bytes);
+
+            //add texture to dictionary
+            textures.Add(filename, tex);
 
             updated = false;
         }
@@ -144,28 +179,43 @@ public class sc_connection_handler : MonoBehaviour {
         }
     }
 
-    public void receiveImage(TopicDataRecord dir) {
+    public void receiveImage(TopicDataRecord dir) 
+    {
         imageData = (dir.String);
         updated = true;
 
         Debug.Log("Received Image Data");
     }
-    public void receiveImageSize(TopicDataRecord dir) {
+    public void receiveImageSize(TopicDataRecord dir) 
+    {
         imageSize = UbiiParser.ProtoToUnity(dir.Vector2);
 
         Debug.Log("Received Image Size");
     }
 
-    public void receiveImageFormat(TopicDataRecord dir) {
+    public void receiveImageFormat(TopicDataRecord dir) 
+    {
         imageFormatIndex = (int)UbiiParser.ProtoToUnity(dir.Double)-1;      //added -1 to not send empty data (0)
         Debug.Log(imageFormatIndex);
         Debug.Log("Received Image Format");
     }
 
-    public void receiveCommand(TopicDataRecord dir) {
+    public void receiveImageName(TopicDataRecord dir)
+    {
+        filename = dir.String;
+    }
+
+    public void receiveCommand(TopicDataRecord dir) 
+    {
         command = dir.String;
         Debug.Log("Received command: " + command);
     }
+
+    public void receiveGalleryCommand(TopicDataRecord dir)
+    {
+        gallery_command = dir.String;
+    }
+
     public void receiveUndo(TopicDataRecord dir) {
         undoStep = dir.Bool;
         Debug.Log("Received undo command: " + undoStep);

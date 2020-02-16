@@ -225,7 +225,7 @@ public class sc_color_picker_ui : MonoBehaviour
     private void set_draw_color(Color c)
     {
         drawing_script.drawing_color = c;
-        sc_connection_handler.instance.send(c);
+        sc_connection_handler.instance.send_color(c);
         brush_image.GetComponent<Image>().color = c;
         bucket_image.GetComponent<Image>().color = c;
     }

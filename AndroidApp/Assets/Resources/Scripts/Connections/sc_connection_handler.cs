@@ -34,8 +34,7 @@ public class sc_connection_handler : MonoBehaviour {
         Debug.Log("connected");
         connected = true;
 
-        sc_gallery_loader loader = FindObjectOfType<sc_gallery_loader>();
-        send(loader.load_resource("Textures/Historic_Version", TextureFormat.ARGB32));
+        send_command("InfoDefault");
     }
 
     public void Start()
@@ -56,8 +55,10 @@ public class sc_connection_handler : MonoBehaviour {
     //}
 
 
-    public void send(Texture2D texture) {
+    public void send_texture(Texture2D texture, string filename) {
         if (!connected) { return; }
+        //send filename
+        client.Publish(UbiiParser.UnityToProto("image name", filename));
         //send size
         client.Publish(UbiiParser.UnityToProto("image size", new Vector2(texture.width, texture.height)));
         //send format
@@ -66,22 +67,31 @@ public class sc_connection_handler : MonoBehaviour {
         client.Publish(UbiiParser.UnityToProto("image format", index+1));   // added +1 to not send empty data
         client.Publish(UbiiParser.UnityToProto("image", Convert.ToBase64String(texture.GetRawTextureData())));
 
-        Debug.Log("Sent");
+        Debug.Log("Sent texture");
     }
-    public void send(String command) {
+
+    public void send_gallery_command(string filename)
+    {
+        if (!connected) { return; }
+        //send filename
+        client.Publish(UbiiParser.UnityToProto("gallery command", filename));
+        Debug.Log("Sent filename: " + filename);
+    }
+
+    public void send_command(string command) {
         if (!connected) { return; }
         client.Publish(UbiiParser.UnityToProto("command", command));
         Debug.Log("Sent command: " + command);
     }
 
-    public void send(Vector4 position_data)
+    public void send_position(Vector4 position_data)
     {
         if (!connected) { return; }
         client.Publish(UbiiParser.UnityToProto("position", position_data));
         Debug.Log("Sent position: " + position_data);
     }
 
-    public void send(Color c)
+    public void send_color(Color c)
     {
         if (!connected) { return; }
         client.Publish(UbiiParser.UnityToProto("color", c));

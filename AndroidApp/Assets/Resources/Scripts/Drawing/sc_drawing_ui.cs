@@ -35,6 +35,8 @@ public class sc_drawing_ui : MonoBehaviour
         brush_button.transform.Find("BrushIcon").Find("BrushHead").GetComponent<Image>().color = drawing_script.default_color;
         bucket_button.transform.Find("BucketIcon").Find("BucketContents").GetComponent<Image>().color = drawing_script.default_color;
         drawing_script.drawing_color = drawing_script.default_color;
+
+        brush_size_slider.GetComponent<Slider>().value = (drawing_script.get_tool("brush") as sc_tool_brush).brush_size;
     }
 
     //gets called whenever switched to drawing ui and shows help
@@ -48,6 +50,7 @@ public class sc_drawing_ui : MonoBehaviour
         enableBrushThicknessButton();
         bucket_button.SetActive(false);
         brush_button.SetActive(true);
+        set_brush_size();
 
         // open tutorial
         drawing_script.active = false;

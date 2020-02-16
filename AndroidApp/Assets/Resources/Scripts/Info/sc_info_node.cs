@@ -17,7 +17,7 @@ public class sc_info_node : MonoBehaviour
     public void displayInfo(string tag)
     {
         infobox.SetActive(true);
-        sc_connection_handler.instance.send(tag);
+        sc_connection_handler.instance.send_command(tag);
         this.GetComponent<Image>().color = new Color(0.6f, 0.6f, 0.6f);
         info_ui.on_info_read(this.gameObject);
     }
@@ -30,7 +30,7 @@ public class sc_info_node : MonoBehaviour
             {
                 infobox.SetActive(false);
                 info_ui.on_info_close();
-                sc_connection_handler.instance.send("InfoDefault");
+                sc_connection_handler.instance.send_command("InfoDefault");
             }
         }
     }

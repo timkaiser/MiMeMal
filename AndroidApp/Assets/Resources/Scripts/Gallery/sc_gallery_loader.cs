@@ -16,7 +16,7 @@ public class sc_gallery_loader : MonoBehaviour
     private GameObject grabstele;       //the paintable object
 
     private int resolution = 2048;      //the resolution of the loaded textures
-    private Texture2D[] textures;   //list of loaded textures from saved drawings
+    private Texture2D[] textures;       //list of loaded textures from saved drawings
     private List<string> filenames;     //list of the filenames of the textures
     private int current_value = 0;      //index indicating currently displayed texture
     private Texture2D historic_version; //used as a default in case of error
@@ -68,18 +68,10 @@ public class sc_gallery_loader : MonoBehaviour
             textures[i-1] = load_resource("Textures/Example" + i, TextureFormat.ARGB32);
         }
 
-        //if there are loaded images display them, otherwise display default
+        //if there are loaded images start in the middle of the examples
         if (filenames.Count >= 1)
         {
-            //start in the middle of the examples
             current_value = num_examples / 2;
-            //grabstele.GetComponent<Renderer>().material.mainTexture = textures[current_value];
-            //sc_connection_handler.instance.send(textures[current_value]);
-        }
-        else
-        {
-            grabstele.GetComponent<Renderer>().material.mainTexture = historic_version;
-            sc_connection_handler.instance.send(historic_version);
         }
     }
 
@@ -87,8 +79,9 @@ public class sc_gallery_loader : MonoBehaviour
     public void next() {
         try {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[update_value(true)];
-            gallery_ui.filename.text = get_current_filename();
-            sc_connection_handler.instance.send(textures[current_value]);
+            string filename = get_current_filename();
+            gallery_ui.filename.text = filename;
+            sc_connection_handler.instance.send_gallery_command(filename);
         }
         catch (Exception)
         {
@@ -102,8 +95,9 @@ public class sc_gallery_loader : MonoBehaviour
         try
         {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[update_value(false)];
-            gallery_ui.filename.text = get_current_filename();
-            sc_connection_handler.instance.send(textures[current_value]);
+            string filename = get_current_filename();
+            gallery_ui.filename.text = filename;
+            sc_connection_handler.instance.send_gallery_command(filename);
         } catch (Exception)
         {
             set_to_default();
@@ -114,7 +108,7 @@ public class sc_gallery_loader : MonoBehaviour
     public void set_to_default()
     {
         grabstele.GetComponent<Renderer>().material.mainTexture = historic_version;
-        sc_connection_handler.instance.send(historic_version);
+        sc_connection_handler.instance.send_command("InfoDefault");
     }
 
     //resets displayed image to current index
@@ -123,7 +117,7 @@ public class sc_gallery_loader : MonoBehaviour
         try
         {
             grabstele.GetComponent<Renderer>().material.mainTexture = textures[current_value];
-            sc_connection_handler.instance.send(textures[current_value]);
+            sc_connection_handler.instance.send_gallery_command(get_current_filename());
         } catch (Exception)
         {
             set_to_default();
