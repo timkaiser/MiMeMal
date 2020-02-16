@@ -22,6 +22,16 @@ public class sc_texture_loader : MonoBehaviour
         obj.GetComponent<Renderer>().material.mainTexture = tex;
     }
 
+    public void setInactive()
+    {
+        obj.SetActive(false);
+    }
+
+    public void setActive()
+    {
+        obj.SetActive(true);
+    }
+
     public Texture2D loadTexture(string path, int resolution = 1024)
     {
         byte[] data = File.ReadAllBytes(path);

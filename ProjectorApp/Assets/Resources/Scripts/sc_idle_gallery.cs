@@ -61,7 +61,16 @@ public class sc_idle_gallery : MonoBehaviour
 
     void auto_browse()
     {
-        if(filenames[current].StartsWith("Example"))
+        if(current == 0)
+        {
+            texture_loader.setActive();
+        }
+
+        if (current == filenames.Count)
+        {
+            texture_loader.setInactive();
+        }
+        else if(filenames[current].StartsWith("Example"))
         {
             texture_loader.setTexture(Resources.Load<Texture2D>("Textures/" + filenames[current]));
         }
@@ -69,6 +78,6 @@ public class sc_idle_gallery : MonoBehaviour
         {
             texture_loader.setTexture(texture_loader.loadTexture(Application.persistentDataPath + "/" + filenames[current]));
         }
-        current = current<filenames.Count-1 ? current+1 : 0;
+        current = current<filenames.Count ? current+1 : 0;
     }
 }
