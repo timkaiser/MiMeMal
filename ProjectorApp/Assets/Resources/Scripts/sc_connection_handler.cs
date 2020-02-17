@@ -136,9 +136,13 @@ public class sc_connection_handler : MonoBehaviour {
             }
             else
             {
-                Texture2D tex = texture_loader.loadTexture(Application.persistentDataPath + "/" + filename);
-                textures.Add(gallery_command, tex);
-                texture_loader.setTexture(tex);
+                try
+                {
+                    Texture2D tex = texture_loader.loadTexture(Application.persistentDataPath + "/" + filename);
+                    textures.Add(gallery_command, tex);
+                    texture_loader.setTexture(tex);
+                }
+                catch (Exception) { Debug.Log("File not found"); }
             }
             gallery_command = "";
         }

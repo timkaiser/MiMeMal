@@ -13,12 +13,21 @@ public class sc_idle_gallery : MonoBehaviour
     private int counter = 0;
     private List<string> filenames;
     private int current = 0;
+    private bool reset;
 
     private sc_texture_loader texture_loader;
 
+    private static sc_idle_gallery instance; // singelton instance to avoid the doubeling of this script
+
+    private void Awake()
+    {
+        // avoid doubeling of this script
+        if (instance != null && instance != this) { Destroy(this.gameObject); } else { instance = this; }
+    }
+
     // Start is called before the first frame update
     void Start()
-    {
+    { 
         texture_loader = FindObjectOfType<sc_texture_loader>();
         filenames = new List<string>();
 
@@ -42,6 +51,12 @@ public class sc_idle_gallery : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(reset)
+        {
+            counter = 0;
+            CancelInvoke("auto_browse");
+            reset = false;
+        }
         if (counter == counter_max)
         {
             InvokeRepeating("auto_browse", 0, auto_browse_seconds);
@@ -55,8 +70,7 @@ public class sc_idle_gallery : MonoBehaviour
 
     public void reset_counter()
     {
-        counter = 0;
-        CancelInvoke("auto_browse");
+        reset = true;
     }
 
     void auto_browse()
