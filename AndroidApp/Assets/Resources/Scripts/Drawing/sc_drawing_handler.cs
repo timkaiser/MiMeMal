@@ -56,18 +56,20 @@ public class sc_drawing_handler : MonoBehaviour
         component_mask = (Texture2D)obj.GetComponent<Renderer>().material.GetTexture("_ComponentMask");
 
         Camera cam = FindObjectOfType<Camera>();
-        /*if (!((cam.pixelWidth == 1600 && cam.pixelHeight == 2560) || (cam.pixelWidth == 1536 && cam.pixelHeight == 2048))) {
+        
+        if (!((cam.pixelWidth == 1600 && cam.pixelHeight == 2560) || (cam.pixelWidth == 1536 && cam.pixelHeight == 2048))) {
             Debug.LogError("Wrong resolution. This app only works with 1600x2560 or 1536x2048");
             return;
         }
 
         //load uv textures
-        string path = "Assets/Resources/Textures/uv_" + cam.pixelWidth + "x" + cam.pixelHeight;
-        byte[] data = System.IO.File.ReadAllBytes(path);
+        string path = "Textures/uv_" + cam.pixelWidth + "x" + cam.pixelHeight;
+        byte[] data = (Resources.Load(path) as TextAsset).bytes;
 
         uvImage = new Texture2D(cam.pixelWidth, cam.pixelHeight, TextureFormat.RGBAFloat, false);
         uvImage.LoadRawTextureData(data);
-        uvImage.Apply();*/
+        uvImage.Apply();
+
         /*uvImage = new RenderTexture(tex.width, tex.height, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Default);
         Graphics.Blit(tex, uvImage);*/
 
@@ -190,7 +192,7 @@ public class sc_drawing_handler : MonoBehaviour
     // INPUT/OUTPUT: none
     public void reset_canvas()
     {
-        sc_UVCamera.update_texture();
+        //sc_UVCamera.update_texture();
 
         sc_connection_handler.instance.send_reset_canvas();
         activate_tool(0);
